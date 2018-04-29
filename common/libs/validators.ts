@@ -38,10 +38,10 @@ export function toChecksumWaddress(address: string): boolean {
   address = address.slice(0, 2) === '0x' ? address.slice(2) : address;
   address = address.toLowerCase();
   /* toChecksumWaddress */
-  var hash = sha3(address).toString('hex');
-  var ret = '0x';
+  const hash = sha3(address).toString('hex');
+  let ret = '0x';
 
-  for (var i = 0; i < address.length; i++) {
+  for (let i = 0; i < address.length; i++) {
     if (parseInt(hash[i], 16) < 8) {
       ret += address[i].toUpperCase();
     } else {
