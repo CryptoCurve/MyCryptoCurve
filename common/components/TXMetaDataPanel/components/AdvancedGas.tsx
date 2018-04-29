@@ -64,17 +64,6 @@ class AdvancedGas extends React.Component<Props, State> {
 
     return (
       <div className="AdvancedGas row form-group">
-        <div className="AdvancedGas-calculate-limit">
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              defaultChecked={autoGasLimitEnabled}
-              onChange={this.handleToggleAutoGasLimit}
-            />
-            <span>Automatically Calculate Gas Limit</span>
-          </label>
-        </div>
-
         <div className="AdvancedGas-flex-wrapper flex-wrapper">
           {gasPriceField && (
             <div className="AdvancedGas-gas-price">
@@ -106,7 +95,7 @@ class AdvancedGas extends React.Component<Props, State> {
           )}
           {nonceField && (
             <div className="AdvancedGas-nonce">
-              <NonceField alwaysDisplay={true} />
+              <NonceField alwaysDisplay={false} />
             </div>
           )}
         </div>

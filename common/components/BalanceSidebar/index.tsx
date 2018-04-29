@@ -6,6 +6,7 @@ import { AppState } from 'reducers';
 import { getWalletInst } from 'selectors/wallet';
 import { connect } from 'react-redux';
 import EquivalentValues from './EquivalentValues';
+import { QRCode } from 'components/ui';
 
 interface Block {
   name: string;
@@ -27,21 +28,12 @@ export class BalanceSidebar extends React.Component<StateProps> {
 
     const blocks: Block[] = [
       {
-        name: 'Account Info',
-        content: <AccountInfo wallet={wallet} />
-      },
-      {
-        name: 'Promos',
-        isFullWidth: true,
-        content: <Promos />
-      },
-      {
         name: 'Token Balances',
         content: <TokenBalances />
       },
       {
-        name: 'Equivalent Values',
-        content: <EquivalentValues />
+        name: 'Account Info',
+        content: <AccountInfo wallet={wallet} />
       }
     ];
 
@@ -52,6 +44,13 @@ export class BalanceSidebar extends React.Component<StateProps> {
             {block.content}
           </section>
         ))}
+        {wallet.address ? (
+          <div className="WalletInfo-qr well well-lg">
+            <QRCode data={wallet.address} />
+          </div>
+        ) : (
+          <div />
+        )}
       </aside>
     );
   }

@@ -33,9 +33,6 @@ class BodyClass extends React.Component<StateProps, State> {
 
     return (
       <div className="tx-modal-body">
-        {this.props.network.isTestnet && (
-          <p className="tx-modal-testnet-warn small">Testnet Transaction</p>
-        )}
         <Addresses />
         <Amounts />
         <button

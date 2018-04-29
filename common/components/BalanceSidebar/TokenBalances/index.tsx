@@ -55,7 +55,6 @@ class TokenBalances extends React.Component<Props> {
     } = this.props;
 
     const walletTokens = walletConfig ? walletConfig.tokens : [];
-
     let content;
     if (isOffline) {
       content = (

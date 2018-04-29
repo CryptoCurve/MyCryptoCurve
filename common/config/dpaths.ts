@@ -43,6 +43,11 @@ export const POA_DEFAULT: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+export const WAN_DEFAULT: DPath = {
+  label: 'Default (WAN)',
+  value: "m/44'/5718350'/0'/0"
+};
+
 export const TOMO_DEFAULT: DPath = {
   label: 'Default (TOMO)',
   value: "m/44'/1'/0'/0"
@@ -68,6 +73,7 @@ export const DPaths: DPath[] = [
   EXP_DEFAULT,
   UBQ_DEFAULT,
   POA_DEFAULT,
+  WAN_DEFAULT,
   TOMO_DEFAULT,
   ELLA_DEFAULT
 ];

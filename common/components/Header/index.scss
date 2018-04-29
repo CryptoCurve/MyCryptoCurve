@@ -27,7 +27,11 @@ $small-size: 900px;
 
 // Header
 .Header {
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  padding-top: 3rem;
+  background-color: black;
+  border-bottom: 1px solid black;
 
   @media screen and (max-width: $screen-sm) {
     margin-bottom: 1rem;
@@ -80,10 +84,10 @@ $small-size: 900px;
   &-branding {
     color: white;
     padding: 0;
-    background: #274e7e;
+    /*background: #274e7e;
     background-image: url('~assets/images/header-bg.jpg'), linear-gradient(130deg, #37709e, #274e7e);
     background-size: cover;
-    background-position: left;
+    background-position: left;*/
 
     @include small-query {
       text-align: center;

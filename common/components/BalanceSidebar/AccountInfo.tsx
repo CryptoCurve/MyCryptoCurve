@@ -101,9 +101,6 @@ class AccountInfo extends React.Component<Props, State> {
       <div className="AccountInfo">
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
-          <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
-          </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">
               <Address address={address} />

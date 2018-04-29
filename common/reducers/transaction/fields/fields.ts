@@ -82,7 +82,7 @@ export const fields = (
       return tokenToToken(state, action);
 
     case TK.RESET_SUCCESSFUL:
-      return reset(state, action);
+      return state; //reset(state, action);
     default:
       return state;
   }

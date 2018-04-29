@@ -55,12 +55,11 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
 
     return (
       <form id="selectedTypeKey" onSubmit={this.unlock}>
-        <DeprecationWarning />
         <div className="input-group-wrapper">
           <label className="input-group">
-            <TogglablePassword
+            <Input
               value={key}
-              rows={4}
+              onChange={this.onPasswordChange}
               placeholder={translateRaw('X_PRIVKEY2')}
               isValid={isValidPkey}
               onChange={this.onPkeyChange}

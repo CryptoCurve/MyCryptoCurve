@@ -250,7 +250,7 @@ const WalletDecrypt = withRouter<Props>(
         return null;
       }
 
-      if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
+      /*if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
@@ -260,7 +260,7 @@ const WalletDecrypt = withRouter<Props>(
             />
           </div>
         );
-      }
+      }*/
 
       return (
         <div className="WalletDecrypt-decrypt">
@@ -268,7 +268,7 @@ const WalletDecrypt = withRouter<Props>(
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
+            {!selectedWallet.isReadOnly} {translate(selectedWallet.lid)}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
             <selectedWallet.component
@@ -306,10 +306,8 @@ const WalletDecrypt = withRouter<Props>(
       const { reasons } = computedDisabledWallets;
 
       return (
-        <div className="WalletDecrypt-wallets">
-          <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
-
-          <div className="WalletDecrypt-wallets-row">
+        <div className="WalletDecrypt-wallets row">
+          <div className="WalletDecrypt-wallets-row col-md-8 col-md-offset-2">
             {SECURE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
@@ -317,18 +315,13 @@ const WalletDecrypt = withRouter<Props>(
                   key={walletType}
                   name={translateRaw(wallet.lid)}
                   description={translateRaw(wallet.description)}
-                  icon={wallet.icon}
-                  helpLink={wallet.helpLink}
                   walletType={walletType}
-                  isSecure={true}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
                 />
               );
             })}
-          </div>
-          <div className="WalletDecrypt-wallets-row">
             {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
@@ -336,16 +329,13 @@ const WalletDecrypt = withRouter<Props>(
                   key={walletType}
                   name={translateRaw(wallet.lid)}
                   example={wallet.example}
-                  helpLink={wallet.helpLink}
                   walletType={walletType}
-                  isSecure={false}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
                 />
               );
             })}
-
             {MISC_WALLETS.map((walletType: MiscWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
@@ -365,7 +355,7 @@ const WalletDecrypt = withRouter<Props>(
           </div>
 
           {this.props.showGenerateLink && (
-            <div className="WalletDecrypt-wallets-generate">
+            <div className="WalletDecrypt-wallets-generate col-md-12">
               <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
             </div>
           )}

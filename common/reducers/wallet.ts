@@ -149,6 +149,7 @@ function scanWalletForTokens(state: State): State {
 }
 
 function setWalletTokens(state: State): State {
+  console.log(state);
   return {
     ...state,
     hasSavedWalletTokens: true

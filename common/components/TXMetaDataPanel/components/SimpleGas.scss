@@ -19,6 +19,7 @@
       > .SimpleGas-slider {
         width: 100%;
         margin-right: 0;
+        background: white;
       }
       > .FeeSummary {
         width: 100%;
@@ -39,7 +40,6 @@
         flex: 1;
         padding: 0 $space-xs;
         text-align: center;
-        color: $gray-light;
         font-size: $font-size-xs;
 
         &:first-child {

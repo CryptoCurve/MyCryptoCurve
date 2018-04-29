@@ -32,31 +32,10 @@ const WalletTypes: React.SFC<{}> = () => {
 
   return (
     <div className="WalletTypes Tab-content-pane">
-      <h1 className="WalletTypes-title">{translate('NAV_GENERATEWALLET')}</h1>
-      <p className="WalletTypes-subtitle alert alert-warning">
-        <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translate('GENERATE_WALLET_WARNING', {
-          $metamask_link: 'https://metamask.io/',
-          $ledger_link: ledgerReferralURL,
-          $trezor_link: trezorReferralURL
-        })}{' '}
-        <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
-          {translate('GENERATE_WALLET_HELPLINK_1')}
-        </HelpLink>
-      </p>
-
       <div className="WalletTypes-types row">
-        <div className="col-md-1" />
+        <div className="col-md-3" />
         {Object.keys(typeInfo).map((type: keyof typeof typeInfo) => (
-          <div key={type} className="WalletType col-md-5">
-            <h2 className="WalletType-title">{translate(typeInfo[type].name)}</h2>
-            <ul className="WalletType-features">
-              {typeInfo[type].bullets.map(bullet => (
-                <li key={bullet} className="WalletType-features-feature">
-                  {translate(bullet)}
-                </li>
-              ))}
-            </ul>
+          <div key={type} className="WalletType col-md-3">
             <div className="WalletType-select">
               <Link
                 className="WalletType-select-btn btn btn-primary btn-block"

@@ -6,12 +6,11 @@
     min-height: 50%;
 
     &-pane {
-      background: #fff;
       min-height: 1.5rem;
       padding: 1.5rem 2rem;
       margin: 0 auto 1rem;
-      box-shadow: $tab-box-shadow;
-      border-radius: 2px;
+      /*box-shadow: $tab-box-shadow;
+      border-radius: 2px;*/
 
       &.is-full-width {
         background: none;

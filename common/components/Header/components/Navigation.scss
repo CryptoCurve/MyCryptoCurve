@@ -4,10 +4,16 @@
   width: 100%;
   position: relative;
   overflow-y: hidden;
-  border-top: 3px solid $brand-primary;
   transition: border 300ms ease;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  /*background: #fff;*/
+  /*border-bottom: 1px solid #eee;*/
+
+  &-header {
+    margin-bottom: -60px;
+    margin-left: 60px;
+    font-size: 60px;
+    font-weight: 900;
+  }
 
   &-scroll {
     -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -32,7 +38,7 @@
   }
 
   &-arrow {
-    background-color: white;
+    background-color: #ffe400;
     bottom: 12px;
     color: #d6d6d6;
     font-size: 33px;
@@ -82,12 +88,14 @@
 // Styling for common/components/NavigationLink.tsx, with custom class
 .NavigationLink {
   display: inline-block;
+  float:right;
+  
 
   &-link {
-    color: darken($link-color, 15%);
+    color: white;
     display: block;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 800;
     padding: 10px;
     white-space: nowrap;
     position: relative;
@@ -101,8 +109,8 @@
 
     &:after {
       content: '';
-      background: $brand-primary;
-      height: 2px;
+      background: white;
+      height: 4px;
       width: 100%;
       left: 0px;
       position: absolute;
@@ -114,7 +122,7 @@
     &.is-active,
     &:hover,
     &:focus {
-      color: $brand-primary;
+      color: white;
       text-decoration: none;
       transition: all 250ms ease 0s;
 

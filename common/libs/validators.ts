@@ -1,4 +1,4 @@
-import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
+import { toChecksumAddress, isValidPrivate, sha3 } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
@@ -29,6 +29,26 @@ export function isValidETHAddress(address: string): boolean {
   } else {
     return isChecksumAddress(address);
   }
+}
+export function toChecksumWaddress(address: string): boolean {
+  /* stripHexPrefix */
+  if (typeof address !== 'string') {
+    return false;
+  }
+  address = address.slice(0, 2) === '0x' ? address.slice(2) : address;
+  address = address.toLowerCase();
+  /* toChecksumWaddress */
+  var hash = sha3(address).toString('hex');
+  var ret = '0x';
+
+  for (var i = 0; i < address.length; i++) {
+    if (parseInt(hash[i], 16) < 8) {
+      ret += address[i].toUpperCase();
+    } else {
+      ret += address[i];
+    }
+  }
+  return ret;
 }
 
 export const isCreationAddress = (address: string): boolean =>
@@ -78,7 +98,7 @@ export function isValidENSAddress(address: string): boolean {
 }
 
 function isChecksumAddress(address: string): boolean {
-  return address === toChecksumAddress(address);
+  return address === toChecksumAddress(address) || address === toChecksumWaddress(address);
 }
 
 export function isValidPrivKey(privkey: string | Buffer): boolean {

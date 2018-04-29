@@ -51,7 +51,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <DeprecationWarning />
         <div id="selectedTypeKey">
           <div className="form-group">
             <TogglablePassword

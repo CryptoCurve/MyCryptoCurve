@@ -13,7 +13,7 @@ import {
   removeCustomNode,
   addCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/logo-mycrypto.svg';
+import logo from 'assets/images/cryptocurve-logo-white2.png';
 import { OldDropDown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
@@ -147,12 +147,6 @@ class Header extends Component<Props, State> {
 
     return (
       <div className="Header">
-        {ANNOUNCEMENT_MESSAGE && (
-          <div className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}>
-            {ANNOUNCEMENT_MESSAGE}
-          </div>
-        )}
-
         <section className="Header-branding">
           <section className="Header-branding-inner container">
             <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
@@ -161,53 +155,11 @@ class Header extends Component<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyCrypto logo"
+                alt="CryptoCurve logo"
               />
             </Link>
-            <div className="Header-branding-right">
-              <div className="Header-branding-right-online">
-                <OnlineStatus isOffline={isOffline} />
-              </div>
-
-              <div className="Header-branding-right-dropdown">
-                <LanguageDropDown
-                  ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
-                  options={Object.values(languages)}
-                  value={languages[selectedLanguage]}
-                  onChange={this.changeLanguage}
-                  size="smr"
-                  color="white"
-                />
-              </div>
-              <div
-                className={classnames({
-                  'Header-branding-right-dropdown': true,
-                  'is-flashing': isChangingNode
-                })}
-              >
-                <ColorDropdown
-                  ariaLabel={`
-                    change node. current node is on the ${node.network} network
-                    provided by ${node.service}
-                  `}
-                  options={options}
-                  value={nodeSelection || ''}
-                  extra={
-                    <li>
-                      <a onClick={this.openCustomNodeModal}>{translate('NODE_ADD')}</a>
-                    </li>
-                  }
-                  disabled={nodeSelection === 'web3'}
-                  onChange={this.props.changeNodeIntent}
-                  size="smr"
-                  color="white"
-                  menuAlign="right"
-                />
-              </div>
-            </div>
           </section>
         </section>
-
         <Navigation color={!network.isCustom && network.color} />
 
         <CustomNodeModal

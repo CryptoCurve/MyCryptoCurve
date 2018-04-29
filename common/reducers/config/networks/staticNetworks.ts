@@ -7,6 +7,7 @@ import {
 } from 'config/data';
 import {
   ELLA_DEFAULT,
+  WAN_DEFAULT,
   ETC_LEDGER,
   ETC_TREZOR,
   ETH_DEFAULT,
@@ -29,6 +30,31 @@ const testnetDefaultGasPrice = {
 };
 
 export const INITIAL_STATE: State = {
+  WAN: {
+    name: 'WAN',
+    unit: 'WAN',
+    chainId: 1,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'Etherchain Light',
+      origin: 'https://explorer.wanchain.org/',
+      addressPath: 'address/search',
+      blockPath: 'blocks/block'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: WAN_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: WAN_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 10,
+      initial: 1
+    }
+  },
   ETH: {
     name: 'ETH',
     unit: 'ETH',

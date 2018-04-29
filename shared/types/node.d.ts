@@ -26,6 +26,7 @@ interface StaticNodeConfig {
 }
 
 declare enum StaticNodeId {
+  WAN_AUTO = 'wan_auto',
   ETH_AUTO = 'eth_auto',
   ETH_MYCRYPTO = 'eth_mycrypto',
   ETH_ETHSCAN = 'eth_ethscan',

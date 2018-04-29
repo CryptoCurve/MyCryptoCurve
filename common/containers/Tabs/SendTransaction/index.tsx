@@ -13,7 +13,8 @@ import {
   RecentTransactions,
   Fields,
   UnavailableWallets,
-  SideBar
+  SideBar,
+  Sets
 } from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
@@ -40,21 +41,8 @@ class SendTransaction extends React.Component<Props> {
     const tabs: Tab[] = [
       {
         path: 'send',
-        name: translate('NAV_SENDETHER'),
+        name: 'Send',
         disabled: !!wallet && !!wallet.isReadOnly
-      },
-      {
-        path: 'request',
-        name: translate('NAV_REQUESTPAYMENT'),
-        disabled: this.props.requestDisabled
-      },
-      {
-        path: 'info',
-        name: translate('NAV_VIEWWALLET')
-      },
-      {
-        path: 'recent-txs',
-        name: translate('NAV_RECENT_TX')
       }
     ];
 
@@ -90,6 +78,11 @@ class SendTransaction extends React.Component<Props> {
                     path={`${currentPath}/info`}
                     exact={true}
                     render={() => <WalletInfo wallet={wallet} />}
+                  />
+                  <Route
+                    path={`${currentPath}/sets`}
+                    exact={true}
+                    render={() => <Sets wallet={wallet} />}
                   />
                   <Route
                     path={`${currentPath}/request`}

@@ -52,15 +52,17 @@
   }
   &-input {
     width: 100%;
-    border: 1px solid $border-idle;
-    border-radius: 2px;
+    border: 0px solid $border-idle;
+    border-bottom: 2px solid;
+    //border-radius: 2px;
     height: $input-height-base;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0rem;
+    background: transparent;
     font-weight: 400;
     font-size: $input-margin-bottom;
-    color: rgba(0, 0, 0, 0.87);
+    /*color: rgba(0, 0, 0, 0.87);
     box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
-    transition: border-color 120ms, box-shadow 120ms;
+    transition: border-color 120ms, box-shadow 120ms;*/
     margin-bottom: 1rem;
     &[placeholder] {
       text-overflow: ellipsis;
@@ -83,14 +85,14 @@
     &:not([disabled]):not([readonly]) {
       &.invalid.has-blurred.has-value {
         border-color: $brand-danger;
-        box-shadow: inset 0px 0px 0px 1px $brand-danger;
+        //box-shadow: inset 0px 0px 0px 1px $brand-danger;
       }
       &:focus {
-        border-color: #4295bc;
-        box-shadow: inset 0px 0px 0px 1px #4295bc;
+        /*border-color: #4295bc;
+        box-shadow: inset 0px 0px 0px 1px #4295bc;*/
         &.valid {
           border-color: #8dd17b;
-          box-shadow: inset 0px 0px 0px 1px #8dd17b;
+          //box-shadow: inset 0px 0px 0px 1px #8dd17b;
         }
       }
     }

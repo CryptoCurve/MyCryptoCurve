@@ -3,6 +3,13 @@ import { shepherdProvider } from 'libs/nodes';
 import { StaticNodesState } from './types';
 
 export const INITIAL_STATE: StaticNodesState = {
+  wan_auto: {
+    network: 'WAN',
+    isCustom: false,
+    lib: shepherdProvider,
+    service: 'AUTO',
+    estimateGas: true
+  },
   eth_auto: {
     network: 'ETH',
     isCustom: false,

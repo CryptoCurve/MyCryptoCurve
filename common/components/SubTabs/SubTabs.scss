@@ -19,7 +19,7 @@
       text-align: center;
       font-weight: 300;
       color: $ether-navy;
-      border-bottom: 2px solid $gray-lighter;
+      border-bottom: 2px solid transparent;
       transition-duration: 100ms;
 
       &.is-active {

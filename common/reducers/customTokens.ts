@@ -14,6 +14,7 @@ function addCustomToken(state: State, action: AddCustomTokenAction): State {
   if (state.find(token => token.symbol === action.payload.symbol)) {
     return state;
   }
+  console.log(action.payload);
   return [...state, action.payload];
 }
 

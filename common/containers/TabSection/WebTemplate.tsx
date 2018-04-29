@@ -36,9 +36,7 @@ class WebTemplate extends Component<Props, {}> {
           {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
         </div>
         <div className="WebTemplate-spacer" />
-        <Footer latestBlock={latestBlock} />
-        <Notifications />
-        <BetaAgreement />
+        <Footer latestBlock={latestBlock} /> <Notifications />
       </div>
     );
   }

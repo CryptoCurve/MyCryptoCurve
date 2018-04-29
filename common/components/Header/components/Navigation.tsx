@@ -48,7 +48,6 @@ export default class Navigation extends PureComponent<Props, State> {
             &#171;
           </a>
         )}
-
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
             {navigationLinks.map(link => (

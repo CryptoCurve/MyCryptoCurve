@@ -3,14 +3,16 @@
 
 .ErrorScreen {
   @include cover-message;
-  background: $brand-danger;
-
+  background: white;
+  &-content {
+    color: black;
+  }
   code {
     display: block;
     word-wrap: break-word;
     background: rgba(#fff, 0.25);
     border: 1px solid rgba(#fff, 0.6);
-    color: #FFF;
+    color: black;
     width: 100%;
     padding: 10px;
     border-radius: 2px;

@@ -32,6 +32,12 @@
     &-btn {
       padding-left: 0;
       padding-right: 0;
+      min-width: 220px;
+    }
+    &-btn:hover {
+      background-color:#2ad4dc;
+      color:black;
+      transition: ease 1s;
     }
   }
 }

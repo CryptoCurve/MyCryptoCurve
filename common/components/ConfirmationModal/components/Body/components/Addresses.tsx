@@ -34,7 +34,6 @@ class AddressesClass extends Component<StateProps> {
               <div className="tx-modal-address-from">
                 {from && (
                   <React.Fragment>
-                    <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
                     <div className="tx-modal-address-from-content">
                       <h5 className="tx-modal-address-from-title">
                         {translate('CONFIRM_TX_FROM')}{' '}
@@ -69,11 +68,6 @@ class AddressesClass extends Component<StateProps> {
               <div className="tx-modal-address-to">
                 {to && (
                   <React.Fragment>
-                    <Identicon
-                      className="tx-modal-address-from-icon"
-                      size={size}
-                      address={toFormatted}
-                    />
                     <div className="tx-modal-address-to-content">
                       <h5 className="tx-modal-address-to-title">{translate('CONFIRM_TX_TO')} </h5>
                       <h5 className="small tx-modal-address-to-address">{toFormatted}</h5>

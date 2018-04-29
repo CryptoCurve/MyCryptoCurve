@@ -79,50 +79,17 @@ export class WalletButton extends React.PureComponent<Props> {
     }
 
     return (
-      <div
-        className={classnames({
-          WalletButton: true,
-          'WalletButton--small': !isSecure,
-          'is-disabled': isDisabled
-        })}
-        onClick={this.handleClick}
-        tabIndex={isDisabled ? -1 : 0}
-        aria-disabled={isDisabled}
-      >
-        <div className="WalletButton-inner">
-          <div className="WalletButton-title">
-            {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' logo'} />}
+      <div className="WalletType col-md-6">
+        <div
+          className="WalletType-select"
+          onClick={this.handleClick}
+          tabIndex={isDisabled ? -1 : 0}
+          aria-disabled={isDisabled}
+        >
+          <a className="WalletType-select-btn btn btn-primary btn-block">
             <span>{name}</span>
-          </div>
-
-          {description && (
-            <div className="WalletButton-description" aria-label="description">
-              {description}
-            </div>
-          )}
-          {example && (
-            <div className="WalletButton-example" aria-label="example" aria-hidden={true}>
-              {example}
-            </div>
-          )}
-
-          <div className="WalletButton-icons">
-            {icons.map(i => (
-              <span className="WalletButton-icons-icon" key={i.icon} onClick={this.stopPropogation}>
-                {i.href ? (
-                  <NewTabLink href={i.href} onClick={this.stopPropogation} aria-label={i.arialabel}>
-                    <i className={`fa fa-${i.icon}`} />
-                  </NewTabLink>
-                ) : (
-                  <i className={`fa fa-${i.icon}`} aria-label={i.arialabel} />
-                )}
-                {!isDisabled && <Tooltip size="sm">{i.tooltip}</Tooltip>}
-              </span>
-            ))}
-          </div>
+          </a>
         </div>
-
-        {isDisabled && disableReason && <Tooltip>{disableReason}</Tooltip>}
       </div>
     );
   }

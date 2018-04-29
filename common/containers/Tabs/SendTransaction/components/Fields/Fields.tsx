@@ -73,7 +73,6 @@ class FieldsClass extends Component<StateProps> {
                 </div>
 
                 <CurrentCustomMessage />
-                <NonStandardTransaction />
 
                 {this.getTxButton()}
               </div>

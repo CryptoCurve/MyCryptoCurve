@@ -1,4 +1,4 @@
-import logo from 'assets/images/logo-mycrypto.svg';
+import logo from 'assets/images/cryptocurve-logo-white2.png';
 import {
   donationAddressMap,
   VERSION,
@@ -40,7 +40,6 @@ export default class Footer extends React.PureComponent<Props, State> {
   public render() {
     return (
       <div>
-        <PreFooter openModal={this.toggleModal} />
         <footer className="Footer" role="contentinfo" aria-label="footer">
           <div className="Footer-links Footer-section">
             <div className="Footer-links-social">
@@ -52,34 +51,13 @@ export default class Footer extends React.PureComponent<Props, State> {
                 />
               ))}
             </div>
-
-            <div className="Footer-links-links">
-              {productLinks.map(link => (
-                <NewTabLink key={link.link} href={link.link}>
-                  {link.text}
-                </NewTabLink>
-              ))}
-              <NewTabLink href="mailto:press@mycrypto.com">
-                {translateRaw('FOOTER_PRESS')}
-              </NewTabLink>
-            </div>
           </div>
 
           <div className="Footer-about Footer-section">
-            <NewTabLink className="Footer-about-logo" href="/">
-              <img
-                className="Footer-about-logo-img"
-                src={logo}
-                height="55px"
-                width="auto"
-                alt="MyCrypto logo"
-              />
-            </NewTabLink>
-
             <div className="Footer-about-links">
-              <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
-              <NewTabLink href={knowledgeBaseURL}>{translateRaw('FOOTER_SUPPORT')}</NewTabLink>
-              <NewTabLink href="https://about.mycrypto.com">
+              <NewTabLink href="https://cryptocurve.io/">cryptocurve.io</NewTabLink>
+              <NewTabLink href="https://mycrypto.com/">mycrypto.com</NewTabLink>
+              <NewTabLink href="https://cryptocurve.io/team.php">
                 {translateRaw('FOOTER_TEAM')}
               </NewTabLink>
             </div>
@@ -88,7 +66,7 @@ export default class Footer extends React.PureComponent<Props, State> {
 
             <div className="Footer-about-legal">
               <div className="Footer-about-legal-text">
-                © {new Date().getFullYear()} MyCrypto, Inc.
+                © {new Date().getFullYear()} CryptoCurve & MyCrypto, Inc.
               </div>
               <div className="Footer-about-legal-text">
                 <a onClick={this.toggleModal}>{translateRaw('DISCLAIMER')}</a>
@@ -130,8 +108,6 @@ export default class Footer extends React.PureComponent<Props, State> {
             </div>
           </div>
         </footer>
-
-        <OnboardModal />
         <DisclaimerModal isOpen={this.state.isDisclaimerOpen} handleClose={this.toggleModal} />
       </div>
     );

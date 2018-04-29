@@ -4,7 +4,7 @@
 $footer-link-color: #fff;
 
 .Footer {
-  background-color: $ether-navy;
+  background-color: black;
   padding: $space-sm $space-sm 0;
   display: flex;
   flex-direction: row;
@@ -25,6 +25,7 @@ $footer-link-color: #fff;
   &-about {
     order: 2;
     text-align: center;
+    margin-left: 115px;
   }
   &-support {
     order: 3;
@@ -41,6 +42,7 @@ $footer-link-color: #fff;
     &-about {
       order: 1;
       width: 100%;
+      margin-left: 0px;
       padding-bottom: $space * 2;
       margin-bottom: $space * 2;
       border-bottom: 1px solid rgba(#fff, 0.2);

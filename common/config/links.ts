@@ -17,32 +17,16 @@ export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com/';
 
 export const socialMediaLinks: Link[] = [
   {
-    link: 'https://twitter.com/mycrypto',
+    link: 'https://twitter.com/crypto_curve',
     text: 'twitter'
   },
   {
-    link: 'https://www.facebook.com/mycryptoHQ/',
+    link: 'https://www.facebook.com/CryptoCurve/',
     text: 'facebook'
   },
   {
-    link: 'https://medium.com/@mycrypto',
+    link: 'https://medium.com/@Cryptocurve',
     text: 'medium'
-  },
-  {
-    link: 'https://www.linkedin.com/company/mycrypto',
-    text: 'linkedin'
-  },
-  {
-    link: 'https://github.com/MyCryptoHQ',
-    text: 'github'
-  },
-  {
-    link: 'https://www.reddit.com/r/mycrypto/',
-    text: 'reddit'
-  },
-  {
-    link: discordURL,
-    text: 'discord'
   }
 ];
 

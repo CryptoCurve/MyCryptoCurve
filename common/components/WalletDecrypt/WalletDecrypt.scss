@@ -19,7 +19,6 @@ $speed: 500ms;
   line-height: 1;
   margin: 0 0 30px;
   font-weight: normal;
-  animation: decrypt-enter $speed ease 1;
 }
 
 .WalletDecrypt {
@@ -132,6 +131,26 @@ $speed: 500ms;
 
     &-active {
       opacity: 0;
+    }
+  }
+}
+
+.WalletType {
+  margin-bottom: $space * 2;
+
+  &-features {
+    padding-left: 20px;
+  }
+
+  &-select {
+    @media screen and (min-width: $screen-md) {
+      padding: 0 10px;
+    }
+
+    &-btn {
+      padding-left: 0;
+      padding-right: 0;
+      min-width: 220px;
     }
   }
 }

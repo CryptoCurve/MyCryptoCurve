@@ -51,18 +51,6 @@ const FinalSteps: React.SFC<Props> = ({ walletType }) => {
   return (
     <div className="FinalSteps">
       <h1 className="FinalSteps-title">{translate('ADD_LABEL_6')}</h1>
-      <p className="FinalSteps-help">{translate('MNEMONIC_FINAL_DESCRIPTION')}</p>
-      <div className="FinalSteps-steps row">
-        {steps.map((step, index) => (
-          <div key={index} className="StepBox col-lg-3 col-sm-6 col-xs-12">
-            <h4 className="StepBox-title">{step.name}</h4>
-            <div className="StepBox-screen">
-              <img className="StepBox-screen-img" src={step.image} />
-              <div className="StepBox-screen-number">{index + 1}</div>
-            </div>
-          </div>
-        ))}
-      </div>
       <div className="FinalSteps-buttons">
         <Link to="/account" className="FinalSteps-buttons-btn btn btn-primary btn-lg">
           {translate('GO_TO_ACCOUNT')}

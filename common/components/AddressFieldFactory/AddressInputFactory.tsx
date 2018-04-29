@@ -65,9 +65,6 @@ class AddressInputFactoryClass extends Component<Props> {
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
         </div>
-        <div className="AddressInput-identicon">
-          <Identicon address={addr} />
-        </div>
       </div>
     );
   }
