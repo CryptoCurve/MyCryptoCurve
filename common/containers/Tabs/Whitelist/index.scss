@@ -1,0 +1,10 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.ViewOnly {
+  position: relative;
+  text-align: center;
+  padding-bottom: 1rem;
+  max-width: 360px;
+  margin: 0 auto;
+}

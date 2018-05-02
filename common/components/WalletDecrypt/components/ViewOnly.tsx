@@ -31,7 +31,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   public render() {
     const { recentAddresses } = this.props;
     const { address } = this.state;
-    const isValid = isValidETHAddress(address);
+    const isValid = isValidAddress(address);
 
     const recentOptions = (recentAddresses.map(addr => ({
       label: (

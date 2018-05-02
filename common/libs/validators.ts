@@ -16,7 +16,7 @@ import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import BN from 'bn.js';
 
 // FIXME we probably want to do checksum checks sideways
-export function isValidETHAddress(address: string): boolean {
+export function isValidAddress(address: string): boolean {
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
@@ -28,6 +28,34 @@ export function isValidETHAddress(address: string): boolean {
     return true;
   } else {
     return isChecksumAddress(address);
+  }
+}
+export function isValidETHAddress(address: string): boolean {
+  if (address === '0x0000000000000000000000000000000000000000') {
+    return false;
+  }
+  if (address.substring(0, 2) !== '0x') {
+    return false;
+  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    return false;
+  } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+    return true;
+  } else {
+    return isEthChecksumAddress(address);
+  }
+}
+export function isValidWANAddress(address: string): boolean {
+  if (address === '0x0000000000000000000000000000000000000000') {
+    return false;
+  }
+  if (address.substring(0, 2) !== '0x') {
+    return false;
+  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    return false;
+    /*} else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+    return true;*/
+  } else {
+    return isWanChecksumAddress(address);
   }
 }
 export function toChecksumWaddress(address: string): boolean {
@@ -99,6 +127,12 @@ export function isValidENSAddress(address: string): boolean {
 
 function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address) || address === toChecksumWaddress(address);
+}
+function isEthChecksumAddress(address: string): boolean {
+  return address === toChecksumAddress(address);
+}
+function isWanChecksumAddress(address: string): boolean {
+  return address === toChecksumWaddress(address);
 }
 
 export function isValidPrivKey(privkey: string | Buffer): boolean {

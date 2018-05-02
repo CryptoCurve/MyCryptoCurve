@@ -10,6 +10,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
+import Whitelist from 'containers/Tabs/Whitelist';
 import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
@@ -88,6 +89,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
+          <Route path="/whitelist" component={Whitelist} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
