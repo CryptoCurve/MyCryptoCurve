@@ -8,6 +8,7 @@ import { stripHexPrefixAndLower } from 'libs/values';
 export function decryptPrivKey(encprivkey: string, password: string): Buffer {
   const cipher = encprivkey.slice(0, 128);
   const decryptedCipher = decodeCryptojsSalt(cipher);
+  console.log(decryptedCipher);
   const evp = evp_kdf(new Buffer(password), decryptedCipher.salt, {
     keysize: 32,
     ivsize: 16
@@ -21,6 +22,7 @@ export function decryptPrivKey(encprivkey: string, password: string): Buffer {
 // adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L284
 export function decodeCryptojsSalt(input: string): any {
   const ciphertext = new Buffer(input, 'base64');
+  console.log(ciphertext.slice(0, 8).toString());
   if (ciphertext.slice(0, 8).toString() === 'Salted__') {
     return {
       salt: ciphertext.slice(8, 16),

@@ -95,6 +95,7 @@ $small-size: 900px;
     }
 
     &-inner {
+      padding-right: 5px;
       display: flex;
       align-items: center;
       @include small-query {

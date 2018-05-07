@@ -21,11 +21,14 @@ import { Link } from 'react-router-dom';
 import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
+import Node from './components/Node';
+import NavigationLink from 'components/NavigationLink';
 import OnlineStatus from './components/OnlineStatus';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { NodeConfig } from 'types/node';
 import './index.scss';
+import './components/Navigation.scss';
 import { AppState } from 'reducers';
 import {
   getOffline,
@@ -158,6 +161,7 @@ class Header extends Component<Props, State> {
                 alt="CryptoCurve logo"
               />
             </Link>
+            <div className="Header-branding-right" />
           </section>
         </section>
         <Navigation color={!network.isCustom && network.color} />
@@ -170,6 +174,13 @@ class Header extends Component<Props, State> {
       </div>
     );
   }
+
+  public changeNodeWan = (value: string) => {
+    this.props.changeNodeIntent('wan_auto');
+  };
+  public changeNodeEth = (value: string) => {
+    this.props.changeNodeIntent('eth_auto');
+  };
 
   public changeLanguage = (value: string) => {
     const key = getKeyByValue(languages, value);

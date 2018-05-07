@@ -82,6 +82,7 @@ class NodeSelect extends React.Component<Props, State> {
   }
 
   private handleNodeSelect = (node: string) => {
+    console.log(node);
     this.props.changeNodeIntent(node);
     this.props.closePanel();
   };

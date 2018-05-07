@@ -263,7 +263,6 @@ const WalletDecrypt = withRouter<Props>(
           </div>
         );
       }*/
-
       return (
         <div className="WalletDecrypt-decrypt">
           <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
@@ -278,7 +277,6 @@ const WalletDecrypt = withRouter<Props>(
                 selectedWallet.lid
               )} is not supported by your browser`}
               onError={this.clearWalletChoice}
-              shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
             >
               <selectedWallet.component
                 value={this.state.value}

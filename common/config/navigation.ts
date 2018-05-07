@@ -9,10 +9,6 @@ export interface NavigationLink {
 
 export const navigationLinks: NavigationLink[] = [
   {
-    name: 'Whitelist',
-    to: '/whitelist'
-  },
-  {
     name: 'NAV_GENERATEWALLET',
     to: '/generate'
   },

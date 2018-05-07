@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
 import translate, { translateRaw } from 'translations';
-import { isValidETHAddress } from 'libs/validators';
+import { isValidETHAddress, isValidAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { getRecentAddresses } from 'selectors/wallet';
 import { AppState } from 'reducers';

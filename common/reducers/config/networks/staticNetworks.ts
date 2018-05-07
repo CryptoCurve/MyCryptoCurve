@@ -38,9 +38,9 @@ export const INITIAL_STATE: State = {
     color: '#6d2eae',
     blockExplorer: makeExplorer({
       name: 'Etherchain Light',
-      origin: 'https://explorer.wanchain.org/',
-      addressPath: 'address/search',
-      blockPath: 'blocks/block'
+      origin: 'https://explorer.cryptocurve.network/',
+      addressPath: 'address/',
+      blockPath: 'block/'
     }),
     tokens: [],
     contracts: [],
