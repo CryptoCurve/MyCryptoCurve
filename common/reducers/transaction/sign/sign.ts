@@ -26,7 +26,10 @@ const signLocalTransactionSucceeded = (
   indexingHash: payload.indexingHash,
   pending: false,
 
-  local: { signedTransaction: payload.signedTransaction },
+  local: {
+    signedTransaction: payload.signedTransaction,
+    wanSignedTransaction: payload.wanSignedTransaction
+  },
   web3: { transaction: null }
 });
 

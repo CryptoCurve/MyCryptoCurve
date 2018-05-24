@@ -99,7 +99,10 @@ shepherd.useProvider('rpc', 'poa', regPoaConf, 'https://core.poa.network');
 
 const regWanConf = makeProviderConfig({ network: 'WAN' });
 //shepherd.useProvider('rpc', 'wan', regWanConf, 'http://GwanWalle-LoadBala-1EG3IUF4JMIAA-1794343934.us-east-2.elb.amazonaws.com');
-shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.network');
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.network');
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.curve.network');
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'http://18.222.15.167:8545');
+shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.xyz');
 
 const regTomoConf = makeProviderConfig({ network: 'TOMO' });
 shepherd.useProvider('rpc', 'tomo', regTomoConf, 'https://core.tomocoin.io');

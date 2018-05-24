@@ -68,13 +68,20 @@ export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
     res.type === TxTypeKeys.BROADCAST_TRANSACTION_SUCCEEDED &&
     res.payload.indexingHash === txIdx
   ) {
-    const tx = new EthTx(txBuffer);
-    const savableTx: SavedTransaction = yield call(
-      getSaveableTransaction,
-      tx,
-      res.payload.broadcastedHash
-    );
-    yield put(addRecentTransaction(savableTx));
+    let tx = null;
+    try {
+      tx = new EthTx(txBuffer);
+      const savableTx: SavedTransaction = yield call(
+        getSaveableTransaction,
+        tx,
+        res.payload.broadcastedHash
+      );
+      yield put(addRecentTransaction(savableTx));
+    } catch (ex) {
+      console.log(ex.message);
+      if (ex.message == 'wrong number of fields in data') {
+      }
+    }
   }
 }
 

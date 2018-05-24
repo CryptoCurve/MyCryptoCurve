@@ -1,5 +1,10 @@
 import { SagaIterator } from 'redux-saga';
-import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
+import {
+  getWeb3Tx,
+  getSignedTx,
+  getTransactionStatus,
+  getWanSignedTx
+} from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -84,8 +89,10 @@ export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator 
 }
 export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction): SagaIterator {
   const isWeb3Req = type === TK.BROADCAST_WEB3_TRANSACTION_REQUESTED;
+  const txWanSelector = isWeb3Req ? getWeb3Tx : getWanSignedTx;
   const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;
   const serializedTransaction: StateSerializedTx = yield select(txSelector);
+  const wanSerializedTransaction: StateSerializedTx = yield select(txWanSelector);
 
   if (!serializedTransaction) {
     throw Error('Can not broadcast: tx does not exist');
@@ -94,5 +101,5 @@ export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedActi
   // grab the hash without the signature, we're going to index by this
   const indexingHash = yield call(computeIndexingHash, serializedTransaction);
 
-  return { serializedTransaction, indexingHash };
+  return { serializedTransaction: wanSerializedTransaction, indexingHash };
 }

@@ -23,7 +23,7 @@ export interface CallbackProps {
 
 interface StateProps {
   walletType: IWalletType;
-  serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
+  serializedTransaction: AppState['transaction']['sign']['local']['wanSignedTransaction'];
   transaction: EthTx;
   isFullTransaction: boolean;
   networkRequestPending: boolean;
@@ -53,7 +53,6 @@ export class SendButtonFactoryClass extends Component<Props> {
       validGasPrice,
       validGasLimit
     } = this.props;
-
     // return signing ? true : signedTx ? true : false
     return (
       (signing || (!signing && signedTx)) && (

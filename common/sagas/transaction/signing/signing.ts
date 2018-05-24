@@ -26,8 +26,16 @@ export function* signLocalTransactionHandler({
   wallet
 }: IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
+  const wanSignedTransaction: Buffer = yield apply(wallet, wallet.wanSignRawTransaction, [tx]);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
-  yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash, noVerify: false }));
+  yield put(
+    signLocalTransactionSucceeded({
+      signedTransaction,
+      wanSignedTransaction,
+      indexingHash,
+      noVerify: true
+    })
+  );
 }
 
 const signLocalTransaction = signTransactionWrapper(signLocalTransactionHandler);

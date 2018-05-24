@@ -9,6 +9,7 @@ import { broadcastTransactionWrapper } from './helpers';
 import { TypeKeys as TK } from 'actions/transaction';
 
 export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {
+  console.log(signedTx);
   const node: INode = yield select(getNodeLib);
   const txHash = yield apply(node, node.sendRawTx, [signedTx.toString()]);
   return txHash;

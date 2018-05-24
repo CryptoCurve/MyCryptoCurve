@@ -14,7 +14,20 @@ const signaturePending = (state: AppState) => {
   return { isHardwareWallet, isSignaturePending: pending };
 };
 
-const getSignedTx = (state: AppState) => getSignState(state).local.signedTransaction;
+const getSignedTx = (state: AppState) => {
+  /*if getSignState(state).local.wanSignedTransaction {
+    return getSignState(state).local.wanSignedTransaction;
+  } else {*/
+  return getSignState(state).local.signedTransaction;
+  //}
+};
+const getWanSignedTx = (state: AppState) => {
+  /*if getSignState(state).local.wanSignedTransaction {
+    return getSignState(state).local.wanSignedTransaction;
+  } else {*/
+  return getSignState(state).local.wanSignedTransaction;
+  //}
+};
 
 const getWeb3Tx = (state: AppState) => getSignState(state).web3.transaction;
 
@@ -49,4 +62,11 @@ export const getParamsFromSerializedTx = (state: AppState): SerializedTxParams =
   return { ...fields, currentValue, currentTo, fee, total, unit, decimal, isToken: !isEther };
 };
 
-export { signaturePending, getSignedTx, getWeb3Tx, getSignState, getSerializedTransaction };
+export {
+  signaturePending,
+  getSignedTx,
+  getWanSignedTx,
+  getWeb3Tx,
+  getSignState,
+  getSerializedTransaction
+};

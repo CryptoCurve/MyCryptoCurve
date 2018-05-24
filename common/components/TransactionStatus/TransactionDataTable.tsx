@@ -74,7 +74,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('TX_STATUS'),
       data: (
         <React.Fragment>
-          <strong className={`TxData-row-data-status is-${statusType}`}>{statusMsg}</strong>
+          <strong className={`TxData-row-data-status`}>{statusMsg}</strong>
           {statusSeeMore &&
             explorer.tx &&
             !network.isCustom && (
@@ -97,7 +97,6 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('OFFLINE_STEP1_LABEL_1'),
       data: (
         <MaybeLink href={explorer.from}>
-          <Identicon address={data.from} size="26px" />
           <Address address={data.from} />
         </MaybeLink>
       )
@@ -106,7 +105,6 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('OFFLINE_STEP2_LABEL_1'),
       data: (
         <MaybeLink href={explorer.to}>
-          <Identicon address={data.to} size="26px" />
           <Address address={data.to} />
         </MaybeLink>
       )

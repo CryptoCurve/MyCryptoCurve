@@ -92,35 +92,34 @@ class TXMetaDataPanel extends React.Component<Props, State> {
     const { offline, disableToggle, advancedGasOptions, className = '', scheduling } = this.props;
     const { gasPrice } = this.state;
     const showAdvanced = this.state.sliderState === 'advanced' || offline;
-
+    /*
+    {showAdvanced ? (
+      <AdvancedGas
+        gasPrice={gasPrice}
+        inputGasPrice={this.props.inputGasPrice}
+        options={advancedGasOptions}
+        scheduling={scheduling}
+      />
+    ) : (
+      <SimpleGas
+        gasPrice={gasPrice}
+        inputGasPrice={this.handleGasPriceInput}
+        setGasPrice={this.props.inputGasPrice}
+      />
+    )}
+    */
+    /*
+    <a className="Gas-toggle" onClick={this.toggleAdvanced}>
+      {showAdvanced
+        ? `- ${translateRaw('TRANS_SIMPLE')}`
+        : `+ ${translateRaw('TRANS_ADVANCED')}`}
+    </a>
+    */
     return (
       <div className={`Gas col-md-12 ${className}`}>
         <br />
-        {showAdvanced ? (
-          <AdvancedGas
-            gasPrice={gasPrice}
-            inputGasPrice={this.props.inputGasPrice}
-            options={advancedGasOptions}
-            scheduling={scheduling}
-          />
-        ) : (
-          <SimpleGas
-            gasPrice={gasPrice}
-            inputGasPrice={this.handleGasPriceInput}
-            setGasPrice={this.props.inputGasPrice}
-          />
-        )}
 
-        {!offline &&
-          !disableToggle && (
-            <div className="help-block">
-              <a className="Gas-toggle" onClick={this.toggleAdvanced}>
-                {showAdvanced
-                  ? `- ${translateRaw('TRANS_SIMPLE')}`
-                  : `+ ${translateRaw('TRANS_ADVANCED')}`}
-              </a>
-            </div>
-          )}
+        {!offline && !disableToggle && <div className="help-block" />}
       </div>
     );
   }

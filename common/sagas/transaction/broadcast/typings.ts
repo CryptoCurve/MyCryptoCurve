@@ -8,7 +8,9 @@ type SignState = AppState['transaction']['sign'];
 type BroadcastRequestedAction =
   | BroadcastWeb3TransactionRequestedAction
   | BroadcastLocalTransactionRequestedAction;
-type StateSerializedTx = SignState['local']['signedTransaction'] | SignState['web3']['transaction'];
+type StateSerializedTx =
+  | SignState['local']['wanSignedTransaction']
+  | SignState['web3']['transaction'];
 interface ISerializedTxAndIndexingHash {
   serializedTransaction: Buffer;
   indexingHash: string;

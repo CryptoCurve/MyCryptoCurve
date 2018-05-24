@@ -37,10 +37,10 @@ export const INITIAL_STATE: State = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'Etherchain Light',
-      origin: 'https://explorer.cryptocurve.network/',
-      addressPath: 'address/',
-      blockPath: 'block/'
+      name: 'CryptoCurve Explorer',
+      origin: 'https://explorer.cryptocurve.xyz',
+      addressPath: 'address',
+      blockPath: 'block'
     }),
     tokens: [],
     contracts: [],
