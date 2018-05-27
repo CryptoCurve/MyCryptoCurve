@@ -10,7 +10,7 @@ const { providerBalancerSelectors: { balancerConfigSelectors } } = selectors;
 export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): IProviderConfig => {
   const defaultConfig: IProviderConfig = {
     concurrency: 2,
-    network: 'ETH',
+    network: 'WAN',
     requestFailureThreshold: 3,
     supportedMethods: {
       getNetVersion: true,
