@@ -42,6 +42,26 @@ export const INITIAL_STATE: State = {
       addressPath: 'address',
       blockPath: 'block'
     }),
+    tokens: require('config/tokens/eth.json'),
+    contracts: require('config/contracts/eth.json'),
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TREZOR,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
+    },
+    gasPriceSettings: gasPriceDefaults,
+    shouldEstimateGasPrice: true
+    /*name: 'WAN',
+    unit: 'WAN',
+    chainId: 1,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'CryptoCurve Explorer',
+      origin: 'https://explorer.cryptocurve.xyz',
+      addressPath: 'address',
+      blockPath: 'block'
+    }),
     tokens: [],
     contracts: [],
     dPathFormats: {
@@ -53,22 +73,20 @@ export const INITIAL_STATE: State = {
       min: 0.1,
       max: 10,
       initial: 1
-    }
+    }*/
   },
   ETH: {
-    name: 'ETH',
-    unit: 'ETH',
+    name: 'WAN',
+    unit: 'WAN',
     chainId: 1,
     isCustom: false,
     color: '#007896',
     blockExplorer: makeExplorer({
-      name: 'Etherscan',
-      origin: 'https://etherscan.io'
+      name: 'CryptoCurve Explorer',
+      origin: 'https://explorer.cryptocurve.xyz',
+      addressPath: 'address',
+      blockPath: 'block'
     }),
-    tokenExplorer: {
-      name: ethPlorer,
-      address: ETHTokenExplorer
-    },
     tokens: require('config/tokens/eth.json'),
     contracts: require('config/contracts/eth.json'),
     dPathFormats: {

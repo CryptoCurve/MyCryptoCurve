@@ -63,16 +63,21 @@ export const makeWeb3Network = (network: string) => `WEB3_${network}`;
 export const stripWeb3Network = (network: string) => network.replace('WEB3_', '');
 export const isAutoNode = (nodeName: string) => nodeName.endsWith('_auto') || nodeName === 'web3';
 
+const regWanConf = makeProviderConfig({ network: 'WAN' });
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'http://GwanWalle-LoadBala-1EG3IUF4JMIAA-1794343934.us-east-2.elb.amazonaws.com');
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.network');
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.curve.network');
+//shepherd.useProvider('rpc', 'wan', regWanConf, 'http://18.222.15.167:8545');
+shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.xyz');
+shepherd.useProvider('rpc', 'wan_mycrypto', regWanConf, 'https://node.cryptocurve.xyz');
+shepherd.useProvider('etherscan', 'wan_ethscan', regWanConf, 'https://node.cryptocurve.xyz');
+shepherd.useProvider('infura', 'wan_infura', regWanConf, 'https://node.cryptocurve.xyz');
+
 const regEthConf = makeProviderConfig({ network: 'ETH' });
-shepherd.useProvider('rpc', 'eth_mycrypto', regEthConf, 'https://api.mycryptoapi.com/eth');
-shepherd.useProvider('etherscan', 'eth_ethscan', regEthConf, 'https://api.etherscan.io/api');
-shepherd.useProvider('infura', 'eth_infura', regEthConf, 'https://mainnet.infura.io/mycrypto');
-shepherd.useProvider(
-  'rpc',
-  'eth_blockscale',
-  regEthConf,
-  'https://api.dev.blockscale.net/dev/parity'
-);
+shepherd.useProvider('rpc', 'eth_mycrypto', regEthConf, 'https://node.cryptocurve.xyz');
+shepherd.useProvider('etherscan', 'eth_ethscan', regEthConf, 'https://node.cryptocurve.xyz');
+shepherd.useProvider('infura', 'eth_infura', regEthConf, 'https://node.cryptocurve.xyz');
+shepherd.useProvider('rpc', 'eth_blockscale', regEthConf, 'https://node.cryptocurve.xyz');
 
 const regRopConf = makeProviderConfig({ network: 'Ropsten' });
 shepherd.useProvider('infura', 'rop_infura', regRopConf, 'https://ropsten.infura.io/mycrypto');
@@ -97,13 +102,6 @@ shepherd.useProvider('rpc', 'exp_tech', regExpConf, 'https://node.expanse.tech/'
 const regPoaConf = makeProviderConfig({ network: 'POA' });
 shepherd.useProvider('rpc', 'poa', regPoaConf, 'https://core.poa.network');
 
-const regWanConf = makeProviderConfig({ network: 'WAN' });
-//shepherd.useProvider('rpc', 'wan', regWanConf, 'http://GwanWalle-LoadBala-1EG3IUF4JMIAA-1794343934.us-east-2.elb.amazonaws.com');
-//shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.network');
-//shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.curve.network');
-//shepherd.useProvider('rpc', 'wan', regWanConf, 'http://18.222.15.167:8545');
-shepherd.useProvider('rpc', 'wan', regWanConf, 'https://node.cryptocurve.xyz');
-
 const regTomoConf = makeProviderConfig({ network: 'TOMO' });
 shepherd.useProvider('rpc', 'tomo', regTomoConf, 'https://core.tomocoin.io');
 
@@ -114,7 +112,7 @@ shepherd.useProvider('rpc', 'ella', regEllaConf, 'https://jsonrpc.ellaism.org');
  * Pseudo-networks to support metamask / web3 interaction
  */
 const web3EthConf = makeProviderConfig({
-  network: makeWeb3Network('ETH'),
+  network: makeWeb3Network('WAN'),
   supportedMethods: {
     sendRawTx: false,
     sendTransaction: false,
@@ -122,20 +120,7 @@ const web3EthConf = makeProviderConfig({
     getNetVersion: false
   }
 });
-shepherd.useProvider('rpc', 'web3_eth_mycrypto', web3EthConf, 'https://api.mycryptoapi.com/eth');
-shepherd.useProvider('etherscan', 'web3_eth_ethscan', web3EthConf, 'https://api.etherscan.io/api');
-shepherd.useProvider(
-  'infura',
-  'web3_eth_infura',
-  web3EthConf,
-  'https://mainnet.infura.io/mycrypto'
-);
-shepherd.useProvider(
-  'rpc',
-  'web3_eth_blockscale',
-  web3EthConf,
-  'https://api.dev.blockscale.net/dev/parity'
-);
+shepherd.useProvider('rpc', 'web3_wan_mycrypto', web3EthConf, 'https://node.cryptocurve.xyz');
 
 const web3RopConf = makeProviderConfig({
   network: makeWeb3Network('Ropsten'),

@@ -10,6 +10,27 @@ export const INITIAL_STATE: StaticNodesState = {
     service: 'AUTO',
     estimateGas: true
   },
+  wan_mycrypto: {
+    network: 'WAN',
+    isCustom: false,
+    lib: shepherdProvider,
+    service: 'cryptocurve.io',
+    estimateGas: true
+  },
+  wan_ethscan: {
+    network: 'WAN',
+    isCustom: false,
+    service: 'cryptocurve.io',
+    lib: shepherdProvider,
+    estimateGas: false
+  },
+  wan_infura: {
+    network: 'ETH',
+    isCustom: false,
+    service: 'cryptocurve.io',
+    lib: shepherdProvider,
+    estimateGas: false
+  },
   eth_auto: {
     network: 'ETH',
     isCustom: false,
@@ -31,7 +52,6 @@ export const INITIAL_STATE: StaticNodesState = {
     lib: shepherdProvider,
     estimateGas: false
   },
-
   eth_infura: {
     network: 'ETH',
     isCustom: false,
