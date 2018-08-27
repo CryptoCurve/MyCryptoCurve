@@ -117,5 +117,5 @@ export function ensV3Url(name: string) {
 }
 
 export function hexToNumber(hex: string) {
-  return new BN(stripHexPrefix(hex)).toNumber();
+  return new BN(stripHexPrefix(hex), 16);
 }
