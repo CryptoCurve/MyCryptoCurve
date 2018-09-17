@@ -5,7 +5,7 @@
 
 ## Running the App
 
-This codebase targets Node 8.9.4 (LTS). After `npm install`ing all dependencies (You may be required to install additional system dependencies, due to some node modules relying on them) you can run various commands depending on what you want to do:
+This codebase targets Node 8.9.4 (LTS). After `npm install`ing all dependencies (You may be required to install additional system dependencies, see [Windows Installation](#windows-installation)), due to some node modules relying on them) you can run various commands depending on what you want to do:
 
 #### Development
 
@@ -124,6 +124,17 @@ npm run test:int
 ```
 
 ### More information is available on the [Wiki Pages](https://github.com/MyCryptoHQ/MyCrypto/wiki)
+
+## Windows Installation
+
+1. Ensure the following software is installed:
+    - Git for Windows
+    - Latest versions of Node.js and npm [(click here for update instructions)](https://stackoverflow.com/a/19584407/2860309)
+    - Python 2.7.3
+    - Visual Studio (any version, Community is free) - windows-build-tools are NOT sufficient (although worth installing if the npm install still doesn't succeed)
+
+2. `npm install`
+3. `npm update`
 
 ## Thanks & Support
 
