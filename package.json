@@ -1,5 +1,5 @@
 {
-  "name": "MyCrypto",
+  "name": "my-crypto",
   "author": "MyCryptoHQ",
   "version": "1.0.0",
   "main": "main.js",
@@ -172,6 +172,7 @@
     "dev": "node webpack_config/devServer.js",
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/devServer.js",
+    "dev:https:windows": "set HTTPS=true && node webpack_config/devServer.js",
     "predev:https": "check-node-version --package",
     "dev:electron": "concurrently --kill-others --names 'webpack,electron' 'BUILD_ELECTRON=true node webpack_config/devServer.js' 'webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js'",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
