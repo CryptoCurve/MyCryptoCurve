@@ -45,6 +45,14 @@ import {
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import translate from 'translations';
+import withStyles from '@material-ui/core/styles/withStyles';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Typography from '@material-ui/core/Typography/Typography';
+import Button from '@material-ui/core/Button/Button';
+import Logo from '../MyCryptoCurve/Logo';
 
 interface OwnProps {
   networkParam: string | null;
@@ -99,7 +107,34 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  },
+  toolbar: {
+    minHeight: 153,
+    paddingLeft: 109,
+    paddingRight: 84
+  },
+  button: {
+    // width: 200
+  }
+};
+
+interface StyleProps {
+  classes: {
+    root: string;
+    menuButton: string;
+    toolbar: string;
+    button: string;
+  };
+}
+
+type Props = OwnProps & StateProps & DispatchProps & StyleProps;
 
 class Header extends Component<Props, State> {
   public state = {
@@ -118,7 +153,8 @@ class Header extends Component<Props, State> {
       isChangingNode,
       isOffline,
       nodeOptions,
-      network
+      network,
+      classes
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
@@ -130,7 +166,8 @@ class Header extends Component<Props, State> {
           ...rest,
           name: (
             <span>
-              {label.network} - {label.nodeName} <small>(custom)</small>
+              {label.network} - {label.nodeName}
+              <small>(custom)</small>
             </span>
           ),
           onRemove: () => this.props.removeCustomNode({ id })
@@ -141,7 +178,8 @@ class Header extends Component<Props, State> {
           ...rest,
           name: (
             <span>
-              {label.network} <small>({label.service})</small>
+              {label.network}
+              <small>({label.service})</small>
             </span>
           )
         };
@@ -149,29 +187,53 @@ class Header extends Component<Props, State> {
     });
 
     return (
-      <div className="Header">
-        <section className="Header-branding">
-          <section className="Header-branding-inner container">
-            <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
-              <img
-                className="Header-branding-title-logo"
-                src={logo}
-                height="64px"
-                width="245px"
-                alt="CryptoCurve logo"
-              />
-            </Link>
-            <div className="Header-branding-right" />
+      <React.Fragment>
+        <div className={classes.root}>
+          <AppBar position="static">
+            <Toolbar className={classes.toolbar}>
+              <Logo />
+              <Button className={classes.button} color="inherit">
+                OPEN WALLET
+              </Button>
+              <div style={{ width: 42 }} />
+              <Button className={classes.button} color="inherit">
+                NEW WALLET
+              </Button>
+              <div style={{ width: 43 }} />
+              <Button className={classes.button} color="inherit">
+                VIEW ADDRESS
+              </Button>
+              <div style={{ width: 40 }} />
+              <Button className={classes.button} color="inherit">
+                FAQ
+              </Button>
+            </Toolbar>
+          </AppBar>
+        </div>
+        <div className="Header">
+          Header
+          <section className="Header-branding">
+            <section className="Header-branding-inner container">
+              <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
+                <img
+                  className="Header-branding-title-logo"
+                  src={logo}
+                  height="64px"
+                  width="245px"
+                  alt="CryptoCurve logo"
+                />
+              </Link>
+              <div className="Header-branding-right" />
+            </section>
           </section>
-        </section>
-        <Navigation color={!network.isCustom && network.color} />
-
-        <CustomNodeModal
-          isOpen={isAddingCustomNode}
-          addCustomNode={this.addCustomNode}
-          handleClose={this.closeCustomNodeModal}
-        />
-      </div>
+          <Navigation color={!network.isCustom && network.color} />
+          <CustomNodeModal
+            isOpen={isAddingCustomNode}
+            addCustomNode={this.addCustomNode}
+            handleClose={this.closeCustomNodeModal}
+          />
+        </div>
+      </React.Fragment>
     );
   }
 
@@ -210,4 +272,4 @@ class Header extends Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Header));
