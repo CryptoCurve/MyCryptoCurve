@@ -17,9 +17,15 @@ import logo from 'assets/images/cryptocurve-logo-white2.png';
 import { OldDropDown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import {
+  ANNOUNCEMENT_MESSAGE,
+  ANNOUNCEMENT_TYPE,
+  languages,
+  navigationLinks,
+  NavigationLink
+} from 'config';
 import Navigation from './components/Navigation';
 import Node from './components/Node';
 import NavigationLink from 'components/NavigationLink';
@@ -53,6 +59,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography/Typography';
 import Button from '@material-ui/core/Button/Button';
 import Logo from '../MyCryptoCurve/Logo';
+import Tabs from '@material-ui/core/Tabs/Tabs';
+import Tab from '@material-ui/core/Tab/Tab';
+import Hidden from '@material-ui/core/Hidden/Hidden';
+import Grow from '@material-ui/core/Grow/Grow';
 
 interface OwnProps {
   networkParam: string | null;
@@ -105,11 +115,15 @@ const mapDispatchToProps: DispatchProps = {
 
 interface State {
   isAddingCustomNode: boolean;
+  activeTab: number;
 }
 
 const styles = {
   root: {
     flexGrow: 1
+  },
+  appBar: {
+    transition: 'background-color 0.5s ease'
   },
   menuButton: {
     marginLeft: -12,
@@ -122,30 +136,56 @@ const styles = {
   },
   button: {
     // width: 200
+  },
+  indicator: {
+    backgroundColor: '#ffffff'
+  },
+  grow: {
+    flexGrow: 1
   }
 };
 
 interface StyleProps {
   classes: {
     root: string;
+    appBar: string;
     menuButton: string;
     toolbar: string;
     button: string;
+    indicator: string;
+    grow: string;
   };
 }
 
-type Props = OwnProps & StateProps & DispatchProps & StyleProps;
+type Props = OwnProps & StateProps & DispatchProps & StyleProps & RouteComponentProps<{}>;
 
 class Header extends Component<Props, State> {
   public state = {
-    isAddingCustomNode: false
+    isAddingCustomNode: false,
+    activeTab: 0
   };
+
+  public componentWillMount() {
+    const { location } = this.props;
+    this.setState({
+      activeTab: navigationLinks.findIndex(value => value.to === location.pathname) + 1
+    });
+  }
 
   public componentDidMount() {
     this.attemptSetNodeFromQueryParameter();
   }
 
+  public handleChange = ({}, value: number) => {
+    this.setState({ activeTab: value });
+  };
+  public handleClick = ({}, to: string) => {
+    const { history } = this.props;
+    history.push(to);
+  };
+
   public render() {
+    console.log(this.props);
     const {
       languageSelection,
       node,
@@ -154,9 +194,10 @@ class Header extends Component<Props, State> {
       isOffline,
       nodeOptions,
       network,
-      classes
+      classes,
+      history
     } = this.props;
-    const { isAddingCustomNode } = this.state;
+    const { isAddingCustomNode, activeTab } = this.state;
     const selectedLanguage = languageSelection;
     const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
     const options = nodeOptions.map(n => {
@@ -189,50 +230,61 @@ class Header extends Component<Props, State> {
     return (
       <React.Fragment>
         <div className={classes.root}>
-          <AppBar position="static">
+          <AppBar
+            position="static"
+            className={classes.appBar}
+            style={activeTab > 0 ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }}
+          >
             <Toolbar className={classes.toolbar}>
               <Logo />
-              <Button className={classes.button} color="inherit">
-                OPEN WALLET
-              </Button>
-              <div style={{ width: 42 }} />
-              <Button className={classes.button} color="inherit">
-                NEW WALLET
-              </Button>
-              <div style={{ width: 43 }} />
-              <Button className={classes.button} color="inherit">
-                VIEW ADDRESS
-              </Button>
-              <div style={{ width: 40 }} />
-              <Button className={classes.button} color="inherit">
-                FAQ
-              </Button>
+              <div className={classes.grow} />
+              <Tabs
+                value={activeTab}
+                onChange={this.handleChange}
+                indicatorColor="secondary"
+                textColor="inherit"
+                fullWidth={true}
+                classes={{
+                  indicator: classes.indicator
+                }}
+              >
+                <Tab style={{ display: 'none' }} />
+                {navigationLinks.map((link: NavigationLink, index: number) => {
+                  console.log(link);
+                  return (
+                    <Tab
+                      label={translate(link.name)}
+                      key={index}
+                      onClick={(e: Event) => this.handleClick(e, link.to)}
+                    />
+                  );
+                })}
+              </Tabs>
             </Toolbar>
           </AppBar>
         </div>
-        <div className="Header">
-          Header
-          <section className="Header-branding">
-            <section className="Header-branding-inner container">
-              <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
-                <img
-                  className="Header-branding-title-logo"
-                  src={logo}
-                  height="64px"
-                  width="245px"
-                  alt="CryptoCurve logo"
-                />
-              </Link>
-              <div className="Header-branding-right" />
-            </section>
-          </section>
-          <Navigation color={!network.isCustom && network.color} />
-          <CustomNodeModal
-            isOpen={isAddingCustomNode}
-            addCustomNode={this.addCustomNode}
-            handleClose={this.closeCustomNodeModal}
-          />
-        </div>
+        {/*<div className="Header">*/}
+        {/*<section className="Header-branding">*/}
+        {/*<section className="Header-branding-inner container">*/}
+        {/*<Link to="/" className="Header-branding-title" aria-label="Go to homepage">*/}
+        {/*<img*/}
+        {/*className="Header-branding-title-logo"*/}
+        {/*src={logo}*/}
+        {/*height="64px"*/}
+        {/*width="245px"*/}
+        {/*alt="CryptoCurve logo"*/}
+        {/*/>*/}
+        {/*</Link>*/}
+        {/*<div className="Header-branding-right" />*/}
+        {/*</section>*/}
+        {/*</section>*/}
+        {/*<Navigation color={!network.isCustom && network.color} />*/}
+        {/*</div>*/}
+        <CustomNodeModal
+          isOpen={isAddingCustomNode}
+          addCustomNode={this.addCustomNode}
+          handleClose={this.closeCustomNodeModal}
+        />
       </React.Fragment>
     );
   }
@@ -272,4 +324,4 @@ class Header extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default withStyles(styles)(withRouter(connect(mapStateToProps, mapDispatchToProps)(Header)));

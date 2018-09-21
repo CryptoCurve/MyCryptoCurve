@@ -10,6 +10,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
+import LandingPage from 'containers/Tabs/LandingPage';
 import Whitelist from 'containers/Tabs/Whitelist';
 import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
@@ -26,6 +27,54 @@ import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
 import { getNetworkUnit } from 'selectors/config';
+import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#8964DC'
+    },
+    text: {
+      secondary: '#fff'
+    }
+  },
+  typography: {
+    fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+    headline: {
+      fontFamily: [
+        'bebasneue_bold',
+        'Abel',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif'
+      ].join(','),
+      textTransform: 'uppercase',
+      fontSize: 40,
+      letterSpacing: 5.3
+    },
+    button: {
+      // fontSize: '1rem',
+      letterSpacing: '1px'
+    }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 50
+      },
+      outlined: {
+        padding: '0 35px',
+        minHeight: 28,
+        borderWidth: 2,
+        borderColor: '#fff',
+        color: '#fff'
+      }
+    }
+  }
+});
 
 interface OwnProps {
   store: Store<AppState>;
@@ -80,7 +129,6 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          <Redirect exact={true} from="/" to="/account" />
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
@@ -91,6 +139,8 @@ class RootClass extends Component<Props, State> {
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
           <Route path="/whitelist" component={Whitelist} />
+          <Route path="/" component={LandingPage} />
+          {/*<Redirect exact={true} from="/" to="/account" />*/}
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
@@ -103,19 +153,22 @@ class RootClass extends Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Provider store={store} key={Math.random()}>
-          <Router key={Math.random()}>
-            <React.Fragment>
-              {process.env.BUILD_ELECTRON && <TitleBar />}
-              {routes}
-              <LegacyRoutes />
-              <LogOutPrompt />
-              <QrSignerModal />
-              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-            </React.Fragment>
-          </Router>
-        </Provider>
-        <div id="ModalContainer" />
+        <CssBaseline />
+        <MuiThemeProvider theme={theme}>
+          <Provider store={store} key={Math.random()}>
+            <Router key={Math.random()}>
+              <React.Fragment>
+                {process.env.BUILD_ELECTRON && <TitleBar />}
+                {routes}
+                <LegacyRoutes />
+                <LogOutPrompt />
+                <QrSignerModal />
+                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+              </React.Fragment>
+            </Router>
+          </Provider>
+          <div id="ModalContainer" />
+        </MuiThemeProvider>
       </React.Fragment>
     );
   }

@@ -1,6 +1,8 @@
 {
   "code": "en",
   "data": {
+    "LANDING_TITLE": "Wanchain powered wallet",
+    "LANDING_SUBTITLE": "Send and receive ETH, WAN and all compatible tokens",
     "X_TXHASH": "TX Hash",
     "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
     "NAV_CHECKTXSTATUS": "Check TX Status",
@@ -15,8 +17,9 @@
     "NAV_CONTRACTS": "Contracts ",
     "NAV_DEPLOYCONTRACT": "Deploy Contract ",
     "NAV_ENS": "ENS",
-    "NAV_VIEW": "Open Wallet (WAN)",
-    "NAV_GENERATEWALLET": "New Wallet (WAN)",
+    "NAV_VIEW": "Open Wallet",
+    "NAV_LEARN": "Learn More",
+    "NAV_GENERATEWALLET": "New Wallet",
     "NAV_HELP": "Help ",
     "NAV_SIGN": "Sign & Verify Message",
     "NAV_BROADCAST": "Broadcast Transaction",

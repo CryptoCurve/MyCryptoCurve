@@ -1,4 +1,4 @@
-import { knowledgeBaseURL } from './data';
+// import { knowledgeBaseURL } from './data';
 
 export interface NavigationLink {
   name: string;
@@ -6,14 +6,25 @@ export interface NavigationLink {
   external?: boolean;
   disabled?: boolean;
 }
+/* List of all possible links */
+const openWallet: NavigationLink = {
+  name: 'NAV_VIEW',
+  to: '/account'
+};
 
-export const navigationLinks: NavigationLink[] = [
-  {
-    name: 'NAV_GENERATEWALLET',
-    to: '/generate'
-  },
-  {
-    name: 'NAV_VIEW',
-    to: '/account'
-  }
-].filter(link => !link.disabled);
+const newWallet: NavigationLink = {
+  name: 'NAV_GENERATEWALLET',
+  to: '/generate'
+};
+
+const learnMore: NavigationLink = {
+  name: 'NAV_LEARN',
+  to: '/faq'
+};
+
+/* Collections of navigation links */
+export const navigationLinks: NavigationLink[] = [openWallet, newWallet].filter(
+  (link: NavigationLink) => !link.disabled
+);
+
+export const navigationLinksLandingPage: NavigationLink[] = [openWallet, learnMore];

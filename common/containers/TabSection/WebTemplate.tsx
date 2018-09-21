@@ -7,38 +7,6 @@ import OfflineTab from './OfflineTab';
 import { getOffline, getLatestBlock } from 'selectors/config';
 import { Query } from 'components/renderCbs';
 import './WebTemplate.scss';
-import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#8964DC'
-    }
-  },
-  typography: {
-    fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
-    headline: {
-      fontFamily: [
-        'bebasneue_bold',
-        'Abel',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif'
-      ].join(','),
-      textTransform: 'uppercase',
-      fontSize: 26,
-      marginBottom: 3,
-      letterSpacing: 4.6
-    },
-    button: {
-      fontSize: '1rem',
-      letterSpacing: '1px'
-    }
-  }
-});
 
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
@@ -59,20 +27,17 @@ class WebTemplate extends Component<Props, {}> {
     return (
       <React.Fragment>
         <div className="WebTemplate">
-          <CssBaseline />
-          <MuiThemeProvider theme={theme}>
-            <Query
-              params={['network']}
-              withQuery={({ network }) => (
-                <Header networkParam={network && `${network.toLowerCase()}_auto`} />
-              )}
-            />
-            {/*<div className="Tab container">*/}
-            {/*{isUnavailableOffline && isOffline ? <OfflineTab /> : children}*/}
-            {/*</div>*/}
-            {/*<div className="WebTemplate-spacer" />*/}
-            {/*<Footer latestBlock={latestBlock} /> <Notifications />*/}
-          </MuiThemeProvider>
+          <Query
+            params={['network']}
+            withQuery={({ network }) => (
+              <Header networkParam={network && `${network.toLowerCase()}_auto`} />
+            )}
+          />
+          <div className="Tab container">
+            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+          </div>
+          <div className="WebTemplate-spacer" />
+          {/*<Footer latestBlock={latestBlock} /> <Notifications />*/}
         </div>
       </React.Fragment>
     );
