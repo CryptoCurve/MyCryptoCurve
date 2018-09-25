@@ -55,15 +55,31 @@ const theme = createMuiTheme({
       fontSize: 40,
       letterSpacing: 5.3
     },
+    title: {
+      fontFamily: [
+        'bebasneue_regular',
+        'Abel',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif'
+      ].join(','),
+      textTransform: 'uppercase',
+      fontSize: 36,
+      letterSpacing: 6.6
+    },
     button: {
-      // fontSize: '1rem',
       letterSpacing: '1px'
     }
   },
   overrides: {
     MuiButton: {
       root: {
-        borderRadius: 50
+        borderRadius: 50,
+        minHeight: 60,
+        textTransform: 'none',
+        fontSize: 22,
+        minWidth: 330
       },
       outlined: {
         padding: '0 35px',

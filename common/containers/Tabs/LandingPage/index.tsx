@@ -65,6 +65,7 @@ type Props = StateProps & RouteComponentProps<{}> & StyleProps;
 class LandingPage extends React.Component<Props> {
   public handleClick = (to: string) => {
     const { history } = this.props;
+    console.log(to);
     history.push(to);
   };
 

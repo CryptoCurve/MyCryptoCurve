@@ -168,7 +168,10 @@ class Header extends Component<Props, State> {
   public componentWillMount() {
     const { location } = this.props;
     this.setState({
-      activeTab: navigationLinks.findIndex(value => value.to === location.pathname) + 1
+      activeTab:
+        navigationLinks.findIndex(
+          value => value.to.replace('/', '') === location.pathname.split('/')[1]
+        ) + 1
     });
   }
 
@@ -185,7 +188,6 @@ class Header extends Component<Props, State> {
   };
 
   public render() {
-    console.log(this.props);
     const {
       languageSelection,
       node,
@@ -226,14 +228,15 @@ class Header extends Component<Props, State> {
         };
       }
     });
-
     return (
       <React.Fragment>
         <div className={classes.root}>
           <AppBar
             position="static"
             className={classes.appBar}
-            style={activeTab > 0 ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }}
+            style={
+              location.pathname !== '/' ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }
+            }
           >
             <Toolbar className={classes.toolbar}>
               <Logo />
@@ -250,7 +253,6 @@ class Header extends Component<Props, State> {
               >
                 <Tab style={{ display: 'none' }} />
                 {navigationLinks.map((link: NavigationLink, index: number) => {
-                  console.log(link);
                   return (
                     <Tab
                       label={translate(link.name)}

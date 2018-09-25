@@ -40,9 +40,12 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     const { words, confirmWords, isConfirming, isConfirmed } = this.state;
     const defaultBtnClassName = 'GenerateMnemonic-buttons-btn btn btn-default';
     const canContinue = this.checkCanContinue();
+    console.log('words', words);
     const [firstHalf, lastHalf] =
       confirmWords.length === 0 ? this.splitWordsIntoHalves(words) : confirmWords;
 
+    console.log('firstHalf', firstHalf);
+    console.log('lastHalf', lastHalf);
     const content = isConfirmed ? (
       <FinalSteps walletType={WalletType.Mnemonic} />
     ) : (
@@ -189,6 +192,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   };
 
   private splitWordsIntoHalves = (words: string[]) => {
+    console.log('words', words);
     const firstHalf: WordTuple[] = [];
     const lastHalf: WordTuple[] = [];
 

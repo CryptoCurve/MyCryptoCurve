@@ -5,6 +5,13 @@
   font-style: normal;
   font-weight: 600;
 }
+@font-face {
+  font-family: 'bebasneue_regular';
+  src: url('../assets/fonts/bebasneue_regular-webfont.woff2') format('woff2'),
+  url('../assets/fonts/bebasneue_regular-webfont.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
+}
 
 @font-face {
   font-family: 'Lato';

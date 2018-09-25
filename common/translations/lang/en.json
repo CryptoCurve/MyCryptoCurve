@@ -3,6 +3,7 @@
   "data": {
     "LANDING_TITLE": "Wanchain powered wallet",
     "LANDING_SUBTITLE": "Send and receive ETH, WAN and all compatible tokens",
+    "PRIVATE_KEY_TITLE": "Select a method to create your private key",
     "X_TXHASH": "TX Hash",
     "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
     "NAV_CHECKTXSTATUS": "Check TX Status",
