@@ -36,8 +36,12 @@ const theme = createMuiTheme({
     primary: {
       main: '#8964DC'
     },
+    secondary: {
+      main: '#40409A'
+    },
     text: {
-      secondary: '#fff'
+      secondary: '#fff',
+      primary: '#272532'
     }
   },
   typography: {
@@ -65,8 +69,20 @@ const theme = createMuiTheme({
         'sans-serif'
       ].join(','),
       textTransform: 'uppercase',
-      fontSize: 36,
-      letterSpacing: 6.6
+      fontSize: 35,
+      letterSpacing: 7,
+      lineHeight: '38px'
+    },
+    subheading: {
+      fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+      textTransform: 'uppercase',
+      fontSize: 18
+    },
+    caption: {
+      fontSize: 20,
+      fontWeight: 100,
+      letterSpacing: 2,
+      lineHeight: '26px'
     },
     button: {
       letterSpacing: '1px'

@@ -16,7 +16,8 @@ const styles = (theme: Theme) =>
     layout: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexGrow: 1
     },
     backButton: {
       position: 'absolute',

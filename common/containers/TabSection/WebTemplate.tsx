@@ -7,6 +7,7 @@ import OfflineTab from './OfflineTab';
 import { getOffline, getLatestBlock } from 'selectors/config';
 import { Query } from 'components/renderCbs';
 import './WebTemplate.scss';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
@@ -18,11 +19,11 @@ interface OwnProps {
   children: string | React.ReactElement<string> | React.ReactElement<string>[];
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StateProps & RouteComponentProps<{}>;
 
 class WebTemplate extends Component<Props, {}> {
   public render() {
-    const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
+    const { isUnavailableOffline, children, isOffline, latestBlock, location } = this.props;
 
     return (
       <React.Fragment>
@@ -37,7 +38,8 @@ class WebTemplate extends Component<Props, {}> {
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <div className="WebTemplate-spacer" />
-          {/*<Footer latestBlock={latestBlock} /> <Notifications />*/}
+          {location.pathname !== '/' && <Footer latestBlock={latestBlock} />}
+          <Notifications />
         </div>
       </React.Fragment>
     );
@@ -51,4 +53,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {})(WebTemplate);
+export default connect(mapStateToProps, {})(withRouter(WebTemplate));
