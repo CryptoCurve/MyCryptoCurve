@@ -41,7 +41,9 @@ export default class GenerateKeystore extends Component<{}, State> {
     switch (activeStep) {
       case Steps.Password:
         content = (
-          <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
+          <Template version={2} title="GENERATE_KEYSTORE_TITLE" tooltip="X_PASSWORDTOOLTIP">
+            <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
+          </Template>
         );
         break;
 

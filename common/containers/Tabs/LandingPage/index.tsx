@@ -6,7 +6,7 @@ import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { RouteComponentProps } from 'react-router';
 import { isNetworkUnit } from 'selectors/config/wallet';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import BackgroundImage from 'assets/images/background/mycryptocurveMain.jpg';
@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography/Typography';
 import Grid from '@material-ui/core/Grid/Grid';
 import Button from '@material-ui/core/Button/Button';
 import { NavigationLink, navigationLinksLandingPage } from 'config/navigation';
+import classnames from 'classnames';
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
@@ -47,22 +48,15 @@ const styles = (theme: Theme) =>
     },
     button: {
       minWidth: 160
+    },
+    whiteText: {
+      color: '#fff'
     }
   });
 
-interface StyleProps {
-  classes: {
-    background: string;
-    layout: string;
-    subHeading: string;
-    buttonRow: string;
-    button: string;
-  };
-}
+type Props = StateProps & RouteComponentProps<{}>;
 
-type Props = StateProps & RouteComponentProps<{}> & StyleProps;
-
-class LandingPage extends React.Component<Props> {
+class LandingPage extends React.Component<Props & WithStyles<typeof styles>> {
   public handleClick = (to: string) => {
     const { history } = this.props;
     console.log(to);
@@ -76,10 +70,13 @@ class LandingPage extends React.Component<Props> {
       <TabSection>
         <div className={classes.background} />
         <main className={classes.layout}>
-          <Typography variant="headline" color="textSecondary">
+          <Typography variant="headline" className={classes.whiteText}>
             {translate('LANDING_TITLE')}
           </Typography>
-          <Typography variant="subheading" color="textSecondary" className={classes.subHeading}>
+          <Typography
+            variant="subheading"
+            className={classnames([classes.subHeading, classes.whiteText])}
+          >
             {translate('LANDING_SUBTITLE')}
           </Typography>
           <Grid

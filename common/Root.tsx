@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -40,7 +40,7 @@ const theme = createMuiTheme({
       main: '#40409A'
     },
     text: {
-      secondary: '#fff',
+      // secondary: '#fff',
       primary: '#272532'
     }
   },
@@ -103,6 +103,22 @@ const theme = createMuiTheme({
         borderWidth: 2,
         borderColor: '#fff',
         color: '#fff'
+      }
+    },
+    MuiInput: {
+      input: {
+        fontSize: 20,
+        lineHeight: 1.3,
+        letterSpacing: 2,
+        padding: ['8px', 0, '7px'].join(' '),
+        marginTop: 4
+      }
+    },
+    MuiFormLabel: {
+      root: {
+        fontSize: 20,
+        lineHeight: '26px',
+        letterSpacing: 2
       }
     }
   }

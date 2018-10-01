@@ -131,7 +131,6 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 
   public render() {
-    console.log(this.props.tooltip);
     const { children, version, history, classes, title, tooltip } = this.props;
     const { tooltipOpen } = this.state;
     return version === 2 ? (

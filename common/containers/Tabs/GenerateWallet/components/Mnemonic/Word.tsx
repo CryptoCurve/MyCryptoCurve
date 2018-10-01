@@ -24,7 +24,7 @@ const styles = (theme: Theme) =>
       }
     },
     wordButtonsDisabled: {
-      color: [theme.palette.text.secondary, '!important'].join(' ')
+      color: ['#fff', '!important'].join(' ')
     },
     wordButtonsConfirming: {
       border: ['solid', '2px', theme.palette.primary.main].join(' '),
@@ -37,12 +37,12 @@ const styles = (theme: Theme) =>
     },
     wordButtonsRevealed: {
       backgroundColor: ['#4CAF50', '!important'].join(' '),
-      color: [theme.palette.text.secondary, '!important'].join(' '),
+      color: ['#fff', '!important'].join(' '),
       borderColor: '#4CAF50'
     },
     wordButtonsError: {
       backgroundColor: [theme.palette.error.main, '!important'].join(' '),
-      color: [theme.palette.text.secondary, '!important'].join(' '),
+      color: ['#fff', '!important'].join(' '),
       borderColor: theme.palette.error.main
     },
     numberLabel: {
