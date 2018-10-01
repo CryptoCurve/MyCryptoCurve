@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
 import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
-import './EnterPassword.scss';
 import Grid from '@material-ui/core/Grid/Grid';
 import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -19,9 +18,8 @@ import Button from '@material-ui/core/Button/Button';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import { green } from '@material-ui/core/colors';
 
-interface Props {
+interface OwnProps {
   isGenerating: boolean;
-
   continue(pw: string): void;
 }
 
@@ -68,7 +66,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-class EnterPassword extends Component<Props & WithStyles<typeof styles>, State> {
+class EnterPassword extends Component<OwnProps & WithStyles<typeof styles>, State> {
   public state: State = {
     password: '',
     confirmedPassword: '',
@@ -279,4 +277,4 @@ class EnterPassword extends Component<Props & WithStyles<typeof styles>, State> 
   };
 }
 
-export default withStyles(styles)(EnterPassword);
+export default withStyles(styles)(EnterPassword) as React.ComponentClass<OwnProps>;

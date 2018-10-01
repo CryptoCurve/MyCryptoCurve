@@ -4,7 +4,7 @@ import './Template.scss';
 import translate from 'translations';
 import Grid from '@material-ui/core/Grid/Grid';
 import Button from '@material-ui/core/Button/Button';
-import { Theme } from '@material-ui/core';
+import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ArrowBack, InfoOutlined } from '@material-ui/icons';
@@ -13,11 +13,11 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener';
 import Zoom from '@material-ui/core/Zoom/Zoom';
 
-interface ComponentProps {
+interface OwnProps {
   children: React.ReactElement<any>;
-  version: number;
-  title: string;
-  tooltip: string;
+  version?: number;
+  title?: string;
+  tooltip?: string;
 }
 
 const styles = (theme: Theme) =>
@@ -40,6 +40,7 @@ const styles = (theme: Theme) =>
     },
     tooltip: {
       ...theme.typography.caption,
+      color: '#fff',
       backgroundColor: theme.palette.secondary.main,
       borderRadius: 50,
       padding: theme.spacing.unit * 4,
@@ -107,23 +108,11 @@ const styles = (theme: Theme) =>
     }
   });
 
-interface StyleProps {
-  classes: {
-    layout: string;
-    title: string;
-    backButton: string;
-    buttonRow: string;
-    tooltip: string;
-    arrowPopper: string;
-    arrowArrow: string;
-  };
-}
-
 interface State {
   tooltipOpen: boolean;
 }
 
-type Props = ComponentProps & RouteComponentProps<{}> & Readonly<StyleProps>;
+type Props = OwnProps & RouteComponentProps<{}> & WithStyles<typeof styles>;
 
 class GenerateWalletTemplate extends React.Component<Props, State> {
   public state = {
@@ -133,7 +122,7 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   public render() {
     const { children, version, history, classes, title, tooltip } = this.props;
     const { tooltipOpen } = this.state;
-    return version === 2 ? (
+    return version === 2 && title ? (
       <main className={classes.layout}>
         <Grid
           container={true}
@@ -217,4 +206,6 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 }
 
-export default withStyles(styles)(withRouter(GenerateWalletTemplate));
+export default withStyles(styles)(withRouter(GenerateWalletTemplate)) as React.ComponentClass<
+  OwnProps
+>;

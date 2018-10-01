@@ -47,7 +47,14 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing.unit * 2
     },
     button: {
-      minWidth: 160
+      minWidth: 195.3,
+      minHeight: 31.7,
+      fontSize: 15,
+      lineHeight: 1.33,
+      letterSpacing: 1.5,
+      border: ['solid', '2px', '#fff'].join(' '),
+      color: '#fff',
+      textTransform: 'uppercase'
     },
     whiteText: {
       color: '#fff'
@@ -85,14 +92,14 @@ class LandingPage extends React.Component<Props & WithStyles<typeof styles>> {
             direction="row"
             justify="center"
             alignItems="center"
-            spacing={16}
+            spacing={24}
           >
             {navigationLinksLandingPage.map((link: NavigationLink, index: number) => (
               <React.Fragment key={index}>
                 <Grid item={true}>
                   <Button
                     variant="outlined"
-                    className={classes.button}
+                    classes={{ outlined: classes.button }}
                     onClick={() => this.handleClick(link.to)}
                   >
                     {translate(link.name)}

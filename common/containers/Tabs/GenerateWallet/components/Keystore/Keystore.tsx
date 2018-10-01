@@ -27,12 +27,17 @@ interface State {
 export default class GenerateKeystore extends Component<{}, State> {
   public state: State = {
     activeStep: Steps.Password,
+    // activeStep: Steps.Paper,
     password: '',
     keystore: null,
     filename: '',
     privateKey: '',
     isGenerating: false
   };
+
+  public componentDidMount() {
+    // this.generateWalletAndContinue('adsfadsfasdfadsf');
+  }
 
   public render() {
     const { activeStep, keystore, privateKey, filename, isGenerating } = this.state;
@@ -50,11 +55,13 @@ export default class GenerateKeystore extends Component<{}, State> {
       case Steps.Download:
         if (keystore) {
           content = (
-            <DownloadWallet
-              keystore={keystore}
-              filename={filename}
-              continue={this.continueToPaper}
-            />
+            <Template version={2} title="GEN_LABEL_2" tooltip="DL_WALLET_WARNING_4">
+              <DownloadWallet
+                keystore={keystore}
+                filename={filename}
+                continue={this.continueToPaper}
+              />
+            </Template>
           );
         }
         break;
@@ -62,11 +69,13 @@ export default class GenerateKeystore extends Component<{}, State> {
       case Steps.Paper:
         if (keystore) {
           content = (
-            <PaperWallet
-              keystore={keystore}
-              privateKey={privateKey}
-              continue={this.continueToFinal}
-            />
+            <Template version={2} title="GEN_LABEL_5">
+              <PaperWallet
+                keystore={keystore}
+                privateKey={privateKey}
+                continue={this.continueToFinal}
+              />
+            </Template>
           );
         }
         break;

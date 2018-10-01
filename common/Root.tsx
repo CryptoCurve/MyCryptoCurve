@@ -98,11 +98,7 @@ const theme = createMuiTheme({
         minWidth: 330
       },
       outlined: {
-        padding: '0 35px',
-        minHeight: 28,
-        borderWidth: 2,
-        borderColor: '#fff',
-        color: '#fff'
+        borderWidth: ['2px', '!important'].join(' ')
       }
     },
     MuiInput: {
@@ -144,6 +140,24 @@ interface State {
 }
 
 class RootClass extends Component<Props, State> {
+  private static addBodyClasses() {
+    const classes = [];
+
+    if (process.env.BUILD_ELECTRON) {
+      classes.push('is-electron');
+
+      if (navigator.appVersion.includes('Win')) {
+        classes.push('is-windows');
+      } else if (navigator.appVersion.includes('Mac')) {
+        classes.push('is-osx');
+      } else {
+        classes.push('is-linux');
+      }
+    }
+
+    document.body.className += ` ${classes.join(' ')}`;
+  }
+
   public state = {
     error: null
   };
@@ -151,7 +165,7 @@ class RootClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.pollOfflineStatus();
     this.props.setUnitMeta(this.props.networkUnit);
-    this.addBodyClasses();
+    RootClass.addBodyClasses();
   }
 
   public componentDidCatch(error: Error) {
@@ -219,24 +233,6 @@ class RootClass extends Component<Props, State> {
         </MuiThemeProvider>
       </React.Fragment>
     );
-  }
-
-  private addBodyClasses() {
-    const classes = [];
-
-    if (process.env.BUILD_ELECTRON) {
-      classes.push('is-electron');
-
-      if (navigator.appVersion.includes('Win')) {
-        classes.push('is-windows');
-      } else if (navigator.appVersion.includes('Mac')) {
-        classes.push('is-osx');
-      } else {
-        classes.push('is-linux');
-      }
-    }
-
-    document.body.className += ` ${classes.join(' ')}`;
   }
 }
 
