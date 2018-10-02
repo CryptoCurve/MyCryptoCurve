@@ -33,6 +33,9 @@ const styles = (theme: Theme) =>
     privateKeyGrid: {
       position: 'relative'
     },
+    paperWalletGrid: {
+      width: 810
+    },
     copiedText: {
       position: 'absolute',
       marginTop: theme.spacing.unit,
@@ -44,8 +47,6 @@ const styles = (theme: Theme) =>
 interface OwnProps {
   keystore: IV3Wallet;
   privateKey: string;
-
-  continue(): void;
 }
 
 interface State {
@@ -82,27 +83,13 @@ class PaperWallet extends React.Component<OwnProps & WithStyles<typeof styles>, 
             </Typography>
           </Fade>
         </Grid>
-        <span className={classes.title}>{translate('X_PRINT_2')}</span>
-        <div className="GenPaper">
-          <div className="GenPaper-paper">
-            <PrintableWallet address={keystore.address} privateKey={privateKey} />
-          </div>
-
-          {/* Continue button */}
-          <button className="GenPaper-continue btn btn-default" onClick={this.handleContinue}>
-            {translate('NAV_VIEWWALLET')} →
-          </button>
-        </div>
-        <Grid item={true}>
-          <Button variant="raised" onClick={this.handleContinue} color="primary">
-            {translate('NAV_VIEWWALLET')}
-          </Button>
+        <Grid container={true} item={true} justify="center" className={classes.paperWalletGrid}>
+          <span className={classes.title}>{translate('X_PRINT_2')}</span>
+          <PrintableWallet address={keystore.address} privateKey={privateKey} />
         </Grid>
       </Grid>
     );
   }
-
-  private handleContinue = () => this.props.continue();
 
   private handleOnCopy = () => {
     this.setState({ copied: true });

@@ -1,18 +1,15 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
 import { generateKeystore } from 'libs/web-workers';
-import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
 import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
-import FinalSteps from '../FinalSteps';
 
 export enum Steps {
   Password = 'password',
   Download = 'download',
-  Paper = 'paper',
-  Final = 'final'
+  Paper = 'paper'
 }
 
 interface State {
@@ -27,7 +24,6 @@ interface State {
 export default class GenerateKeystore extends Component<{}, State> {
   public state: State = {
     activeStep: Steps.Password,
-    // activeStep: Steps.Paper,
     password: '',
     keystore: null,
     filename: '',
@@ -36,7 +32,7 @@ export default class GenerateKeystore extends Component<{}, State> {
   };
 
   public componentDidMount() {
-    // this.generateWalletAndContinue('adsfadsfasdfadsf');
+    this.generateWalletAndContinue('adsfadsfasdfadsf');
   }
 
   public render() {
@@ -70,22 +66,10 @@ export default class GenerateKeystore extends Component<{}, State> {
         if (keystore) {
           content = (
             <Template version={2} title="GEN_LABEL_5">
-              <PaperWallet
-                keystore={keystore}
-                privateKey={privateKey}
-                continue={this.continueToFinal}
-              />
+              <PaperWallet keystore={keystore} privateKey={privateKey} />
             </Template>
           );
         }
-        break;
-
-      case Steps.Final:
-        content = (
-          <Template>
-            <FinalSteps walletType={WalletType.Keystore} />
-          </Template>
-        );
         break;
 
       default:
@@ -112,9 +96,5 @@ export default class GenerateKeystore extends Component<{}, State> {
 
   private continueToPaper = () => {
     this.setState({ activeStep: Steps.Paper });
-  };
-
-  private continueToFinal = () => {
-    this.setState({ activeStep: Steps.Final });
   };
 }

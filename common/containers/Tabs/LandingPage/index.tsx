@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import TabSection from 'containers/TabSection';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { RouteComponentProps } from 'react-router';
@@ -9,12 +8,12 @@ import { isNetworkUnit } from 'selectors/config/wallet';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
-import BackgroundImage from 'assets/images/background/mycryptocurveMain.jpg';
 import Typography from '@material-ui/core/Typography/Typography';
 import Grid from '@material-ui/core/Grid/Grid';
 import Button from '@material-ui/core/Button/Button';
 import { NavigationLink, navigationLinksLandingPage } from 'config/navigation';
 import classnames from 'classnames';
+import Slide from '@material-ui/core/Slide/Slide';
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
@@ -23,22 +22,12 @@ interface StateProps {
 
 const styles = (theme: Theme) =>
   createStyles({
-    background: {
-      backgroundImage: `url(${BackgroundImage})`,
-      backgroundPosition: 'center top',
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: '#35286E',
-      top: 0,
-      position: 'absolute',
-      left: 0,
-      width: '100%',
-      height: '100%',
-      zIndex: -1
-    },
     layout: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexGrow: 1,
+      justifyContent: 'center'
     },
     subHeading: {
       marginTop: theme.spacing.unit * 3
@@ -74,8 +63,7 @@ class LandingPage extends React.Component<Props & WithStyles<typeof styles>> {
     const { classes } = this.props;
 
     return (
-      <TabSection>
-        <div className={classes.background} />
+      <Slide in={true} direction="left">
         <main className={classes.layout}>
           <Typography variant="headline" className={classes.whiteText}>
             {translate('LANDING_TITLE')}
@@ -109,7 +97,7 @@ class LandingPage extends React.Component<Props & WithStyles<typeof styles>> {
             ))}
           </Grid>
         </main>
-      </TabSection>
+      </Slide>
     );
   }
 }

@@ -51,14 +51,13 @@ import {
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import translate from 'translations';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography/Typography';
 import Button from '@material-ui/core/Button/Button';
-import Logo from '../MyCryptoCurve/Logo';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
 import Hidden from '@material-ui/core/Hidden/Hidden';
@@ -119,9 +118,6 @@ interface State {
 }
 
 const styles = {
-  root: {
-    flexGrow: 1
-  },
   appBar: {
     transition: 'background-color 0.5s ease'
   },
@@ -142,22 +138,30 @@ const styles = {
   },
   grow: {
     flexGrow: 1
+  },
+  logoText: {
+    fontSize: 26,
+    marginBottom: 3,
+    letterSpacing: 4.6
+  },
+  link: {
+    color: '#ffffff',
+    transition: 'transform 0.2s',
+    '&:hover': {
+      transform: 'scale(1.1)',
+      color: '#ffffff'
+    },
+    '&:focus': {
+      color: '#ffffff'
+    }
   }
 };
 
-interface StyleProps {
-  classes: {
-    root: string;
-    appBar: string;
-    menuButton: string;
-    toolbar: string;
-    button: string;
-    indicator: string;
-    grow: string;
-  };
-}
-
-type Props = OwnProps & StateProps & DispatchProps & StyleProps & RouteComponentProps<{}>;
+type Props = OwnProps &
+  StateProps &
+  DispatchProps &
+  RouteComponentProps<{}> &
+  WithStyles<typeof styles>;
 
 class Header extends Component<Props, State> {
   public state = {
@@ -168,10 +172,7 @@ class Header extends Component<Props, State> {
   public componentWillMount() {
     const { location } = this.props;
     this.setState({
-      activeTab:
-        navigationLinks.findIndex(
-          value => value.to.replace('/', '') === location.pathname.split('/')[1]
-        ) + 1
+      activeTab: this.calculateActiveTab(location.pathname)
     });
   }
 
@@ -179,13 +180,13 @@ class Header extends Component<Props, State> {
     this.attemptSetNodeFromQueryParameter();
   }
 
-  public handleChange = ({}, value: number) => {
-    this.setState({ activeTab: value });
-  };
-  public handleClick = ({}, to: string) => {
-    const { history } = this.props;
-    history.push(to);
-  };
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
+      this.setState({
+        activeTab: this.calculateActiveTab(nextProps.location.pathname)
+      });
+    }
+  }
 
   public render() {
     const {
@@ -230,41 +231,43 @@ class Header extends Component<Props, State> {
     });
     return (
       <React.Fragment>
-        <div className={classes.root}>
-          <AppBar
-            position="static"
-            className={classes.appBar}
-            style={
-              location.pathname !== '/' ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }
-            }
-          >
-            <Toolbar className={classes.toolbar}>
-              <Logo />
-              <div className={classes.grow} />
-              <Tabs
-                value={activeTab}
-                onChange={this.handleChange}
-                indicatorColor="secondary"
-                textColor="inherit"
-                fullWidth={true}
-                classes={{
-                  indicator: classes.indicator
-                }}
-              >
-                <Tab style={{ display: 'none' }} />
-                {navigationLinks.map((link: NavigationLink, index: number) => {
-                  return (
-                    <Tab
-                      label={translate(link.name)}
-                      key={index}
-                      onClick={(e: Event) => this.handleClick(e, link.to)}
-                    />
-                  );
-                })}
-              </Tabs>
-            </Toolbar>
-          </AppBar>
-        </div>
+        <AppBar
+          position="static"
+          className={classes.appBar}
+          style={
+            location.pathname !== '/' ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }
+          }
+        >
+          <Toolbar className={classes.toolbar}>
+            <Link to={'/'} className={classes.link} onClick={this.handleChange.bind(this, {}, 0)}>
+              <Typography variant="headline" color="inherit" className={classes.logoText}>
+                MyCryptoCurve
+              </Typography>
+            </Link>
+            <div className={classes.grow} />
+            <Tabs
+              value={activeTab}
+              onChange={this.handleChange}
+              indicatorColor="secondary"
+              textColor="inherit"
+              fullWidth={true}
+              classes={{
+                indicator: classes.indicator
+              }}
+            >
+              <Tab style={{ display: 'none' }} />
+              {navigationLinks.map((link: NavigationLink, index: number) => {
+                return (
+                  <Tab
+                    label={translate(link.name)}
+                    key={index}
+                    onClick={(e: Event) => this.handleClick(e, link.to)}
+                  />
+                );
+              })}
+            </Tabs>
+          </Toolbar>
+        </AppBar>
         {/*<div className="Header">*/}
         {/*<section className="Header-branding">*/}
         {/*<section className="Header-branding-inner container">*/}
@@ -303,6 +306,17 @@ class Header extends Component<Props, State> {
     if (key) {
       this.props.changeLanguage(key);
     }
+  };
+
+  private handleChange = ({}, value: number) => {
+    this.setState({ activeTab: value });
+  };
+
+  private calculateActiveTab = (pathName: string) =>
+    navigationLinks.findIndex(value => value.to.replace('/', '') === pathName.split('/')[1]) + 1;
+  private handleClick = ({}, to: string) => {
+    const { history } = this.props;
+    history.push(to);
   };
 
   private openCustomNodeModal = () => {

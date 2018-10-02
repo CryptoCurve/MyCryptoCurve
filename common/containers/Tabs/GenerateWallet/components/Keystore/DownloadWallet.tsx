@@ -31,7 +31,7 @@ class DownloadWallet extends Component<OwnProps & WithStyles<typeof styles>, Sta
   };
 
   public componentDidMount() {
-    // this.props.continue();
+    this.props.continue();
   }
 
   public render() {

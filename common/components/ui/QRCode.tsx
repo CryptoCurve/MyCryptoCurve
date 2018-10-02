@@ -36,10 +36,10 @@ export default class QRCode extends React.PureComponent<Props, State> {
       <img
         src={qr}
         alt="QR Code"
-        style={{
-          width: '100%',
-          height: '100%'
-        }}
+        // style={{
+        //   width: '100%',
+        //   height: '100%'
+        // }}
       />
     );
   }
@@ -57,6 +57,7 @@ export default class QRCode extends React.PureComponent<Props, State> {
           light: '#fff'
         },
         margin: 0,
+        width: 180,
         errorCorrectionLevel: 'H'
       },
       (err, qr) => {

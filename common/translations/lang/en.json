@@ -45,6 +45,8 @@
     "X_PRINT": "Print Paper Wallet ",
     "X_PRINT_2": "Print Your Wallet ",
     "X_PRINTDESC": "ProTip: Click print and save this as a PDF, even if you do not own a printer! ",
+    "X_PRINT_YOURADDRESS": "Your Address",
+    "X_PRINT_YOURPRIVATEKEY": "Your Private Key",
     "X_PRIVKEY": "Private Key (unencrypted) ",
     "X_PRIVKEY2": "Private Key",
     "X_PRIVKEYDESC": "This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended. ",

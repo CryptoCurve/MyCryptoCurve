@@ -1,3 +1,5 @@
+declare module 'react-to-print';
+
 declare module '*.svg' {
   const content: any;
   export default content;

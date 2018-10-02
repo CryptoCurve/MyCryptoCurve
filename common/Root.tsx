@@ -30,6 +30,7 @@ import { getNetworkUnit } from 'selectors/config';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import WebTemplate from './containers/TabSection/WebTemplate';
 
 const theme = createMuiTheme({
   palette: {
@@ -82,7 +83,7 @@ const theme = createMuiTheme({
       fontSize: 20,
       fontWeight: 100,
       letterSpacing: 2,
-      lineHeight: '26px'
+      lineHeight: 1.3
     },
     button: {
       letterSpacing: '1px'
@@ -188,7 +189,12 @@ class RootClass extends Component<Props, State> {
       );
     });
 
-    const routes = (
+    const Router =
+      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
+        ? HashRouter
+        : BrowserRouter;
+
+    const routes: React.ReactNode = (
       <CaptureRouteNotFound>
         <Switch>
           <Route path="/account" component={SendTransaction} />
@@ -208,31 +214,63 @@ class RootClass extends Component<Props, State> {
       </CaptureRouteNotFound>
     );
 
-    const Router =
-      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
-        ? HashRouter
-        : BrowserRouter;
-
+    // Creating new base to handle the new design
     return (
       <React.Fragment>
         <CssBaseline />
         <MuiThemeProvider theme={theme}>
           <Provider store={store} key={Math.random()}>
-            <Router key={Math.random()}>
+            {process.env.BUILD_ELECTRON ? (
+              <Router>
+                <React.Fragment>
+                  {process.env.BUILD_ELECTRON && <TitleBar />}
+                  {routes}
+                  <LegacyRoutes />
+                  <LogOutPrompt />
+                  <QrSignerModal />
+                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                </React.Fragment>
+              </Router>
+            ) : (
               <React.Fragment>
-                {process.env.BUILD_ELECTRON && <TitleBar />}
-                {routes}
-                <LegacyRoutes />
-                <LogOutPrompt />
-                <QrSignerModal />
-                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                <BrowserRouter>
+                  <WebTemplate routes={routes} />
+                </BrowserRouter>
+                {/*<Router key={Math.random()}>*/}
+                {/*<React.Fragment>*/}
+                {/*{routes}*/}
+                {/*<LegacyRoutes />*/}
+                {/*<LogOutPrompt />*/}
+                {/*<QrSignerModal />*/}
+                {/*</React.Fragment>*/}
+                {/*</Router>*/}
               </React.Fragment>
-            </Router>
+            )}
           </Provider>
           <div id="ModalContainer" />
         </MuiThemeProvider>
       </React.Fragment>
     );
+    // return (
+    //   <React.Fragment>
+    //     <CssBaseline />
+    //     <MuiThemeProvider theme={theme}>
+    //       <Provider store={store} key={Math.random()}>
+    //         <Router key={Math.random()}>
+    //           <React.Fragment>
+    //             {process.env.BUILD_ELECTRON && <TitleBar />}
+    //             {routes}
+    //             <LegacyRoutes />
+    //             <LogOutPrompt />
+    //             <QrSignerModal />
+    //             {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+    //           </React.Fragment>
+    //         </Router>
+    //       </Provider>
+    //       <div id="ModalContainer" />
+    //     </MuiThemeProvider>
+    //   </React.Fragment>
+    // );
   }
 }
 
