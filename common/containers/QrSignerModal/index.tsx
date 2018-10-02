@@ -20,12 +20,13 @@ interface PropsOpen {
   from: string;
   data: string;
 }
+type OptionalProps = PropsClosed | PropsOpen;
 
 interface ActionProps {
   finalizeSignature: TFinalizeSignature;
 }
 
-type Props = (PropsClosed | PropsOpen) & ActionProps;
+type Props = OptionalProps & ActionProps;
 
 class QrSignerModal extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -112,4 +113,6 @@ function mapStateToProps(state: AppState): PropsClosed | PropsOpen {
   };
 }
 
-export default connect(mapStateToProps, { finalizeSignature })(QrSignerModal);
+export default connect(mapStateToProps, { finalizeSignature })(
+  QrSignerModal
+) as React.ComponentClass<{}>;

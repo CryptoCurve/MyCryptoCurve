@@ -6,7 +6,13 @@ import Word from './Word';
 import FinalSteps from '../FinalSteps';
 import Template from '../Template';
 import { WalletType } from '../../GenerateWallet';
-import './Mnemonic.scss';
+import Grid from '@material-ui/core/Grid/Grid';
+import { Theme } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button/Button';
+import Cached from '@material-ui/icons/Cached';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 interface State {
   words: string[];
@@ -22,7 +28,38 @@ interface WordTuple {
   index: number;
 }
 
-export default class GenerateMnemonic extends React.Component<{}, State> {
+const styles = (theme: Theme) =>
+  createStyles({
+    mainContentGrid: {
+      marginTop: theme.spacing.unit * 5
+    },
+    buttonRow: {
+      marginTop: theme.spacing.unit * 10
+    },
+    buttonIcon: {
+      marginRight: theme.spacing.unit
+    },
+    regenButton: {
+      border: ['solid', '2px', theme.palette.primary.main].join(' ')
+    }
+  });
+
+interface StyleProps {
+  classes: {
+    mainContentGrid: string;
+    buttonRow: string;
+    buttonIcon: string;
+    regenButton: string;
+  };
+}
+
+type Props = StyleProps;
+
+class GenerateMnemonic extends React.Component<Props, State> {
+  public defaultProps = {
+    classes: {}
+  };
+
   public state: State = {
     words: [],
     confirmValues: [],
@@ -37,59 +74,89 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   }
 
   public render() {
+    const { classes } = this.props;
     const { words, confirmWords, isConfirming, isConfirmed } = this.state;
-    const defaultBtnClassName = 'GenerateMnemonic-buttons-btn btn btn-default';
     const canContinue = this.checkCanContinue();
-    const [firstHalf, lastHalf] =
-      confirmWords.length === 0 ? this.splitWordsIntoHalves(words) : confirmWords;
+    const [firstGroup, secondGroup, thirdGroup] =
+      confirmWords.length === 0 ? this.splitWordsIntoGroups(words, 3) : confirmWords;
 
     const content = isConfirmed ? (
       <FinalSteps walletType={WalletType.Mnemonic} />
     ) : (
-      <div className="GenerateMnemonic">
-        <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
-
-        <p className="GenerateMnemonic-help">
-          {isConfirming ? translate('MNEMONIC_DESCRIPTION_1') : translate('MNEMONIC_DESCRIPTION_2')}
-        </p>
-
-        <div className="GenerateMnemonic-words">
-          {[firstHalf, lastHalf].map((ws, i) => (
-            <div key={i} className="GenerateMnemonic-words-column">
+      <React.Fragment>
+        <Grid
+          className={classes.mainContentGrid}
+          container={true}
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+          spacing={16}
+        >
+          {[firstGroup, secondGroup, thirdGroup].map((ws, i) => (
+            <Grid container={true} key={i} lg={4} md={4} sm={12} xs={12} xl={4}>
               {ws.map(this.makeWord)}
-            </div>
+            </Grid>
           ))}
-        </div>
-
-        <div className="GenerateMnemonic-buttons">
-          {!isConfirming && (
-            <button className={defaultBtnClassName} onClick={this.regenerateWordArray}>
-              <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
-            </button>
-          )}
-          {isConfirming && (
-            <button
-              className={defaultBtnClassName}
-              disabled={canContinue}
-              onClick={this.revealNextWord}
-            >
-              <i className="fa fa-eye" /> {translate('REVEAL_NEXT_MNEMONIC')}
-            </button>
-          )}
-          <button
-            className="GenerateMnemonic-buttons-btn btn btn-primary"
-            disabled={!canContinue}
-            onClick={this.goToNextStep}
+          <Grid
+            className={classes.buttonRow}
+            container={true}
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={40}
           >
-            {translate('CONFIRM_MNEMONIC')}
-          </button>
-        </div>
+            {!isConfirming && (
+              <Grid item={true}>
+                <Button className={classes.regenButton} onClick={this.regenerateWordArray}>
+                  <Cached className={classes.buttonIcon} />
+                  {translate('REGENERATE_MNEMONIC')}
+                </Button>
+              </Grid>
+            )}
+            {isConfirming && (
+              <Grid item={true}>
+                <Button
+                  className={classes.regenButton}
+                  disabled={canContinue}
+                  onClick={this.revealNextWord}
+                >
+                  <RemoveRedEye className={classes.buttonIcon} />
+                  {translate('REVEAL_NEXT_MNEMONIC')}
+                </Button>
+              </Grid>
+            )}
+            <Grid item={true}>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={!canContinue}
+                onClick={this.goToNextStep}
+              >
+                {translate('CONFIRM_MNEMONIC')}
+              </Button>
+            </Grid>
+          </Grid>
 
-        <button className="GenerateMnemonic-skip" onClick={this.skip} />
-      </div>
+          {/*<button  onClick={()=>this.setState({ isConfirmed: true })} >skip</button>*/}
+        </Grid>
+      </React.Fragment>
     );
-
-    return <Template>{content}</Template>;
+    console.log('isConfirmed', isConfirmed);
+    console.log('isConfirming', isConfirming);
+    console.log(
+      isConfirming ? 'MNEMONIC_DESCRIPTION_2' : isConfirmed ? '' : 'MNEMONIC_DESCRIPTION_1'
+    );
+    return (
+      <Template
+        version={2}
+        title={isConfirmed ? 'ADD_LABEL_6' : 'GENERATE_MNEMONIC_TITLE'}
+        tooltip={
+          isConfirmed ? '' : isConfirming ? 'MNEMONIC_DESCRIPTION_2' : 'MNEMONIC_DESCRIPTION_1'
+        }
+      >
+        {content}
+      </Template>
+    );
   }
 
   private regenerateWordArray = () => {
@@ -105,7 +172,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
       this.setState({ isConfirmed: true });
     } else {
       const shuffledWords = shuffle(this.state.words);
-      const confirmWords = this.splitWordsIntoHalves(shuffledWords);
+      const confirmWords = this.splitWordsIntoGroups(shuffledWords, 3);
 
       this.setState({
         isConfirming: true,
@@ -166,10 +233,6 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
 
   private getWordConfirmed = (word: string) => this.state.confirmValues.includes(word);
 
-  private skip = () => {
-    this.setState({ isConfirmed: true });
-  };
-
   private revealNextWord = () => {
     const revealDuration = 400;
 
@@ -188,17 +251,21 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     );
   };
 
-  private splitWordsIntoHalves = (words: string[]) => {
-    const firstHalf: WordTuple[] = [];
-    const lastHalf: WordTuple[] = [];
+  private splitWordsIntoGroups = (words: string[], groups: 1 | 2 | 3 = 2) => {
+    const first: WordTuple[] = [];
+    const second: WordTuple[] = [];
+    const third: WordTuple[] = [];
 
     words.forEach((word: string, index: number) => {
-      const inFirstColumn = index < words.length / 2;
-      const half = inFirstColumn ? firstHalf : lastHalf;
-
+      const inFirstColumn = index < words.length / groups;
+      const half = inFirstColumn
+        ? first
+        : groups > 2 && index < words.length / groups * 2 ? second : third;
       half.push({ word, index });
     });
 
-    return [firstHalf, lastHalf];
+    return [first, second, third];
   };
 }
+
+export default withStyles(styles)(GenerateMnemonic);

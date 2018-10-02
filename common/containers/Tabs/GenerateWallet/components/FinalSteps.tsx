@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import translate from 'translations';
 import { WalletType } from '../GenerateWallet';
 import OpenAppImage from 'assets/images/unlock-guide/open-app.png';
@@ -11,12 +11,25 @@ import ProvideKeystoreImage from 'assets/images/unlock-guide/provide-keystore.pn
 import SelectMnemonicImage from 'assets/images/unlock-guide/select-mnemonic.png';
 import ProvideMnemonicImage from 'assets/images/unlock-guide/provide-mnemonic.png';
 import './FinalSteps.scss';
+import Grid from '@material-ui/core/Grid/Grid';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { Theme } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import Button from '@material-ui/core/Button/Button';
+import { Link } from 'react-router-dom';
 
 interface Props {
   walletType: WalletType;
 }
 
-const FinalSteps: React.SFC<Props> = ({ walletType }) => {
+const styles = (theme: Theme) =>
+  createStyles({
+    mainContentGrid: {
+      marginTop: theme.spacing.unit * 5
+    }
+  });
+
+const FinalSteps: React.SFC<Props & WithStyles<typeof styles>> = ({ walletType, classes }) => {
   const steps = [
     {
       name: translate('CREATE_FINAL_STEP_1'),
@@ -47,17 +60,35 @@ const FinalSteps: React.SFC<Props> = ({ walletType }) => {
       image: ProvideMnemonicImage
     });
   }
-
   return (
-    <div className="FinalSteps">
-      <h1 className="FinalSteps-title">{translate('ADD_LABEL_6')}</h1>
-      <div className="FinalSteps-buttons">
-        <Link to="/account" className="FinalSteps-buttons-btn btn btn-primary btn-lg">
+    <React.Fragment>
+      <Grid
+        className={classes.mainContentGrid}
+        container={true}
+        item={true}
+        direction="row"
+        justify="space-evenly"
+        alignItems="center"
+        spacing={16}
+      >
+        <Button
+          component={(props: any) => <Link to="/account" {...props} />}
+          variant="contained"
+          color="primary"
+        >
           {translate('GO_TO_ACCOUNT')}
-        </Link>
-      </div>
-    </div>
+        </Button>
+      </Grid>
+      {/*<div className="FinalSteps">*/}
+      {/*<h1 className="FinalSteps-title">{translate('ADD_LABEL_6')}</h1>*/}
+      {/*<div className="FinalSteps-buttons">*/}
+      {/*<Link to="/account" className="FinalSteps-buttons-btn btn btn-primary btn-lg">*/}
+      {/*{translate('GO_TO_ACCOUNT')}*/}
+      {/*</Link>*/}
+      {/*</div>*/}
+      {/*</div>*/}
+    </React.Fragment>
   );
 };
 
-export default FinalSteps;
+export default withStyles(styles)(FinalSteps);

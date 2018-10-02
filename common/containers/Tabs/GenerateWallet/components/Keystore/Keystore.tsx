@@ -1,18 +1,15 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
 import { generateKeystore } from 'libs/web-workers';
-import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
 import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
-import FinalSteps from '../FinalSteps';
 
 export enum Steps {
   Password = 'password',
   Download = 'download',
-  Paper = 'paper',
-  Final = 'final'
+  Paper = 'paper'
 }
 
 interface State {
@@ -34,6 +31,10 @@ export default class GenerateKeystore extends Component<{}, State> {
     isGenerating: false
   };
 
+  public componentDidMount() {
+    this.generateWalletAndContinue('adsfadsfasdfadsf');
+  }
+
   public render() {
     const { activeStep, keystore, privateKey, filename, isGenerating } = this.state;
     let content;
@@ -41,18 +42,22 @@ export default class GenerateKeystore extends Component<{}, State> {
     switch (activeStep) {
       case Steps.Password:
         content = (
-          <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
+          <Template version={2} title="GENERATE_KEYSTORE_TITLE" tooltip="X_PASSWORDTOOLTIP">
+            <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
+          </Template>
         );
         break;
 
       case Steps.Download:
         if (keystore) {
           content = (
-            <DownloadWallet
-              keystore={keystore}
-              filename={filename}
-              continue={this.continueToPaper}
-            />
+            <Template version={2} title="GEN_LABEL_2" tooltip="DL_WALLET_WARNING_4">
+              <DownloadWallet
+                keystore={keystore}
+                filename={filename}
+                continue={this.continueToPaper}
+              />
+            </Template>
           );
         }
         break;
@@ -60,21 +65,11 @@ export default class GenerateKeystore extends Component<{}, State> {
       case Steps.Paper:
         if (keystore) {
           content = (
-            <PaperWallet
-              keystore={keystore}
-              privateKey={privateKey}
-              continue={this.continueToFinal}
-            />
+            <Template version={2} title="GEN_LABEL_5">
+              <PaperWallet keystore={keystore} privateKey={privateKey} />
+            </Template>
           );
         }
-        break;
-
-      case Steps.Final:
-        content = (
-          <Template>
-            <FinalSteps walletType={WalletType.Keystore} />
-          </Template>
-        );
         break;
 
       default:
@@ -101,9 +96,5 @@ export default class GenerateKeystore extends Component<{}, State> {
 
   private continueToPaper = () => {
     this.setState({ activeStep: Steps.Paper });
-  };
-
-  private continueToFinal = () => {
-    this.setState({ activeStep: Steps.Final });
   };
 }

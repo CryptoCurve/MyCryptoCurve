@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -10,6 +10,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
+import LandingPage from 'containers/Tabs/LandingPage';
 import Whitelist from 'containers/Tabs/Whitelist';
 import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
@@ -26,6 +27,99 @@ import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
 import { getNetworkUnit } from 'selectors/config';
+import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import WebTemplate from './containers/TabSection/WebTemplate';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#8964DC'
+    },
+    secondary: {
+      main: '#40409A'
+    },
+    text: {
+      // secondary: '#fff',
+      primary: '#272532'
+    }
+  },
+  typography: {
+    fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+    headline: {
+      fontFamily: [
+        'bebasneue_bold',
+        'Abel',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif'
+      ].join(','),
+      textTransform: 'uppercase',
+      fontSize: 40,
+      letterSpacing: 5.3
+    },
+    title: {
+      fontFamily: [
+        'bebasneue_regular',
+        'Abel',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif'
+      ].join(','),
+      textTransform: 'uppercase',
+      fontSize: 35,
+      letterSpacing: 7,
+      lineHeight: '38px'
+    },
+    subheading: {
+      fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+      textTransform: 'uppercase',
+      fontSize: 18
+    },
+    caption: {
+      fontSize: 20,
+      fontWeight: 100,
+      letterSpacing: 2,
+      lineHeight: 1.3
+    },
+    button: {
+      letterSpacing: '1px'
+    }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 50,
+        minHeight: 60,
+        textTransform: 'none',
+        fontSize: 22,
+        minWidth: 330
+      },
+      outlined: {
+        borderWidth: ['2px', '!important'].join(' ')
+      }
+    },
+    MuiInput: {
+      input: {
+        fontSize: 20,
+        lineHeight: 1.3,
+        letterSpacing: 2,
+        padding: ['8px', 0, '7px'].join(' '),
+        marginTop: 4
+      }
+    },
+    MuiFormLabel: {
+      root: {
+        fontSize: 20,
+        lineHeight: '26px',
+        letterSpacing: 2
+      }
+    }
+  }
+});
 
 interface OwnProps {
   store: Store<AppState>;
@@ -47,6 +141,24 @@ interface State {
 }
 
 class RootClass extends Component<Props, State> {
+  private static addBodyClasses() {
+    const classes = [];
+
+    if (process.env.BUILD_ELECTRON) {
+      classes.push('is-electron');
+
+      if (navigator.appVersion.includes('Win')) {
+        classes.push('is-windows');
+      } else if (navigator.appVersion.includes('Mac')) {
+        classes.push('is-osx');
+      } else {
+        classes.push('is-linux');
+      }
+    }
+
+    document.body.className += ` ${classes.join(' ')}`;
+  }
+
   public state = {
     error: null
   };
@@ -54,7 +166,7 @@ class RootClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.pollOfflineStatus();
     this.props.setUnitMeta(this.props.networkUnit);
-    this.addBodyClasses();
+    RootClass.addBodyClasses();
   }
 
   public componentDidCatch(error: Error) {
@@ -77,10 +189,14 @@ class RootClass extends Component<Props, State> {
       );
     });
 
-    const routes = (
+    const Router =
+      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
+        ? HashRouter
+        : BrowserRouter;
+
+    const routes: React.ReactNode = (
       <CaptureRouteNotFound>
         <Switch>
-          <Redirect exact={true} from="/" to="/account" />
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
@@ -91,51 +207,70 @@ class RootClass extends Component<Props, State> {
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
           <Route path="/whitelist" component={Whitelist} />
+          <Route path="/" component={LandingPage} />
+          {/*<Redirect exact={true} from="/" to="/account" />*/}
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
     );
 
-    const Router =
-      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
-        ? HashRouter
-        : BrowserRouter;
-
+    // Creating new base to handle the new design
     return (
       <React.Fragment>
-        <Provider store={store} key={Math.random()}>
-          <Router key={Math.random()}>
-            <React.Fragment>
-              {process.env.BUILD_ELECTRON && <TitleBar />}
-              {routes}
-              <LegacyRoutes />
-              <LogOutPrompt />
-              <QrSignerModal />
-              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-            </React.Fragment>
-          </Router>
-        </Provider>
-        <div id="ModalContainer" />
+        <CssBaseline />
+        <MuiThemeProvider theme={theme}>
+          <Provider store={store} key={Math.random()}>
+            {process.env.BUILD_ELECTRON ? (
+              <Router>
+                <React.Fragment>
+                  {process.env.BUILD_ELECTRON && <TitleBar />}
+                  {routes}
+                  <LegacyRoutes />
+                  <LogOutPrompt />
+                  <QrSignerModal />
+                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                </React.Fragment>
+              </Router>
+            ) : (
+              <React.Fragment>
+                <BrowserRouter>
+                  <WebTemplate routes={routes} />
+                </BrowserRouter>
+                {/*<Router key={Math.random()}>*/}
+                {/*<React.Fragment>*/}
+                {/*{routes}*/}
+                {/*<LegacyRoutes />*/}
+                {/*<LogOutPrompt />*/}
+                {/*<QrSignerModal />*/}
+                {/*</React.Fragment>*/}
+                {/*</Router>*/}
+              </React.Fragment>
+            )}
+          </Provider>
+          <div id="ModalContainer" />
+        </MuiThemeProvider>
       </React.Fragment>
     );
-  }
-
-  private addBodyClasses() {
-    const classes = [];
-
-    if (process.env.BUILD_ELECTRON) {
-      classes.push('is-electron');
-
-      if (navigator.appVersion.includes('Win')) {
-        classes.push('is-windows');
-      } else if (navigator.appVersion.includes('Mac')) {
-        classes.push('is-osx');
-      } else {
-        classes.push('is-linux');
-      }
-    }
-
-    document.body.className += ` ${classes.join(' ')}`;
+    // return (
+    //   <React.Fragment>
+    //     <CssBaseline />
+    //     <MuiThemeProvider theme={theme}>
+    //       <Provider store={store} key={Math.random()}>
+    //         <Router key={Math.random()}>
+    //           <React.Fragment>
+    //             {process.env.BUILD_ELECTRON && <TitleBar />}
+    //             {routes}
+    //             <LegacyRoutes />
+    //             <LogOutPrompt />
+    //             <QrSignerModal />
+    //             {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+    //           </React.Fragment>
+    //         </Router>
+    //       </Provider>
+    //       <div id="ModalContainer" />
+    //     </MuiThemeProvider>
+    //   </React.Fragment>
+    // );
   }
 }
 

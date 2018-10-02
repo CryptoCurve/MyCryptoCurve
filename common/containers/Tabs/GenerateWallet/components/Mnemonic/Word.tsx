@@ -1,7 +1,59 @@
 import React from 'react';
-import classnames from 'classnames';
-import './Word.scss';
-import { Input } from 'components/ui';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
+import Button from '@material-ui/core/Button/Button';
+import { Theme, WithStyles } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Badge from '@material-ui/core/Badge/Badge';
+import Zoom from '@material-ui/core/Zoom/Zoom';
+
+const styles = (theme: Theme) =>
+  createStyles({
+    wordContainer: {
+      marginTop: theme.spacing.unit * 4
+    },
+    wordButtons: {
+      backgroundColor: theme.palette.text.primary,
+      color: theme.palette.text.secondary,
+      minHeight: 40,
+      fontSize: 20,
+      minWidth: 210,
+      '&:hover': {
+        color: theme.palette.text.primary
+      }
+    },
+    wordButtonsDisabled: {
+      color: ['#fff', '!important'].join(' ')
+    },
+    wordButtonsConfirming: {
+      border: ['solid', '2px', theme.palette.primary.main].join(' '),
+      fontSize: 20,
+      minHeight: 40,
+      minWidth: 210
+    },
+    wordButtonsConfirmingDisabled: {
+      color: [theme.palette.text.primary, '!important'].join(' ')
+    },
+    wordButtonsRevealed: {
+      backgroundColor: ['#4CAF50', '!important'].join(' '),
+      color: ['#fff', '!important'].join(' '),
+      borderColor: '#4CAF50'
+    },
+    wordButtonsError: {
+      backgroundColor: [theme.palette.error.main, '!important'].join(' '),
+      color: ['#fff', '!important'].join(' '),
+      borderColor: theme.palette.error.main
+    },
+    numberLabel: {
+      paddingRight: 20,
+      fontWeight: 600
+    },
+    badge: {
+      top: -30,
+      left: -10
+    }
+  });
 
 interface Props {
   index: number;
@@ -13,6 +65,7 @@ interface Props {
   isBeingRevealed: boolean;
   isConfirming: boolean;
   hasBeenConfirmed: boolean;
+  classes?: any;
   onClick(index: number, value: string): void;
 }
 
@@ -20,7 +73,7 @@ interface State {
   flashingError: boolean;
 }
 
-export default class MnemonicWord extends React.Component<Props, State> {
+class MnemonicWord extends React.Component<Props & WithStyles<typeof styles>, State> {
   public state = {
     flashingError: false
   };
@@ -33,38 +86,52 @@ export default class MnemonicWord extends React.Component<Props, State> {
       index,
       isConfirming,
       confirmIndex,
-      word
+      word,
+      classes
     } = this.props;
     const { flashingError } = this.state;
-    const btnClassName = classnames({
-      btn: true,
-      'btn-default': !(isBeingRevealed || flashingError),
-      'btn-success': isBeingRevealed,
-      'btn-danger': flashingError
-    });
-    const indexClassName = 'input-group-addon input-group-addon--transparent';
 
     return (
-      <div className="input-group-wrapper MnemonicWord">
-        <label className="input-group input-group-inline ENSInput-name">
-          {showIndex && <span className={indexClassName}>{index + 1}.</span>}
-          {hasBeenConfirmed && (
-            <span className="MnemonicWord-button-index">{confirmIndex + 1}</span>
-          )}
-          {isConfirming ? (
-            <button
-              className={`MnemonicWord-button ${btnClassName} ${
-                hasBeenConfirmed ? 'disabled' : ''
-              }`}
-              onClick={() => this.handleClick(word)}
-            >
-              {word}
-            </button>
-          ) : (
-            <Input className="MnemonicWord-word-input" value={word} readOnly={true} />
-          )}
-        </label>
-      </div>
+      <Grid
+        container={true}
+        justify="center"
+        direction="row"
+        alignItems="center"
+        item={true}
+        className={classes.wordContainer}
+      >
+        {showIndex && (
+          <Typography variant="subheading" color="textPrimary" className={classes.numberLabel}>
+            {index + 1}.
+          </Typography>
+        )}
+        <Zoom in={hasBeenConfirmed} style={{ zIndex: 1 }}>
+          <Badge
+            badgeContent={confirmIndex + 1}
+            color="secondary"
+            classes={{ badge: classes.badge }}
+          >
+            <div />
+          </Badge>
+        </Zoom>
+        <Zoom in={true} timeout={{ enter: 200 + index * 100 }}>
+          <Button
+            className={isConfirming ? classes.wordButtonsConfirming : classes.wordButtons}
+            classes={{
+              disabled: isConfirming
+                ? classes.wordButtonsConfirmingDisabled
+                : classes.wordButtonsDisabled,
+              root: isBeingRevealed
+                ? classes.wordButtonsRevealed
+                : flashingError ? classes.wordButtonsError : ''
+            }}
+            disabled={!isConfirming || hasBeenConfirmed}
+            onClick={() => isConfirming && this.handleClick(word)}
+          >
+            {word}
+          </Button>
+        </Zoom>
+      </Grid>
     );
   }
 
@@ -96,3 +163,5 @@ export default class MnemonicWord extends React.Component<Props, State> {
     );
   };
 }
+
+export default withStyles(styles)(MnemonicWord);

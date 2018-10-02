@@ -1,12 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BetaAgreement, Footer, Header } from 'components';
+import { Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import { getOffline, getLatestBlock } from 'selectors/config';
 import { Query } from 'components/renderCbs';
 import './WebTemplate.scss';
+import { RouteComponentProps, withRouter } from 'react-router';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import BackgroundImage from 'assets/images/background/mycryptocurveMain.jpg';
+import createStyles from '@material-ui/core/styles/createStyles';
+import Fade from '@material-ui/core/Fade/Fade';
+
+const styles = () =>
+  createStyles({
+    background: {
+      backgroundImage: `url(${BackgroundImage})`,
+      backgroundPosition: 'center top',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#35286E',
+      top: 0,
+      position: 'absolute',
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: -1
+    }
+  });
 
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
@@ -15,29 +36,33 @@ interface StateProps {
 
 interface OwnProps {
   isUnavailableOffline?: boolean;
-  children: string | React.ReactElement<string> | React.ReactElement<string>[];
+  // children: string | React.ReactElement<string> | React.ReactElement<string>[];
+  routes: React.ReactNode;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StateProps & RouteComponentProps<{}>;
 
-class WebTemplate extends Component<Props, {}> {
+class WebTemplate extends Component<Props & WithStyles<typeof styles>, {}> {
   public render() {
-    const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
+    const { routes, classes, isUnavailableOffline, isOffline, latestBlock, location } = this.props;
+    console.log(this.props);
 
     return (
-      <div className="WebTemplate">
+      <React.Fragment>
+        <Fade in={location.pathname === '/'}>
+          <div className={classes.background} />
+        </Fade>
         <Query
           params={['network']}
           withQuery={({ network }) => (
             <Header networkParam={network && `${network.toLowerCase()}_auto`} />
           )}
         />
-        <div className="Tab container">
-          {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
-        </div>
-        <div className="WebTemplate-spacer" />
-        <Footer latestBlock={latestBlock} /> <Notifications />
-      </div>
+        {routes}
+        {isUnavailableOffline && isOffline ? <OfflineTab /> : null}
+        {location.pathname !== '/' && <Footer latestBlock={latestBlock} />}
+        <Notifications />
+      </React.Fragment>
     );
   }
 }
@@ -49,4 +74,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {})(WebTemplate);
+export default withStyles(styles)(withRouter(connect(mapStateToProps, {})(WebTemplate)));
