@@ -29,11 +29,14 @@ const styles = (theme: Theme) =>
       flexGrow: 1
     },
     title: {
-      ...theme.typography.title
+      ...theme.typography.title,
+      textAlign: 'center'
     },
-    backButton: {
-      position: 'absolute',
-      left: theme.spacing.unit * 15
+    buttonGridItem: {
+      minHeight: 80,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     buttonRow: {
       marginTop: theme.spacing.unit * 20
@@ -123,36 +126,26 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
     const { children, version, history, classes, title, tooltip } = this.props;
     const { tooltipOpen } = this.state;
     return version === 2 && title ? (
-      <main className={classes.layout}>
+      <React.Fragment>
         <Grid
           container={true}
+          item={true}
           direction="row"
           justify="space-evenly"
           alignItems="center"
           spacing={16}
         >
-          <Grid container={true} item={true} xs={12} sm={1} md={1} lg={1} xl={1} justify="center">
+          <Grid item={true} xs={12} md={2} className={classes.buttonGridItem}>
             <Button
               variant="fab"
               color="primary"
               aria-label="Back"
-              onClick={() => history.goBack()}
+              onClick={() => history.push('/')}
             >
               <ArrowBack />
             </Button>
           </Grid>
-          <Grid
-            container={true}
-            item={true}
-            xs={12}
-            sm={10}
-            md={10}
-            lg={10}
-            xl={10}
-            direction="row"
-            alignItems="center"
-            justify="center"
-          >
+          <Grid item={true} container={true} xs={12} md={8} justify="center" alignItems="center">
             <span className={classes.title}>{translate(title)}</span>
             {tooltip && (
               <ClickAwayListener onClickAway={this.handleTooltipClose}>
@@ -182,10 +175,10 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
               </ClickAwayListener>
             )}
           </Grid>
-          <Grid item={true} xs={false} sm={1} md={1} lg={1} xl={1} />
+          <Grid item={true} xs={12} md={2} />
         </Grid>
         {children}
-      </main>
+      </React.Fragment>
     ) : (
       <div className="GenerateWallet Tab-content-pane">
         {children}

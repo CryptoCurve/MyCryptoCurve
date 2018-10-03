@@ -3,13 +3,12 @@ import translate, { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { RouteComponentProps } from 'react-router-dom';
 import './WalletTypes.scss';
-import { Theme } from '@material-ui/core';
+import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography/Typography';
 import Button from '@material-ui/core/Button/Button';
 import Grid from '@material-ui/core/Grid/Grid';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Template from './Template';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -19,26 +18,20 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       flexGrow: 1
     },
-    backButton: {
-      position: 'absolute',
-      left: theme.spacing.unit * 15
+    buttonGridItem: {
+      minHeight: 80,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     buttonRow: {
       marginTop: theme.spacing.unit * 20
     }
   });
 
-interface StyleProps {
-  classes: {
-    layout: string;
-    backButton: string;
-    buttonRow: string;
-  };
-}
+type Props = RouteComponentProps<{}>;
 
-type Props = StyleProps & RouteComponentProps<{}>;
-
-const WalletTypes: React.SFC<Props> = props => {
+const WalletTypes: React.SFC<Props & WithStyles<typeof styles>> = props => {
   const { classes, history, location } = props;
   console.log(props);
   const typeInfo = {
@@ -65,29 +58,11 @@ const WalletTypes: React.SFC<Props> = props => {
   };
 
   return (
-    <main className={classes.layout}>
-      <Grid
-        container={true}
-        direction="row"
-        justify="space-evenly"
-        alignItems="center"
-        spacing={16}
-      >
-        <Grid container={true} item={true} xs={12} sm={1} md={1} lg={1} xl={1} justify="center">
-          <Button variant="fab" color="primary" aria-label="Back" onClick={() => history.push('/')}>
-            <ArrowBack />
-          </Button>
-        </Grid>
-        <Grid item={true} xs={12} sm={10} md={10} lg={10} xl={10}>
-          <Typography variant="title" align="center">
-            {translate('PRIVATE_KEY_TITLE')}
-          </Typography>
-        </Grid>
-        <Grid item={true} xs={false} sm={1} md={1} lg={1} xl={1} />
-      </Grid>
+    <Template version={2} title="PRIVATE_KEY_TITLE">
       <Grid
         className={classes.buttonRow}
         container={true}
+        item={true}
         direction="row"
         justify="space-evenly"
         alignItems="center"
@@ -107,7 +82,7 @@ const WalletTypes: React.SFC<Props> = props => {
           </React.Fragment>
         ))}
       </Grid>
-    </main>
+    </Template>
   );
 };
 
