@@ -2,7 +2,7 @@ import React from 'react';
 import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
-import { print } from 'components/PrintableWallet';
+// import { print } from 'components/PrintableWallet';
 import { QRCode } from 'components/ui';
 import { GenerateKeystoreModal, TogglablePassword, AddressField } from 'components';
 import './WalletInfo.scss';
@@ -85,9 +85,11 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
                 <div className="col-xs-6">
                   <label>{translate('WALLET_INFO_UTILITIES')}</label>
 
-                  <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
-                    {translate('X_PRINT')}
-                  </button>
+                  {/*<button className="btn btn-info btn-block" onClick={print(address, privateKey)}>*/}
+                  {/*{translate('X_PRINT')}*/}
+                  {/*</button>*/}
+                  {/* TODO: Fix printing */}
+                  <button className="btn btn-info btn-block">{translate('X_PRINT')}</button>
 
                   <button className="btn btn-info btn-block" onClick={this.toggleKeystoreModal}>
                     {translate('GENERATE_KEYSTORE_TITLE')}

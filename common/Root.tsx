@@ -32,17 +32,24 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import WebTemplate from './containers/TabSection/WebTemplate';
 
+export enum Colors {
+  white = '#fff',
+  purpley = '#8964DC',
+  lavender = '#beaceb',
+  lightLavender = '#e4d9ff',
+  dark = '#272532'
+}
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#8964DC'
+      main: Colors.purpley
     },
     secondary: {
       main: '#40409A'
     },
     text: {
       // secondary: '#fff',
-      primary: '#272532'
+      primary: Colors.dark
     }
   },
   typography: {
@@ -116,6 +123,28 @@ const theme = createMuiTheme({
         fontSize: 20,
         lineHeight: '26px',
         letterSpacing: 2
+      }
+    },
+    MuiList: {
+      root: {
+        border: ['solid', '1px', Colors.lavender].join(' '),
+        borderRadius: 8
+      }
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: 8
+      }
+    },
+    MuiListItem: {
+      selected: {
+        backgroundColor: [Colors.lavender, '!important'].join(' '),
+        color: [Colors.white, '!important'].join(' ')
+      },
+      button: {
+        '&:hover': {
+          backgroundColor: Colors.lightLavender
+        }
       }
     }
   }
@@ -197,7 +226,8 @@ class RootClass extends Component<Props, State> {
     const routes: React.ReactNode = (
       <CaptureRouteNotFound>
         <Switch>
-          <Route path="/account" component={SendTransaction} />
+          <Route path="/account" exact={true} component={SendTransaction} />
+          <Route path="/account/:action?" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />

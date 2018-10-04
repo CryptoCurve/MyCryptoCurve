@@ -45,8 +45,6 @@ type Props = OwnProps & StateProps & RouteComponentProps<{}>;
 class WebTemplate extends Component<Props & WithStyles<typeof styles>, {}> {
   public render() {
     const { routes, classes, isUnavailableOffline, isOffline, latestBlock, location } = this.props;
-    console.log(this.props);
-
     return (
       <React.Fragment>
         <Fade in={location.pathname === '/'}>

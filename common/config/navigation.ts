@@ -17,13 +17,18 @@ const newWallet: NavigationLink = {
   to: '/generate'
 };
 
+const viewAddress: NavigationLink = {
+  name: 'VIEW_ADDR',
+  to: '/account/view'
+};
+
 const learnMore: NavigationLink = {
   name: 'NAV_LEARN',
   to: '/faq'
 };
 
 /* Collections of navigation links */
-export const navigationLinks: NavigationLink[] = [openWallet, newWallet].filter(
+export const navigationLinks: NavigationLink[] = [openWallet, newWallet, viewAddress].filter(
   (link: NavigationLink) => !link.disabled
 );
 
