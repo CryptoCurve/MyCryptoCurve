@@ -92,7 +92,6 @@ interface State {
   hasAcknowledgedInsecure: boolean;
   loginSelectorOpen: boolean;
   loginSelectorValue: InsecureWalletName;
-  title: string;
 }
 
 interface BaseWalletInfo {
@@ -258,6 +257,9 @@ class WalletDecrypt extends Component<
     }
   }
 
+  public componentDidMount() {
+    // this.handleWalletChoice(this.state.loginSelectorValue).then();
+  }
   public componentWillReceiveProps(nextProps: Props) {
     // Reset state when unlock is hidden / revealed
     let shouldIDoIt = false;
@@ -297,13 +299,15 @@ class WalletDecrypt extends Component<
     if (!selectedWalletKey) {
       return null;
     }
-
+    // @ts-ignore
     return this.WALLETS[selectedWalletKey];
   }
 
   public getDecryptionComponent() {
     const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
     const selectedWallet = this.getSelectedWallet();
+
+    console.log(selectedWallet);
     if (!selectedWalletKey || !selectedWallet) {
       return null;
     }
@@ -320,44 +324,42 @@ class WalletDecrypt extends Component<
       );
     }*/
     return (
-      <div className="WalletDecrypt-decrypt">
-        <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-          <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
-        </button>
-        <h2 className="WalletDecrypt-decrypt-title">
-          {!selectedWallet.isReadOnly} {translate(selectedWallet.lid)}
-        </h2>
-        <section className="WalletDecrypt-decrypt-form">
-          <Errorable
-            errorMessage={`Oops, looks like ${translateRaw(
-              selectedWallet.lid
-            )} is not supported by your browser`}
-            onError={this.clearWalletChoice}
-          >
-            <selectedWallet.component
-              value={this.state.value}
-              onChange={this.onChange}
-              onUnlock={(value: any) => {
-                if (selectedWallet.redirect) {
-                  this.props.history.push(selectedWallet.redirect);
-                }
-                this.onUnlock(value);
-              }}
-              showNotification={this.props.showNotification}
-              isWalletPending={
-                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                  ? this.props.isWalletPending
-                  : undefined
+      <Grid container={true}>
+        {/*<button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>*/}
+        {/*<i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}*/}
+        {/*</button>*/}
+        {/*<h2 className="WalletDecrypt-decrypt-title">*/}
+        {/*{!selectedWallet.isReadOnly} {translate(selectedWallet.lid)}*/}
+        {/*</h2>*/}
+        <Errorable
+          errorMessage={`Oops, looks like ${translateRaw(
+            selectedWallet.lid
+          )} is not supported by your browser`}
+          onError={this.clearWalletChoice}
+        >
+          <selectedWallet.component
+            value={this.state.value}
+            onChange={this.onChange}
+            onUnlock={(value: any) => {
+              if (selectedWallet.redirect) {
+                this.props.history.push(selectedWallet.redirect);
               }
-              isPasswordPending={
-                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                  ? this.props.isPasswordPending
-                  : undefined
-              }
-            />
-          </Errorable>
-        </section>
-      </div>
+              this.onUnlock(value);
+            }}
+            showNotification={this.props.showNotification}
+            isWalletPending={
+              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                ? this.props.isWalletPending
+                : undefined
+            }
+            isPasswordPending={
+              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                ? this.props.isPasswordPending
+                : undefined
+            }
+          />
+        </Errorable>
+      </Grid>
     );
   }
 
@@ -469,7 +471,11 @@ class WalletDecrypt extends Component<
     console.log('decryptionComponent', decryptionComponent);
     console.log('selectedWallet', selectedWallet);
     return (
-      <Template version={2} title="OPEN_WALLET_SELECT" hideButton={true}>
+      <Template
+        version={2}
+        title={selectedWallet ? selectedWallet.lid : 'OPEN_WALLET_SELECT'}
+        hideButton={!(selectedWallet && selectedWallet.lid)}
+      >
         <React.Fragment>
           {!hidden && (
             <Grid container={true} item={true} alignItems="center" justify="center">
