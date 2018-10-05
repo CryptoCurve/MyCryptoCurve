@@ -18,10 +18,15 @@ interface OwnProps {
   version?: number;
   title?: string;
   tooltip?: string;
+  hideButton?: boolean;
 }
 
 const styles = (theme: Theme) =>
   createStyles({
+    mainGrid: {
+      marginTop: theme.spacing.unit * 10,
+      marginBottom: theme.spacing.unit * 20
+    },
     layout: {
       display: 'flex',
       flexDirection: 'column',
@@ -29,11 +34,14 @@ const styles = (theme: Theme) =>
       flexGrow: 1
     },
     title: {
-      ...theme.typography.title
+      ...theme.typography.title,
+      textAlign: 'center'
     },
-    backButton: {
-      position: 'absolute',
-      left: theme.spacing.unit * 15
+    buttonGridItem: {
+      minHeight: 80,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     buttonRow: {
       marginTop: theme.spacing.unit * 20
@@ -120,72 +128,73 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 
   public render() {
-    const { children, version, history, classes, title, tooltip } = this.props;
+    const { children, version, history, classes, title, tooltip, hideButton } = this.props;
     const { tooltipOpen } = this.state;
     return version === 2 && title ? (
-      <main className={classes.layout}>
-        <Grid
-          container={true}
-          direction="row"
-          justify="space-evenly"
-          alignItems="center"
-          spacing={16}
-        >
-          <Grid container={true} item={true} xs={12} sm={1} md={1} lg={1} xl={1} justify="center">
-            <Button
-              variant="fab"
-              color="primary"
-              aria-label="Back"
-              onClick={() => history.goBack()}
-            >
-              <ArrowBack />
-            </Button>
-          </Grid>
+      <React.Fragment>
+        <Grid container={true} className={classes.mainGrid}>
           <Grid
             container={true}
             item={true}
-            xs={12}
-            sm={10}
-            md={10}
-            lg={10}
-            xl={10}
             direction="row"
+            justify="space-evenly"
             alignItems="center"
-            justify="center"
+            spacing={16}
           >
-            <span className={classes.title}>{translate(title)}</span>
-            {tooltip && (
-              <ClickAwayListener onClickAway={this.handleTooltipClose}>
-                <Tooltip
-                  TransitionComponent={Zoom}
-                  classes={{ popper: classes.arrowPopper, tooltip: classes.tooltip }}
-                  PopperProps={{
-                    disablePortal: true
-                  }}
-                  onClose={this.handleTooltipClose}
-                  open={tooltipOpen}
-                  disableFocusListener={true}
-                  disableHoverListener={true}
-                  disableTouchListener={true}
-                  placement="right"
-                  title={
-                    <React.Fragment>
-                      {translate(tooltip)}
-                      <span className={classes.arrowArrow} />
-                    </React.Fragment>
-                  }
+            {!hideButton && (
+              <Grid item={true} xs={12} md={2} className={classes.buttonGridItem}>
+                <Button
+                  variant="fab"
+                  color="primary"
+                  aria-label="Back"
+                  onClick={() => history.push('/')}
                 >
-                  <IconButton onClick={this.handleTooltipToggle}>
-                    <InfoOutlined color="primary" />
-                  </IconButton>
-                </Tooltip>
-              </ClickAwayListener>
+                  <ArrowBack />
+                </Button>
+              </Grid>
             )}
+            <Grid
+              item={true}
+              container={true}
+              xs={12}
+              md={hideButton ? 12 : 8}
+              justify="center"
+              alignItems="center"
+            >
+              <span className={classes.title}>{translate(title)}</span>
+              {tooltip && (
+                <ClickAwayListener onClickAway={this.handleTooltipClose}>
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    classes={{ popper: classes.arrowPopper, tooltip: classes.tooltip }}
+                    PopperProps={{
+                      disablePortal: true
+                    }}
+                    onClose={this.handleTooltipClose}
+                    open={tooltipOpen}
+                    disableFocusListener={true}
+                    disableHoverListener={true}
+                    disableTouchListener={true}
+                    placement="right"
+                    title={
+                      <React.Fragment>
+                        {translate(tooltip)}
+                        <span className={classes.arrowArrow} />
+                      </React.Fragment>
+                    }
+                  >
+                    <IconButton onClick={this.handleTooltipToggle}>
+                      <InfoOutlined color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                </ClickAwayListener>
+              )}
+            </Grid>
+            {!hideButton && <Grid item={true} xs={12} md={2} />}
           </Grid>
-          <Grid item={true} xs={false} sm={1} md={1} lg={1} xl={1} />
+          {children}
         </Grid>
-        {children}
-      </main>
+      </React.Fragment>
     ) : (
       <div className="GenerateWallet Tab-content-pane">
         {children}

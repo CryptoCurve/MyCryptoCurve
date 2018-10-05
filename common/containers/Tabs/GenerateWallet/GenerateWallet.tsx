@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import Keystore from './components/Keystore';
 import Mnemonic from './components/Mnemonic';
 import WalletTypes from './components/WalletTypes';
@@ -12,25 +12,23 @@ export enum WalletType {
   Mnemonic = 'mnemonic'
 }
 
-export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
-  public render() {
-    const currentPath = this.props.match.url;
-    console.log('HERE');
-    return (
-      <React.Fragment>
-        <section className="Tab-content">
-          {window.crypto ? (
-            <Switch>
-              <Route exact={true} path={currentPath} component={WalletTypes} />
-              <Route exact={true} path={`${currentPath}/keystore`} component={Keystore} />
-              <Route exact={true} path={`${currentPath}/mnemonic`} component={Mnemonic} />
-              <RouteNotFound />
-            </Switch>
-          ) : (
-            <CryptoWarning />
-          )}
-        </section>
-      </React.Fragment>
-    );
-  }
-}
+const GenerateWallet = (props: RouteComponentProps<{}>) => {
+  const { match } = props;
+  const currentPath = match.url;
+  return (
+    <React.Fragment>
+      {window.crypto ? (
+        <Switch>
+          <Route exact={true} path={currentPath} component={WalletTypes} />
+          <Route exact={true} path={`${currentPath}/keystore`} component={Keystore} />
+          <Route exact={true} path={`${currentPath}/mnemonic`} component={Mnemonic} />
+          <RouteNotFound />
+        </Switch>
+      ) : (
+        <CryptoWarning />
+      )}
+    </React.Fragment>
+  );
+};
+
+export default GenerateWallet;

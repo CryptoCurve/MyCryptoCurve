@@ -31,9 +31,10 @@ export default class GenerateKeystore extends Component<{}, State> {
     isGenerating: false
   };
 
-  public componentDidMount() {
-    this.generateWalletAndContinue('adsfadsfasdfadsf');
-  }
+  // the following only needed for debug
+  // public componentDidMount() {
+  //   this.generateWalletAndContinue('adsfadsfasdfadsf');
+  // }
 
   public render() {
     const { activeStep, keystore, privateKey, filename, isGenerating } = this.state;

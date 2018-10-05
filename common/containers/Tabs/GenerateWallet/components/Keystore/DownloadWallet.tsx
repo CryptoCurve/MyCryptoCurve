@@ -18,6 +18,7 @@ const styles = (theme: Theme) =>
 interface OwnProps {
   keystore: IV3Wallet;
   filename: string;
+
   continue(): void;
 }
 
@@ -30,9 +31,10 @@ class DownloadWallet extends Component<OwnProps & WithStyles<typeof styles>, Sta
     hasDownloadedWallet: false
   };
 
-  public componentDidMount() {
-    this.props.continue();
-  }
+  // the following only needed for debug
+  // public componentDidMount() {
+  //   this.props.continue();
+  // }
 
   public render() {
     const { filename, classes } = this.props;

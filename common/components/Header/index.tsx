@@ -13,7 +13,6 @@ import {
   removeCustomNode,
   addCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/cryptocurve-logo-white2.png';
 import { OldDropDown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
@@ -259,9 +258,10 @@ class Header extends Component<Props, State> {
               {navigationLinks.map((link: NavigationLink, index: number) => {
                 return (
                   <Tab
+                    component={(props: any) => <Link to={link.to} {...props} />}
                     label={translate(link.name)}
                     key={index}
-                    onClick={(e: Event) => this.handleClick(e, link.to)}
+                    // onClick={(e: Event) => this.handleClick(e, link.to)}
                   />
                 );
               })}
@@ -312,8 +312,17 @@ class Header extends Component<Props, State> {
     this.setState({ activeTab: value });
   };
 
-  private calculateActiveTab = (pathName: string) =>
-    navigationLinks.findIndex(value => value.to.replace('/', '') === pathName.split('/')[1]) + 1;
+  private calculateActiveTab = (pathName: string) => {
+    const splitPath = pathName.split('/');
+    const initial =
+      navigationLinks.findIndex(value => value.to.replace('/', '') === splitPath[1]) + 1;
+
+    console.log(splitPath);
+    return initial === 1 && splitPath.length === 3 && splitPath[2] === 'view'
+      ? initial + 2
+      : initial;
+  };
+
   private handleClick = ({}, to: string) => {
     const { history } = this.props;
     history.push(to);
