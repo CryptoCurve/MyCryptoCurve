@@ -258,7 +258,7 @@ class WalletDecrypt extends Component<
   }
 
   public componentDidMount() {
-    // this.handleWalletChoice(this.state.loginSelectorValue).then();
+    this.handleWalletChoice(this.state.loginSelectorValue).then();
   }
   public componentWillReceiveProps(nextProps: Props) {
     // Reset state when unlock is hidden / revealed

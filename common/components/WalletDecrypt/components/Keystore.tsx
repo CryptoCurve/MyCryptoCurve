@@ -15,16 +15,16 @@ import CircularProgress from '@material-ui/core/CircularProgress/CircularProgres
 import { green } from '@material-ui/core/colors';
 
 export interface KeystoreValue {
-  file: string;
+  file: string | null | ArrayBuffer;
   password: string;
   filename: string;
   valid: boolean;
 }
 
-function isPassRequired(file: string): boolean {
+function isPassRequired(file: string | null | ArrayBuffer): boolean {
   let passReq = false;
   try {
-    passReq = isKeystorePassRequired(file);
+    passReq = file !== null && isKeystorePassRequired(file);
   } catch (e) {
     // TODO: communicate invalid file to user
   }
@@ -78,7 +78,7 @@ const styles = (theme: Theme) =>
 
 class KeystoreDecryptClass extends React.Component<OwnProps & WithStyles<typeof styles>> {
   public render() {
-    const { isWalletPending, value: { file, password, filename }, classes } = this.props;
+    const { isWalletPending, classes, value: { file, password, filename } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -151,7 +151,8 @@ class KeystoreDecryptClass extends React.Component<OwnProps & WithStyles<typeof 
   };
 
   private onPasswordChange = (e: any) => {
-    const valid = this.props.value.file.length && e.target.value.length;
+    const { file } = this.props.value;
+    const valid = file !== null && file.toString().length && e.target.value.length;
     this.props.onChange({
       ...this.props.value,
       password: e.target.value,
@@ -172,7 +173,7 @@ class KeystoreDecryptClass extends React.Component<OwnProps & WithStyles<typeof 
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq,
+        valid: keystore !== null && keystore.toString().length !== 0 && !passReq,
         password: '',
         filename: fileName
       });

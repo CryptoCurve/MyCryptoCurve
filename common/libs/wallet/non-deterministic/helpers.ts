@@ -38,8 +38,8 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
     unlock: () => Promise.resolve()
   });
 
-function determineKeystoreType(file: string): string {
-  const parsed = JSON.parse(file);
+function determineKeystoreType(file: string | ArrayBuffer): string {
+  const parsed = JSON.parse(file.toString());
   if (parsed.encseed) {
     return KeystoreTypes.presale;
   } else if (parsed.Crypto || parsed.crypto) {
@@ -55,7 +55,7 @@ function determineKeystoreType(file: string): string {
   }
 }
 
-const isKeystorePassRequired = (file: string): boolean => {
+const isKeystorePassRequired = (file: string | ArrayBuffer): boolean => {
   const keystoreType = determineKeystoreType(file);
   return (
     keystoreType === KeystoreTypes.presale ||
