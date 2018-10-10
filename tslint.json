@@ -26,7 +26,11 @@
     "ordered-imports": false,
     "react-anchor-blank-noopener": true,
     "no-http-string": [true, "http://localhost:.*"],
-    "react-no-dangerous-html": true
+    "react-no-dangerous-html": true,
+    "no-unused-expression": [
+      true,
+      "allow-fast-null-checks"
+    ]
   },
   "rulesDirectory": ["node_modules/tslint-microsoft-contrib"]
 }

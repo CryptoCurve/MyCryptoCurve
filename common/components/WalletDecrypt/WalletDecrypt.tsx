@@ -246,7 +246,7 @@ class WalletDecrypt extends Component<
     value: null,
     hasAcknowledgedInsecure: false,
     loginSelectorOpen: false,
-    loginSelectorValue: InsecureWalletName.PRIVATE_KEY
+    loginSelectorValue: InsecureWalletName.MNEMONIC_PHRASE
   };
 
   public componentWillMount() {

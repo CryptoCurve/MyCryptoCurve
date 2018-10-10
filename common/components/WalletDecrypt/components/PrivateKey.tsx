@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid/Grid';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
-import { green } from '@material-ui/core/colors';
 import Input from '@material-ui/core/Input/Input';
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import Fade from '@material-ui/core/Fade/Fade';
@@ -31,29 +30,11 @@ interface Validated {
 
 const styles = (theme: Theme) =>
   createStyles({
-    hidden: {
-      display: 'none'
-    },
     formGrid: {
       marginTop: theme.spacing.unit * 5
     },
-    fileNameLabel: {
-      marginTop: theme.spacing.unit,
-      marginBottom: theme.spacing.unit,
-      textAlign: 'center'
-    },
     submitButton: {
       marginTop: theme.spacing.unit
-    },
-    wrapper: {
-      margin: theme.spacing.unit,
-      position: 'relative'
-    },
-    buttonProgress: {
-      color: green[500],
-      position: 'absolute',
-      top: 'calc(50% - 6px)',
-      left: 'calc(50% - 12px)'
     },
     keyLabelIcon: {
       marginRight: theme.spacing.unit
@@ -101,7 +82,6 @@ class PrivateKeyDecryptClass extends PureComponent<Props & WithStyles<typeof sty
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
-    console.log(this.props);
     return (
       <form id="selectedTypeKey" onSubmit={this.unlock}>
         <Grid
