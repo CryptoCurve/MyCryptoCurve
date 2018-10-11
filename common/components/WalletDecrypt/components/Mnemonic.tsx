@@ -80,8 +80,8 @@ type Props = OwnProps & StateProps & WithStyles<typeof styles>;
 
 class MnemonicDecryptClass extends PureComponent<Props, State> {
   public state: State = {
-    phrase: '',
-    formattedPhrase: '',
+    phrase: 'monkey clock pool orbit sleep what wheat evoke pond smart find easily',
+    formattedPhrase: 'monkey clock pool orbit sleep what wheat evoke pond smart find easily',
     pass: '',
     seed: '',
     dPath: this.props.dPath,
@@ -89,6 +89,9 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     loading: false
   };
 
+  public componentDidMount() {
+    this.onDWModalOpen();
+  }
   public componentDidUpdate({}, prevState: State) {
     const { loading: prevLoading } = prevState;
     const { loading } = this.state;
