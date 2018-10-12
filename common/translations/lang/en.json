@@ -53,6 +53,7 @@
     "X_SAVE": "Save ",
     "X_TRY_AGAIN": "Try again",
     "X_CUSTOM": "Custom ",
+    "DECRYPT_CUSTOM_PATH": "Custom Path",
     "CX_WARNING_1": "Make sure you have **external backups** of any wallets you store here. Many things could happen that would cause you to lose the data in this Chrome Extension, including uninstalling and reinstalling the extension. This extension is a way to easily access your wallets, **not** a way to back them up. ",
     "SIDEBAR_ACCOUNTADDR": "Account Address ",
     "SIDEBAR_ACCOUNTBAL": "Account Balance ",

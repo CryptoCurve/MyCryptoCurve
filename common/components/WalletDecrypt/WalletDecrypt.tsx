@@ -246,7 +246,7 @@ class WalletDecrypt extends Component<
     value: null,
     hasAcknowledgedInsecure: false,
     loginSelectorOpen: false,
-    loginSelectorValue: InsecureWalletName.MNEMONIC_PHRASE
+    loginSelectorValue: InsecureWalletName.KEYSTORE_FILE
   };
 
   public componentWillMount() {
@@ -257,9 +257,9 @@ class WalletDecrypt extends Component<
     }
   }
 
-  public componentDidMount() {
-    this.handleWalletChoice(this.state.loginSelectorValue).then();
-  }
+  // public componentDidMount() {
+  //   this.handleWalletChoice(this.state.loginSelectorValue).then();
+  // }
   public componentWillReceiveProps(nextProps: Props) {
     // Reset state when unlock is hidden / revealed
     let shouldIDoIt = false;

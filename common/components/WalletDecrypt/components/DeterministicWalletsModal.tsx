@@ -1,21 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Option } from 'react-select';
 import translate, { translateRaw } from 'translations';
 import {
-  DeterministicWalletData,
   getDeterministicWallets,
   GetDeterministicWalletsAction,
   GetDeterministicWalletsArgs,
   setDesiredToken,
   SetDesiredTokenAction
 } from 'actions/deterministicWallets';
-import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
-import { UnitDisplay, Input } from 'components/ui';
+import { UnitDisplay } from 'components/ui';
 import { StaticNetworkConfig } from 'types/network';
 import './DeterministicWalletsModal.scss';
 import Dialog from '@material-ui/core/Dialog/Dialog';
@@ -28,11 +25,24 @@ import Button from '@material-ui/core/Button/Button';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import Select from '@material-ui/core/Select/Select';
 import Typography from '@material-ui/core/Typography/Typography';
 import Grid from '@material-ui/core/Grid/Grid';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import TextField from '@material-ui/core/TextField/TextField';
+import CheckIcon from '@material-ui/icons/Check';
+import LaunchIcon from '@material-ui/icons/Launch';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { green } from '@material-ui/core/colors';
+import { Colors } from '../../../Root';
+import Table from '@material-ui/core/Table/Table';
+import TableHead from '@material-ui/core/TableHead/TableHead';
+import TableRow from '@material-ui/core/TableRow/TableRow';
+import TableCell from '@material-ui/core/TableCell/TableCell';
+import TableBody from '@material-ui/core/TableBody/TableBody';
+import Radio from '@material-ui/core/Radio/Radio';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -86,6 +96,28 @@ const styles = (theme: Theme) =>
     },
     dialogActions: {
       margin: theme.spacing.unit * 3
+    },
+    customPathTextField: {
+      flex: 1,
+      marginRight: theme.spacing.unit
+    },
+    customPathButton: {
+      backgroundColor: green['500'],
+      color: Colors.white,
+      '&:hover': {
+        backgroundColor: green['500']
+      }
+    },
+    row: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.background.default
+      }
+    },
+    navButtons: {
+      width: 'auto',
+      height: 'auto',
+      minWidth: 'auto',
+      minHeight: 'auto'
     }
   });
 
@@ -102,10 +134,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<
     page: 0
   };
 
-  public componentDidMount() {
-    this.getAddresses();
-  }
-
   public componentWillReceiveProps(nextProps: Props) {
     const { publicKey, chainCode, seed, dPath } = this.props;
     if (
@@ -121,8 +149,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<
   public render() {
     const { wallets, desiredToken, network, tokens, dPaths, onCancel, classes } = this.props;
     const { selectedAddress, customPath, page, currentDPath } = this.state;
-
-    console.log(dPaths);
     return (
       <Dialog
         onClose={onCancel}
@@ -133,104 +159,173 @@ class DeterministicWalletsModalClass extends React.PureComponent<
       >
         <DialogTitle>{translate('DECRYPT_DROPDOWN_LABEL')}</DialogTitle>
         <DialogContent>
-          <div className="DWModal">
-            <form
-              className="DWModal-path form-group-sm flex-wrapper"
-              onSubmit={this.handleSubmitCustomPath}
-            >
-              <Grid container={true}>
-                <Grid item={true} xs={false}>
-                  <FormControl fullWidth={true}>
-                    <InputLabel htmlFor="fieldDPath">dPath</InputLabel>
-                    <Select
-                      inputProps={{
-                        name: 'fieldDPath',
-                        id: 'fieldDPath',
-                        onChange: this.handleChangePath
-                      }}
-                      value={`${currentDPath.label}~${currentDPath.value}`}
-                    >
-                      {dPaths.concat([customDPath]).map((dPath, i) => (
-                        <MenuItem key={i} value={`${dPath.label}~${dPath.value}`}>
-                          <Grid container={true} direction="row" alignItems="center" spacing={8}>
-                            <Grid item={true}>
-                              <Typography variant="button">{dPath.label}</Typography>
-                            </Grid>
-                            {dPath.value !== 'custom' && (
-                              <Grid item={true}>
-                                <Typography variant="body2">( {dPath.value} )</Typography>
-                              </Grid>
-                            )}
+          <form onSubmit={this.handleSubmitCustomPath}>
+            <Grid container={true} spacing={8}>
+              <Grid item={true} xs={12}>
+                <FormControl fullWidth={true}>
+                  <InputLabel htmlFor="fieldDPath">dPath</InputLabel>
+                  <Select
+                    inputProps={{
+                      name: 'fieldDPath',
+                      id: 'fieldDPath',
+                      onChange: this.handleChangePath
+                    }}
+                    value={`${currentDPath.label}~${currentDPath.value}`}
+                  >
+                    {dPaths.concat([customDPath]).map((dPath, i) => (
+                      <MenuItem key={i} value={`${dPath.label}~${dPath.value}`}>
+                        <Grid container={true} direction="row" alignItems="center" spacing={8}>
+                          <Grid item={true}>
+                            <Typography variant="button">{dPath.label}</Typography>
                           </Grid>
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+                          {dPath.value !== 'custom' && (
+                            <Grid item={true}>
+                              <Typography variant="body2">( {dPath.value} )</Typography>
+                            </Grid>
+                          )}
+                        </Grid>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               {currentDPath.label === customDPath.label && (
-                <React.Fragment>
-                  <div className="DWModal-path-custom">
-                    <Input
-                      className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
-                      value={customPath}
-                      placeholder="m/44'/60'/0'/0"
-                      onChange={this.handleChangeCustomPath}
-                    />
-                  </div>
-                  <button
-                    className="DWModal-path-submit btn btn-success"
+                <Grid container={true} item={true} direction="row" xs={12}>
+                  <TextField
+                    value={customPath}
+                    name="customPath"
+                    type="text"
+                    className={classes.customPathTextField}
+                    onChange={this.handleChangeCustomPath}
+                    label={translateRaw('DECRYPT_CUSTOM_PATH')}
+                    error={customPath.length > 0 && !isValidPath(customPath)}
+                    placeholder="m/44'/60'/0'/0"
+                  />
+                  <Button
+                    variant="fab"
                     disabled={!isValidPath(customPath)}
+                    type="submit"
+                    classes={{ contained: classes.customPathButton }}
                   >
-                    <i className="fa fa-check" />
-                  </button>
-                </React.Fragment>
+                    <CheckIcon />
+                  </Button>
+                </Grid>
               )}
-            </form>
-
-            <div className="DWModal-addresses">
-              <table className="DWModal-addresses-table table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <td>#</td>
-                    <td>Address</td>
-                    <td>{network.unit}</td>
-                    <td>
-                      <select
-                        className="DWModal-addresses-table-token"
-                        value={desiredToken}
-                        onChange={this.handleChangeToken}
+            </Grid>
+          </form>
+          <Grid container={true} spacing={8}>
+            <Grid item={true} xs={12}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>{network.unit}</TableCell>
+                    <TableCell>
+                      <FormControl fullWidth={true}>
+                        <InputLabel htmlFor="token">Token</InputLabel>
+                        <Select
+                          inputProps={{
+                            name: 'token',
+                            id: 'token',
+                            onChange: this.handleChangeToken
+                          }}
+                          value={desiredToken}
+                        >
+                          {tokens.map(t => (
+                            <MenuItem key={t.symbol} value={t.symbol}>
+                              {t.symbol}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+                    <TableCell>{translate('ACTION_5')}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {wallets.map(wallet => {
+                    const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
+                    return (
+                      <TableRow
+                        className={classes.row}
+                        key={wallet.index}
+                        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
+                        hover={true}
                       >
-                        <option value="">-Token-</option>
-                        {tokens.map(t => (
-                          <option key={t.symbol} value={t.symbol}>
-                            {t.symbol}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>{translate('ACTION_5')}</td>
-                  </tr>
-                </thead>
-                <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
-              </table>
-            </div>
-            <div className="DWModal-addresses-nav">
-              <button
-                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-                disabled={page === 0}
-                onClick={this.prevPage}
-              >
-                ← {translate('ACTION_4')}
-              </button>
-              <button
-                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-                onClick={this.nextPage}
-              >
-                {translate('ACTION_5')} →
-              </button>
-            </div>
-          </div>
+                        <TableCell>{wallet.index + 1}</TableCell>
+                        <TableCell>
+                          <Radio
+                            checked={selectedAddress === wallet.address}
+                            // onChange={this.handleChange}
+                            value={wallet.address}
+                            name="selectedAddress"
+                          />
+                          {wallet.address}
+                        </TableCell>
+                        <TableCell>
+                          <UnitDisplay
+                            unit={'ether'}
+                            value={wallet.value}
+                            symbol={network.unit}
+                            displayShortBalance={true}
+                            checkOffline={true}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          {desiredToken ? (
+                            <UnitDisplay
+                              decimal={token ? token.decimal : 0}
+                              value={token ? token.value : null}
+                              symbol={desiredToken}
+                              displayShortBalance={true}
+                              checkOffline={true}
+                            />
+                          ) : (
+                            <span className="DWModal-addresses-table-na">N/A</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <a
+                            target="_blank"
+                            href={`https://ethplorer.io/address/${wallet.address}`}
+                            rel="noopener noreferrer"
+                          >
+                            <IconButton>
+                              <LaunchIcon />
+                            </IconButton>
+                          </a>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Grid>
+            <Grid container={true} item={true} alignItems="center" justify="flex-end" spacing={16}>
+              <Grid item={true}>
+                <Button
+                  variant="fab"
+                  size="small"
+                  disabled={page === 0}
+                  onClick={this.prevPage}
+                  className={classes.navButtons}
+                >
+                  <ArrowBackIcon />
+                </Button>
+              </Grid>
+              <Grid item={true}>
+                <Button
+                  variant="fab"
+                  size="small"
+                  className={classes.navButtons}
+                  onClick={this.nextPage}
+                >
+                  <ArrowForwardIcon />
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
           <Button onClick={onCancel} variant="raised">
@@ -269,8 +364,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<
   }
 
   private handleChangePath = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target);
-    console.log(e.target.value);
     const genPath: string = e.target.value;
     const newPath: DPath = {
       label: genPath.split('~')[0],
@@ -284,7 +377,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<
     }
   };
 
-  private handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
+  private handleChangeCustomPath = (ev: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ customPath: ev.currentTarget.value });
   };
 
@@ -300,8 +393,8 @@ class DeterministicWalletsModalClass extends React.PureComponent<
     }
   };
 
-  private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
-    this.props.setDesiredToken(ev.currentTarget.value || undefined);
+  private handleChangeToken = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.setDesiredToken(ev.target.value || undefined);
   };
 
   private handleConfirmAddress = () => {
@@ -321,75 +414,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<
   private prevPage = () => {
     this.setState({ page: Math.max(this.state.page - 1, 0) }, this.getAddresses);
   };
-
-  private renderDPathOption(option: Option) {
-    if (option.value === customDPath.value) {
-      return translate('X_CUSTOM');
-    }
-
-    return (
-      <React.Fragment>
-        {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
-      </React.Fragment>
-    );
-  }
-
-  private renderWalletRow(wallet: DeterministicWalletData) {
-    const { desiredToken, network } = this.props;
-    const { selectedAddress } = this.state;
-
-    // Get renderable values, but keep 'em short
-    const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
-
-    return (
-      <tr
-        key={wallet.address}
-        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
-      >
-        <td>{wallet.index + 1}</td>
-        <td className="DWModal-addresses-table-address">
-          <input
-            type="radio"
-            name="selectedAddress"
-            checked={selectedAddress === wallet.address}
-            value={wallet.address}
-          />
-          {wallet.address}
-        </td>
-        <td>
-          <UnitDisplay
-            unit={'ether'}
-            value={wallet.value}
-            symbol={network.unit}
-            displayShortBalance={true}
-            checkOffline={true}
-          />
-        </td>
-        <td>
-          {desiredToken ? (
-            <UnitDisplay
-              decimal={token ? token.decimal : 0}
-              value={token ? token.value : null}
-              symbol={desiredToken}
-              displayShortBalance={true}
-              checkOffline={true}
-            />
-          ) : (
-            <span className="DWModal-addresses-table-na">N/A</span>
-          )}
-        </td>
-        <td>
-          <a
-            target="_blank"
-            href={`https://ethplorer.io/address/${wallet.address}`}
-            rel="noopener noreferrer"
-          >
-            <i className="DWModal-addresses-table-more" />
-          </a>
-        </td>
-      </tr>
-    );
-  }
 }
 
 function mapStateToProps(state: AppState) {

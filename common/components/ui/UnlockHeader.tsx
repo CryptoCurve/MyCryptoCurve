@@ -31,9 +31,8 @@ export class UnlockHeader extends React.Component<Props & RouteComponentProps<{}
   }
 
   public render() {
-    const { title, wallet, disabledWallets, showGenerateLink, match } = this.props;
+    const { title, wallet, disabledWallets, showGenerateLink } = this.props;
     const { isExpanded } = this.state;
-    console.log(this.props);
     return (
       <React.Fragment>
         <WalletDecrypt
