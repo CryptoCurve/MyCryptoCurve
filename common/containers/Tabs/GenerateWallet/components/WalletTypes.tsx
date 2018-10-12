@@ -33,7 +33,6 @@ type Props = RouteComponentProps<{}>;
 
 const WalletTypes: React.SFC<Props & WithStyles<typeof styles>> = props => {
   const { classes, history, location } = props;
-  console.log(props);
   const typeInfo = {
     [WalletType.Keystore]: {
       name: 'X_KEYSTORE2',

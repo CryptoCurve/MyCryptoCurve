@@ -39,7 +39,6 @@ class DownloadWallet extends Component<OwnProps & WithStyles<typeof styles>, Sta
   public render() {
     const { filename, classes } = this.props;
     const { hasDownloadedWallet } = this.state;
-    console.log(filename);
     return (
       <Grid
         className={classes.mainContentGrid}

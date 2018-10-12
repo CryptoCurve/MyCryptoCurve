@@ -8,7 +8,6 @@ import { stripHexPrefixAndLower } from 'libs/values';
 export function decryptPrivKey(encprivkey: string, password: string): Buffer {
   const cipher = encprivkey.slice(0, 128);
   const decryptedCipher = decodeCryptojsSalt(cipher);
-  console.log(decryptedCipher);
   const evp = evp_kdf(new Buffer(password), decryptedCipher.salt, {
     keysize: 32,
     ivsize: 16

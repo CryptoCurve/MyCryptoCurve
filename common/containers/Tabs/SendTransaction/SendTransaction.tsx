@@ -43,7 +43,6 @@ class SendTransaction extends React.Component<Props> {
         disabled: !!wallet && !!wallet.isReadOnly
       }
     ];
-    console.log(this.props);
     return (
       <React.Fragment>
         <UnlockHeader showGenerateLink={true} />

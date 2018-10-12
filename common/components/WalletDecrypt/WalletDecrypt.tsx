@@ -264,7 +264,6 @@ class WalletDecrypt extends Component<
     // Reset state when unlock is hidden / revealed
     let shouldIDoIt = false;
     let selectedWalletKey = null;
-    console.log(nextProps);
     if (nextProps.match.params !== this.props.match.params) {
       const thisParams: any = this.props.match.params;
       const nextParams: any = nextProps.match.params;
@@ -307,7 +306,6 @@ class WalletDecrypt extends Component<
     const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
     const selectedWallet = this.getSelectedWallet();
 
-    console.log(selectedWallet);
     if (!selectedWalletKey || !selectedWallet) {
       return null;
     }
@@ -466,10 +464,6 @@ class WalletDecrypt extends Component<
     const { hidden } = this.props;
     const selectedWallet = this.getSelectedWallet();
     const decryptionComponent = this.getDecryptionComponent();
-    console.log(this.props);
-    console.log('hidden', hidden);
-    console.log('decryptionComponent', decryptionComponent);
-    console.log('selectedWallet', selectedWallet);
     return (
       <Template
         version={2}

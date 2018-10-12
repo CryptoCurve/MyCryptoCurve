@@ -141,11 +141,6 @@ class GenerateMnemonic extends React.Component<Props, State> {
         </Grid>
       </React.Fragment>
     );
-    console.log('isConfirmed', isConfirmed);
-    console.log('isConfirming', isConfirming);
-    console.log(
-      isConfirming ? 'MNEMONIC_DESCRIPTION_2' : isConfirmed ? '' : 'MNEMONIC_DESCRIPTION_1'
-    );
     return (
       <Template
         version={2}

@@ -317,7 +317,6 @@ class Header extends Component<Props, State> {
     const initial =
       navigationLinks.findIndex(value => value.to.replace('/', '') === splitPath[1]) + 1;
 
-    console.log(splitPath);
     return initial === 1 && splitPath.length === 3 && splitPath[2] === 'view'
       ? initial + 2
       : initial;

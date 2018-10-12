@@ -78,7 +78,6 @@ export class Notifications extends React.Component<
     const { classes } = this.props;
     const { key, open, message, level } = this.state;
     const classLevel: NOTIFICATION_LEVEL = level === null ? 'info' : level;
-    console.log(this.props);
     return (
       <React.Fragment>
         <Snackbar
@@ -126,7 +125,6 @@ export class Notifications extends React.Component<
 
   // private handleClose (reason:any|null) {
   private handleClose = (...other: any[]) => {
-    console.log(other[1]);
     if (other[1] === 'clickaway') {
       return;
     }
@@ -139,7 +137,6 @@ export class Notifications extends React.Component<
 
   private processQueue = () => {
     if (this.queue.length > 0) {
-      console.log(this.queue[0]);
       this.setState({
         message: this.queue[0].msg,
         key: new Date().getTime(),
