@@ -8,18 +8,23 @@ import closeIcon from 'assets/images/close.svg';
 import './UnlockHeader.scss';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props {
+interface OwnProps {
   title?: string;
-  wallet: IWallet;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
+}
+
+interface StateProps {
+  wallet: IWallet;
 }
 
 interface State {
   isExpanded: boolean;
 }
 
-export class UnlockHeader extends React.Component<Props & RouteComponentProps<{}>, State> {
+type Props = OwnProps & StateProps & RouteComponentProps<{}>;
+
+export class UnlockHeader extends React.Component<Props, State> {
   public state = {
     isExpanded: !this.props.wallet
   };
@@ -47,7 +52,7 @@ export class UnlockHeader extends React.Component<Props & RouteComponentProps<{}
               !isExpanded && (
                 <button
                   className="UnlockHeader-open btn btn-default btn-smr"
-                  onClick={this.toggleisExpanded}
+                  onClick={this.toggleIsExpanded}
                 >
                   <span>
                     <span className="hidden-xs UnlockHeader-open-text">
@@ -59,7 +64,7 @@ export class UnlockHeader extends React.Component<Props & RouteComponentProps<{}
               )}
             {wallet &&
               isExpanded && (
-                <button className="UnlockHeader-close" onClick={this.toggleisExpanded}>
+                <button className="UnlockHeader-close" onClick={this.toggleIsExpanded}>
                   <img src={closeIcon} alt="close" />
                 </button>
               )}
@@ -74,7 +79,7 @@ export class UnlockHeader extends React.Component<Props & RouteComponentProps<{}
     );
   }
 
-  public toggleisExpanded = (_: React.FormEvent<HTMLButtonElement>) => {
+  public toggleIsExpanded = () => {
     this.setState(state => {
       return { isExpanded: !state.isExpanded };
     });
@@ -87,4 +92,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(UnlockHeader));
+export default withRouter(connect(mapStateToProps)(UnlockHeader)) as React.ComponentClass<OwnProps>;

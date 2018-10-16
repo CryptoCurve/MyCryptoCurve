@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
+import { UnitDisplay, Address, NewTabLink } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
@@ -12,6 +12,17 @@ import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { Theme } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import CopyIcon from '@material-ui/icons/FilterNone';
+import { green } from '@material-ui/core/colors';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Button from '@material-ui/core/Button/Button';
+import { Colors } from '../../Root';
 
 interface OwnProps {
   wallet: IWallet;
@@ -34,7 +45,39 @@ interface DispatchProps {
   refreshAccountBalance: TRefreshAccountBalance;
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
+const styles = (theme: Theme) =>
+  createStyles({
+    topMargin: {
+      marginTop: theme.spacing.unit
+    },
+    flipIcon: {
+      transform: 'scaleY(-1)'
+    },
+    success: {
+      color: green['500']
+    },
+    addressText: {
+      wordBreak: 'break-word'
+    },
+    balanceText: {
+      ...theme.typography.caption,
+      '&:hover': {
+        cursor: 'pointer',
+        textDecoration: 'underline'
+      }
+    },
+    whiteText: {
+      color: Colors.white,
+      '&:hover': {
+        color: Colors.white
+      },
+      '&:focus': {
+        color: Colors.white
+      }
+    }
+  });
+
+type Props = OwnProps & StateProps & DispatchProps & WithStyles<typeof styles>;
 
 class AccountInfo extends React.Component<Props, State> {
   public state = {
@@ -86,8 +129,8 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance, isOffline } = this.props;
-    const { address, showLongBalance, confirmAddr } = this.state;
+    const { network, balance, isOffline, classes } = this.props;
+    const { address, showLongBalance, confirmAddr, copied } = this.state;
     let blockExplorer;
     let tokenExplorer;
     if (!network.isCustom) {
@@ -95,123 +138,139 @@ class AccountInfo extends React.Component<Props, State> {
       blockExplorer = network.blockExplorer;
       tokenExplorer = network.tokenExplorer;
     }
-
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
+    console.log(wallet);
     return (
-      <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
-        <div className="AccountInfo-section AccountInfo-address-section">
-          <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">
+      <React.Fragment>
+        <Grid
+          item={true}
+          container={true}
+          direction="column"
+          className={classes.topMargin}
+          spacing={8}
+        >
+          <Grid item={true}>
+            <Typography variant="display1">{translate('SIDEBAR_ACCOUNTADDR')}</Typography>
+          </Grid>
+          <Grid container={true} item={true} direction="row" alignItems="center">
+            <Typography variant="caption" className={classes.addressText}>
               <Address address={address} />
-            </div>
+            </Typography>
             <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
-              <div
-                className={`AccountInfo-copy ${this.state.copied ? 'is-copied' : ''}`}
-                title="Copy To clipboard"
-              >
-                <i className="fa fa-copy" />
-                <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
-              </div>
+              <IconButton className={copied ? classes.success : undefined}>
+                <CopyIcon className={classes.flipIcon} />
+              </IconButton>
             </CopyToClipboard>
-          </div>
-        </div>
-
-        {typeof wallet.displayAddress === 'function' && (
-          <div className="AccountInfo-section">
-            <a
-              className="AccountInfo-address-hw-addr"
-              onClick={() => {
-                this.toggleConfirmAddr();
-                wallet
-                  .displayAddress()
-                  .then(() => this.toggleConfirmAddr())
-                  .catch(e => {
-                    this.toggleConfirmAddr();
-                    throw new Error(e);
-                  });
-              }}
+          </Grid>
+          <Grid item={true} className={classes.topMargin}>
+            <Typography variant="display1">{translate('SIDEBAR_ACCOUNTBAL')}</Typography>
+          </Grid>
+          <Grid
+            item={true}
+            container={true}
+            className={classes.topMargin}
+            alignItems="center"
+            direction="row"
+          >
+            <span onClick={this.toggleShowLongBalance} className={classes.balanceText}>
+              <UnitDisplay
+                value={balance.wei}
+                unit={'ether'}
+                displayShortBalance={!showLongBalance}
+                checkOffline={true}
+                symbol={balance.wei ? network.name : null}
+              />
+            </span>
+            {balance.wei && (
+              <React.Fragment>
+                {balance.isPending ? (
+                  <Spinner />
+                ) : (
+                  !isOffline && (
+                    <IconButton onClick={this.props.refreshAccountBalance}>
+                      <RefreshIcon />
+                    </IconButton>
+                  )
+                )}
+              </React.Fragment>
+            )}
+          </Grid>
+          {(!!blockExplorer || !!tokenExplorer) && (
+            <Grid
+              container={true}
+              spacing={8}
+              item={true}
+              className={classes.topMargin}
+              direction="column"
             >
-              {confirmAddr
-                ? null
-                : translate('SIDEBAR_DISPLAY_ADDR', { $wallet: wallet.getWalletType() })}
-            </a>
-            {confirmAddr ? (
-              <span className="AccountInfo-address-confirm">
-                <Spinner /> Confirm address on {wallet.getWalletType()}
-              </span>
-            ) : null}
-          </div>
-        )}
-
-        <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTBAL')}</h5>
-          <ul className="AccountInfo-list">
-            <li className="AccountInfo-list-item AccountInfo-balance">
-              <span
-                className="AccountInfo-list-item-clickable AccountInfo-balance-amount mono wrap"
-                onClick={this.toggleShowLongBalance}
-              >
-                <UnitDisplay
-                  value={balance.wei}
-                  unit={'ether'}
-                  displayShortBalance={!showLongBalance}
-                  checkOffline={true}
-                  symbol={balance.wei ? network.name : null}
-                />
-              </span>
-              {balance.wei && (
-                <React.Fragment>
-                  {balance.isPending ? (
-                    <Spinner />
-                  ) : (
-                    !isOffline && (
-                      <button
-                        className="AccountInfo-section-refresh"
-                        onClick={this.props.refreshAccountBalance}
-                      >
-                        <i className="fa fa-refresh" />
-                      </button>
-                    )
-                  )}
-                </React.Fragment>
-              )}
-            </li>
-          </ul>
-        </div>
-
-        {(!!blockExplorer || !!tokenExplorer) && (
-          <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">{translate('SIDEBAR_TRANSHISTORY')}</h5>
-            <ul className="AccountInfo-list">
+              <Grid item={true} className={classes.topMargin} />
+              {/*<Typography variant="display1">{translate('SIDEBAR_TRANSHISTORY')}</Typography>*/}
               {!!blockExplorer && (
-                <li className="AccountInfo-list-item">
-                  <NewTabLink href={blockExplorer.addressUrl(address)}>
-                    {`${network.name} (${blockExplorer.origin})`}
-                  </NewTabLink>
-                </li>
+                <Grid item={true}>
+                  <Button variant="raised" color="primary">
+                    <NewTabLink
+                      className={classes.whiteText}
+                      href={blockExplorer.addressUrl(address)}
+                    >
+                      View Transaction History
+                    </NewTabLink>
+                  </Button>
+                </Grid>
               )}
               {network.name === 'ETH' && (
-                <li className="AccountInfo-list-item">
-                  <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
-                    {`${network.name} (${etherChainExplorerInst.origin})`}
-                  </NewTabLink>
-                </li>
+                <Grid item={true}>
+                  <Button variant="raised" color="primary">
+                    <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
+                      {`${network.name} (${etherChainExplorerInst.origin})`}
+                    </NewTabLink>
+                  </Button>
+                </Grid>
               )}
               {!!tokenExplorer && (
-                <li className="AccountInfo-list-item">
-                  <NewTabLink href={tokenExplorer.address(address)}>
-                    {`Tokens (${tokenExplorer.name})`}
-                  </NewTabLink>
-                </li>
+                <Grid item={true}>
+                  <Button variant="raised" color="primary">
+                    <NewTabLink href={tokenExplorer.address(address)}>
+                      {`Tokens (${tokenExplorer.name})`}
+                    </NewTabLink>
+                  </Button>
+                </Grid>
               )}
-            </ul>
-          </div>
-        )}
-      </div>
+            </Grid>
+          )}
+        </Grid>
+        <div className="AccountInfo">
+          {typeof wallet.displayAddress === 'function' && (
+            <div className="AccountInfo-section">
+              <a
+                className="AccountInfo-address-hw-addr"
+                onClick={() => {
+                  this.toggleConfirmAddr();
+                  wallet
+                    .displayAddress()
+                    .then(() => this.toggleConfirmAddr())
+                    .catch(e => {
+                      this.toggleConfirmAddr();
+                      throw new Error(e);
+                    });
+                }}
+              >
+                {confirmAddr
+                  ? null
+                  : translate('SIDEBAR_DISPLAY_ADDR', { $wallet: wallet.getWalletType() })}
+              </a>
+              {confirmAddr ? (
+                <span className="AccountInfo-address-confirm">
+                  <Spinner /> Confirm address on {wallet.getWalletType()}
+                </span>
+              ) : null}
+            </div>
+          )}
+        </div>
+      </React.Fragment>
     );
   }
 }
+
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
@@ -219,5 +278,8 @@ function mapStateToProps(state: AppState): StateProps {
     isOffline: getOffline(state)
   };
 }
+
 const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
-export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(AccountInfo)
+) as React.ComponentClass<OwnProps>;

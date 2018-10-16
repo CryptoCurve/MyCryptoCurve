@@ -37,7 +37,8 @@ export enum Colors {
   purpley = '#8964DC',
   lavender = '#beaceb',
   lightLavender = '#e4d9ff',
-  dark = '#272532'
+  dark = '#272532',
+  darkHover = '#52505b'
 }
 const theme = createMuiTheme({
   palette: {
@@ -86,11 +87,23 @@ const theme = createMuiTheme({
       textTransform: 'uppercase',
       fontSize: 18
     },
+
     caption: {
       fontSize: 20,
       fontWeight: 100,
       letterSpacing: 2,
       lineHeight: 1.3
+    },
+    display1: {
+      fontSize: 25,
+      fontFamily: [
+        'bebasneue_regular',
+        'Abel',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif'
+      ].join(',')
     },
     button: {
       letterSpacing: '1px'

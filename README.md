@@ -112,7 +112,7 @@ npm run test:int
 │   ├── translations - Language JSON dictionaries
 │   ├── typescript - Typescript definition files
 │   ├── utils - Common use utility functions
-│   ├── index.tsx - Entry point for app
+│   ├── BalanceSidebar.tsx - Entry point for app
 │   ├── index.html - Html template file for html-webpack-plugin
 │   ├── Root.tsx - Root component for React
 │   └── store.ts - Redux reducer combiner and middleware injector
