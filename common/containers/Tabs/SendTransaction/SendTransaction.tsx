@@ -87,7 +87,9 @@ class SendTransaction extends React.Component<Props> {
         {wallet && (
           <React.Fragment>
             <Grid container={true} className={classes.walletGrid}>
-              <Grid item={true} md={8} />
+              <Grid item={true} md={8}>
+                <SubTabs tabs={tabs} match={match} location={location} history={history} />
+              </Grid>
               <Grid item={true} md={4} className={classes.sideBarGrid}>
                 <Button onClick={dispatchResetWallet} className={classes.changeWalletButton}>
                   {translateRaw('CHANGE_WALLET')}
@@ -100,9 +102,7 @@ class SendTransaction extends React.Component<Props> {
               </Grid>
             </Grid>
             <div className="SubTabs row">
-              <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} location={location} history={history} />
-              </div>
+              <div className="col-sm-8" />
               <div className="col-sm-8">
                 <Switch>
                   <Route

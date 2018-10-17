@@ -139,7 +139,6 @@ class AccountInfo extends React.Component<Props, State> {
       tokenExplorer = network.tokenExplorer;
     }
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
-    console.log(wallet);
     return (
       <React.Fragment>
         <Grid
