@@ -14,7 +14,7 @@ import {
   SideBar,
   Sets
 } from './components';
-import SubTabs, { Tab } from 'components/SubTabs';
+import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
 import { resetWallet } from '../../../actions/wallet';
@@ -27,7 +27,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { OwnProps } from '../../../components/ConfirmationModalTemplate';
 import { Colors } from '../../../Root';
-import Typography from '@material-ui/core/Typography/Typography';
+import { TabType } from '../../../components/SubTabs/SubTabs';
 
 const Send = () => (
   <React.Fragment>
@@ -52,7 +52,8 @@ const styles = (theme: Theme) =>
       paddingRight: theme.spacing.unit * 2
     },
     walletGrid: {
-      marginTop: theme.spacing.unit * 12
+      marginTop: theme.spacing.unit * 12,
+      marginBottom: theme.spacing.unit * 4
     },
     buttonIcon: {
       marginLeft: theme.spacing.unit
@@ -65,6 +66,9 @@ const styles = (theme: Theme) =>
       },
       minWidth: 232,
       width: 232
+    },
+    topMargin: {
+      marginTop: theme.spacing.unit
     }
   });
 
@@ -74,7 +78,7 @@ class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, match, location, history, dispatchResetWallet, classes } = this.props;
     const currentPath = match.url;
-    const tabs: Tab[] = [
+    const tabs: TabType[] = [
       {
         path: 'send',
         name: 'Send',
@@ -96,14 +100,7 @@ class SendTransaction extends React.Component<Props> {
                   <ArrowRightIcon className={classes.buttonIcon} />
                 </Button>
               </Grid>
-              <Grid item={true} md={8} />
-              <Grid item={true} md={4} className={classes.sideBarGrid}>
-                <SideBar />
-              </Grid>
-            </Grid>
-            <div className="SubTabs row">
-              <div className="col-sm-8" />
-              <div className="col-sm-8">
+              <Grid item={true} md={8} className={classes.topMargin}>
                 <Switch>
                   <Route
                     exact={true}
@@ -144,8 +141,11 @@ class SendTransaction extends React.Component<Props> {
                   />
                   <RouteNotFound />
                 </Switch>
-              </div>
-            </div>
+              </Grid>
+              <Grid item={true} md={4} className={classes.sideBarGrid}>
+                <SideBar />
+              </Grid>
+            </Grid>
           </React.Fragment>
         )}
       </React.Fragment>
