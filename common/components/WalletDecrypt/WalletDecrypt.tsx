@@ -223,7 +223,7 @@ class WalletDecrypt extends Component<
       example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
       component: PrivateKeyDecrypt,
       initialParams: {
-        key: '3a87b3e9fcef510ea26d6dff3700171b501f26abd282145e67ae3da4bc38e326',
+        key: '',
         password: ''
       },
       unlock: this.props.unlockPrivateKey,
@@ -246,8 +246,8 @@ class WalletDecrypt extends Component<
     value: null,
     hasAcknowledgedInsecure: false,
     loginSelectorOpen: false,
-    // loginSelectorValue: InsecureWalletName.KEYSTORE_FILE
-    loginSelectorValue: InsecureWalletName.PRIVATE_KEY
+    loginSelectorValue: InsecureWalletName.KEYSTORE_FILE
+    // loginSelectorValue: InsecureWalletName.PRIVATE_KEY
   };
 
   public componentWillMount() {
@@ -259,7 +259,7 @@ class WalletDecrypt extends Component<
   }
 
   public componentDidMount() {
-    this.handleWalletChoice(this.state.loginSelectorValue).then();
+    // setTimeout(()=>this.handleWalletChoice(this.state.loginSelectorValue).then(),500);
   }
 
   public componentWillReceiveProps(nextProps: Props) {

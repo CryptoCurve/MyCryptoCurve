@@ -19,7 +19,7 @@ export interface CallbackProps {
   isValid: boolean;
   readOnly: boolean;
   currentTo: ICurrentTo;
-  onChange(ev: React.FormEvent<HTMLInputElement>): void;
+  onChange(ev: React.ChangeEvent<HTMLInputElement>): void;
 }
 
 type Props = DispatchProps & OwnProps;

@@ -4,6 +4,7 @@ import translate from 'translations';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { SigningStatus } from 'components';
 import './SendButton.scss';
+import Button from '@material-ui/core/Button/Button';
 
 export const SendButton: React.SFC<{
   className?: string;
@@ -16,15 +17,17 @@ export const SendButton: React.SFC<{
       Modal={customModal ? customModal : ConfirmationModal}
       withProps={({ disabled, openModal, signTx }) => (
         <React.Fragment>
-          <button
+          <Button
+            color="primary"
+            variant="raised"
             disabled={disabled}
             className={`SendButton btn btn-primary btn-block ${className}`}
             onClick={() => {
-              !!signing ? (signTx(), openModal()) : openModal();
+              signing ? (signTx(), openModal()) : openModal();
             }}
           >
             {translate('SEND_TRANS')}
-          </button>
+          </Button>
         </React.Fragment>
       )}
     />

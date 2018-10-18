@@ -2,12 +2,13 @@ import React from 'react';
 import { AmountFieldFactory } from './AmountFieldFactory';
 import { UnitDropDown, SendEverything } from 'components';
 import translate from 'translations';
-import { Input } from 'components/ui';
+import TextField from '@material-ui/core/TextField/TextField';
 
 interface Props {
   hasUnitDropdown?: boolean;
   hasSendEverything?: boolean;
   showAllTokens?: boolean;
+
   customValidator?(rawAmount: string): boolean;
 }
 
@@ -19,23 +20,25 @@ export const AmountField: React.SFC<Props> = ({
 }) => (
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
-      <div className="AmountField input-group-wrapper">
-        <label className="AmountField-group input-group input-group-inline">
-          <div className="input-group-header">{translate('SEND_AMOUNT_SHORT')}</div>
-          <Input
-            className={`input-group-input ${
-              isAmountValid(raw, customValidator, isValid) ? '' : 'invalid'
-            }`}
-            type="number"
-            placeholder="1"
-            value={raw}
-            readOnly={!!readOnly}
-            onChange={onChange}
-          />
-          {hasSendEverything && <SendEverything />}
-          {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
-        </label>
-      </div>
+      <TextField
+        fullWidth={true}
+        label={translate('SEND_AMOUNT_SHORT')}
+        type="number"
+        InputProps={{
+          readOnly: !!readOnly,
+          endAdornment: (
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              {hasSendEverything ? <SendEverything /> : null}
+              {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
+            </div>
+          )
+        }}
+        spellCheck={false}
+        onChange={onChange}
+        error={isAmountValid(raw, customValidator, isValid)}
+        placeholder="1"
+        value={raw}
+      />
     )}
   />
 );

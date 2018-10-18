@@ -91,16 +91,17 @@ class SendTransaction extends React.Component<Props> {
         {wallet && (
           <React.Fragment>
             <Grid container={true} className={classes.walletGrid}>
-              <Grid item={true} md={8}>
+              <Grid item={true} md={6}>
                 <SubTabs tabs={tabs} match={match} location={location} history={history} />
               </Grid>
+              <Grid item={true} md={2} />
               <Grid item={true} md={4} className={classes.sideBarGrid}>
                 <Button onClick={dispatchResetWallet} className={classes.changeWalletButton}>
                   {translateRaw('CHANGE_WALLET')}
                   <ArrowRightIcon className={classes.buttonIcon} />
                 </Button>
               </Grid>
-              <Grid item={true} md={8} className={classes.topMargin}>
+              <Grid item={true} md={6} className={classes.topMargin}>
                 <Switch>
                   <Route
                     exact={true}
@@ -142,6 +143,7 @@ class SendTransaction extends React.Component<Props> {
                   <RouteNotFound />
                 </Switch>
               </Grid>
+              <Grid item={true} md={2} />
               <Grid item={true} md={4} className={classes.sideBarGrid}>
                 <SideBar />
               </Grid>

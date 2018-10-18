@@ -17,10 +17,13 @@ import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 
 import { AppState } from 'reducers';
-import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'selectors/config';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { getUnit } from 'selectors/transaction';
+import { Theme, WithStyles } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid/Grid';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -39,9 +42,17 @@ interface StateProps {
   useScheduling: ICurrentSchedulingToggle['value'];
 }
 
-class FieldsClass extends Component<StateProps> {
+const styles = (theme: Theme) =>
+  createStyles({
+    containerGrid: {
+      paddingLeft: theme.spacing.unit * 2,
+      paddingRight: theme.spacing.unit * 2
+    }
+  });
+
+class FieldsClass extends Component<StateProps & WithStyles<typeof styles>> {
   public render() {
-    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling, classes } = this.props;
 
     return (
       <OnlyUnlocked
@@ -49,33 +60,40 @@ class FieldsClass extends Component<StateProps> {
           <React.Fragment>
             <QueryWarning />
             {shouldDisplay && (
-              <div className="Tab-content-pane">
-                <AddressField />
-                <div className="row form-group">
-                  <div
-                    className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
-                  >
+              <React.Fragment>
+                <Grid
+                  container={true}
+                  spacing={16}
+                  direction="column"
+                  className={classes.containerGrid}
+                >
+                  <Grid item={true}>
+                    <AddressField />
+                  </Grid>
+                  <Grid item={true}>
                     <AmountField hasUnitDropdown={true} hasSendEverything={true} />
-                  </div>
-                  {schedulingAvailable && (
-                    <div className="col-sm-3 col-md-2">
-                      <SchedulingToggle />
+                    {schedulingAvailable && (
+                      <div className="col-sm-3 col-md-2">
+                        <SchedulingToggle />
+                      </div>
+                    )}
+                  </Grid>
+                  <Grid item={true}>
+                    {useScheduling && <ScheduleFields />}
+
+                    <div className="row form-group">
+                      <div className="col-xs-12">
+                        <TXMetaDataPanel scheduling={useScheduling} />
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </Grid>
+                  <Grid item={true}>
+                    <CurrentCustomMessage />
 
-                {useScheduling && <ScheduleFields />}
-
-                <div className="row form-group">
-                  <div className="col-xs-12">
-                    <TXMetaDataPanel scheduling={useScheduling} />
-                  </div>
-                </div>
-
-                <CurrentCustomMessage />
-
-                {this.getTxButton()}
-              </div>
+                    {this.getTxButton()}
+                  </Grid>
+                </Grid>
+              </React.Fragment>
             )}
           </React.Fragment>
         }
@@ -102,9 +120,11 @@ class FieldsClass extends Component<StateProps> {
   }
 }
 
-export const Fields = connect((state: AppState) => ({
-  schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
-  shouldDisplay: !isAnyOfflineWithWeb3(state),
-  offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value
-}))(FieldsClass);
+export const Fields = withStyles(styles)(
+  connect((state: AppState) => ({
+    schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
+    shouldDisplay: !isAnyOfflineWithWeb3(state),
+    offline: getOffline(state),
+    useScheduling: getCurrentSchedulingToggle(state).value
+  }))(FieldsClass)
+) as React.ComponentClass<{}>;

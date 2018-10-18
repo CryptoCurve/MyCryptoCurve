@@ -77,7 +77,7 @@ interface Props {
 
 class PrivateKeyDecryptClass extends PureComponent<Props & WithStyles<typeof styles>> {
   public componentDidMount() {
-    setTimeout(() => this.props.onUnlock(), 500);
+    // setTimeout(() => this.props.onUnlock(), 500);
   }
 
   public render() {
