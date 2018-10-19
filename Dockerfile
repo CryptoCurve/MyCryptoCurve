@@ -18,7 +18,6 @@ COPY package.json /usr/src/app/
 COPY . /usr/src/app/
 #COPY yarn.lock /usr/src/app/
 
-RUN npm install -g typopro
 RUN npm install 
 
 
