@@ -56,6 +56,7 @@
     "rlp": "^2.0.0",
     "scryptsy": "2.0.0",
     "semver": "5.5.0",
+    "typopro": "^4.1.1",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.1.6",
     "wanchain-util": "^1.2.0",
