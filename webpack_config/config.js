@@ -40,7 +40,6 @@ module.exports = {
 
   // Vendor modules
   vendorModules: [
-    '@typopro',
     'bip39',
     'bn.js',
     'classnames',
