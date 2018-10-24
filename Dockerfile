@@ -35,5 +35,6 @@ RUN yarn run build
 
 FROM nginx:1.13.12-alpine
 COPY --from=build /usr/src/app/dist/prod /usr/share/nginx/html
+RUN sed -i s/#gzip/gzip/g  /etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
