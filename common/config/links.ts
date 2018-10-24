@@ -1,6 +1,5 @@
 import { translateRaw } from 'translations';
 import {
-  discordURL,
   ledgerReferralURL,
   trezorReferralURL,
   ethercardReferralURL,
