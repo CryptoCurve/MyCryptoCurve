@@ -3,7 +3,10 @@
 
 .Tab {
   &-content {
-    min-height: 50%;
+    min-height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &-pane {
       min-height: 1.5rem;

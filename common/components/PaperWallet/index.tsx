@@ -1,146 +1,95 @@
-import { Identicon, QRCode } from 'components/ui';
+import { QRCode } from 'components/ui';
 import React from 'react';
 
-import ethLogo from 'assets/images/logo-ethereum-1.png';
-import notesBg from 'assets/images/notes-bg.png';
-import sidebarImg from 'assets/images/print-sidebar.png';
+import Paper from '@material-ui/core/Paper/Paper';
+import { Theme, WithStyles } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
+import translate from '../../translations';
 
-const walletWidth = 680;
-const walletHeight = 280;
+const styles = (theme: Theme) =>
+  createStyles({
+    paper: {
+      marginTop: theme.spacing.unit * 5,
+      marginLeft: theme.spacing.unit * 2.5,
+      marginRight: theme.spacing.unit * 2.5,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit *
+        3}px`,
+      borderRadius: 8,
+      border: ['1px', 'solid', theme.palette.text.primary].join(' ')
+    },
+    qrItem: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      '& img': {
+        width: 180
+      }
+    },
+    qrLabel: {
+      marginBottom: theme.spacing.unit * 4
+    },
+    detailsGrid: {
+      marginTop: theme.spacing.unit * 5
+    },
+    detailsLabel: {
+      marginBottom: theme.spacing.unit
+    },
+    smallerText: {
+      fontSize: 18
+    }
+  });
 
-const styles: any = {
-  container: {
-    position: 'relative',
-    margin: '0 auto',
-    width: `${walletWidth}px`,
-    height: `${walletHeight}px`,
-    border: '1px solid #163151',
-    userSelect: 'none',
-    cursor: 'default'
-  },
-
-  // Images
-  sidebar: {
-    float: 'left',
-    height: '100%',
-    width: 'auto'
-  },
-  ethLogo: {
-    position: 'absolute',
-    left: '86px',
-    height: '100%',
-    width: 'auto',
-    zIndex: '-1'
-  },
-
-  // Blocks / QR Codes
-  block: {
-    position: 'relative',
-    float: 'left',
-    width: '27.5%',
-    padding: '20px'
-  },
-  blockText: {
-    position: 'absolute',
-    top: '50%',
-    left: '100%',
-    width: '100%',
-    margin: 0,
-    transform: 'translate(-50%, -50%) rotate(-90deg)',
-    fontSize: '13px',
-    fontWeight: '600',
-    color: '#0b7290',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    letterSpacing: '1px'
-  },
-  // Address / private key info
-  infoContainer: {
-    float: 'left',
-    width: '85%',
-    padding: '0 20px'
-  },
-  infoText: {
-    margin: '0 0 8px',
-    textAlign: 'left',
-    fontSize: '14px',
-    fontFamily: '"Roboto Mono", Menlo, Monaco, Consolas, "Courier New", monospace',
-    fontWeight: 300
-  },
-  infoLabel: {
-    fontWeight: 600
-  },
-  identiconContainer: {
-    position: 'absolute',
-    right: '15px',
-    bottom: '45px'
-  },
-  identiconText: {
-    float: 'left',
-    width: '130px',
-    padding: '0 5px',
-    margin: '12px 0 0',
-    fontSize: '9px',
-    textAlign: 'center'
-  },
-  box: {
-    width: 150,
-    height: 150
-  }
-};
-
-interface Props {
+interface OwnProps {
   address: string;
   privateKey: string;
 }
 
-export default class PaperWallet extends React.Component<Props, {}> {
-  public render() {
-    const { privateKey, address } = this.props;
-
-    return (
-      <div style={styles.container}>
-        <img src={ethLogo} style={styles.ethLogo} alt="ETH Logo" />
-
-        <div style={styles.block}>
-          <div style={styles.box}>
+const PaperWallet = (props: OwnProps & WithStyles<typeof styles>) => {
+  const { privateKey, address, classes } = props;
+  return (
+    <Paper className={classes.paper}>
+      <Grid container={true} direction="column">
+        <Grid container={true} direction="row" justify="space-evenly">
+          <Grid item={true} className={classes.qrItem} xs={6}>
+            <Typography className={classes.qrLabel} variant="caption">
+              {translate('X_PRINT_YOURADDRESS')}
+            </Typography>
             <QRCode data={address} />
-          </div>
-          <p style={styles.blockText}>YOUR ADDRESS</p>
-        </div>
-
-        <div style={styles.block}>
-          <img src={notesBg} style={styles.box} aria-hidden={true} />
-          <p style={styles.blockText}>AMOUNT / NOTES</p>
-        </div>
-
-        <div style={styles.block}>
-          <div style={styles.box}>
+          </Grid>
+          <Grid item={true} className={classes.qrItem} xs={6}>
+            <Typography className={classes.qrLabel} variant="caption">
+              {translate('X_PRINT_YOURPRIVATEKEY')}
+            </Typography>
             <QRCode data={privateKey} />
-          </div>
-          <p style={styles.blockText}>YOUR PRIVATE KEY</p>
-        </div>
+          </Grid>
+        </Grid>
+        <Grid container={true} direction="column" className={classes.detailsGrid} spacing={16}>
+          <Grid item={true}>
+            <Typography className={classes.detailsLabel} variant="caption">
+              {translate('X_PRINT_YOURADDRESS')}
+            </Typography>
+            <Typography variant="caption" className={classes.smallerText}>
+              {address}
+            </Typography>
+          </Grid>
+          <Grid item={true}>
+            <Typography className={classes.detailsLabel} variant="caption">
+              {translate('X_PRINT_YOURPRIVATEKEY')}
+            </Typography>
+            <Typography variant="caption" className={classes.smallerText}>
+              {privateKey}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+};
 
-        <div style={styles.infoContainer}>
-          <p style={styles.infoText}>
-            <strong style={styles.infoLabel}>Your Address:</strong>
-            <br />
-            {address}
-          </p>
-          <p style={styles.infoText}>
-            <strong style={styles.infoLabel}>Your Private Key:</strong>
-            <br />
-            {privateKey}
-          </p>
-        </div>
-
-        <div style={styles.identiconContainer}>
-          <div style={{ float: 'left' }}>
-            <Identicon address={address} size={'42px'} />
-          </div>
-          <p style={styles.identiconText}>Always look for this icon when sending to this wallet</p>
-        </div>
-      </div>
-    );
-  }
-}
+export default withStyles(styles)(PaperWallet) as React.ComponentClass<OwnProps>;

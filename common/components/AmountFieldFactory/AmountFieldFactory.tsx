@@ -11,7 +11,7 @@ export interface CallbackProps {
   currentValue:
     | AppState['transaction']['fields']['value']
     | AppState['transaction']['meta']['tokenValue'];
-  onChange(ev: React.FormEvent<HTMLInputElement>): void;
+  onChange(ev: React.ChangeEvent<HTMLInputElement>): void;
 }
 
 interface DispatchProps {

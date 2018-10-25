@@ -1,12 +1,38 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import './WalletTypes.scss';
-import { HelpLink } from 'components/ui';
-import { HELP_ARTICLE, ledgerReferralURL, trezorReferralURL } from 'config';
+import { Theme, WithStyles } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button/Button';
+import Grid from '@material-ui/core/Grid/Grid';
+import Template from './Template';
 
-const WalletTypes: React.SFC<{}> = () => {
+const styles = (theme: Theme) =>
+  createStyles({
+    layout: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      flexGrow: 1
+    },
+    buttonGridItem: {
+      minHeight: 80,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    buttonRow: {
+      marginTop: theme.spacing.unit * 20
+    }
+  });
+
+type Props = RouteComponentProps<{}>;
+
+const WalletTypes: React.SFC<Props & WithStyles<typeof styles>> = props => {
+  const { classes, history, location } = props;
   const typeInfo = {
     [WalletType.Keystore]: {
       name: 'X_KEYSTORE2',
@@ -31,24 +57,32 @@ const WalletTypes: React.SFC<{}> = () => {
   };
 
   return (
-    <div className="WalletTypes Tab-content-pane">
-      <div className="WalletTypes-types row">
-        <div className="col-md-3" />
+    <Template version={2} title="PRIVATE_KEY_TITLE">
+      <Grid
+        className={classes.buttonRow}
+        container={true}
+        item={true}
+        direction="row"
+        justify="space-evenly"
+        alignItems="center"
+        spacing={16}
+      >
         {Object.keys(typeInfo).map((type: keyof typeof typeInfo) => (
-          <div key={type} className="WalletType col-md-3">
-            <div className="WalletType-select">
-              <Link
-                className="WalletType-select-btn btn btn-primary btn-block"
-                to={`/generate/${type}`}
+          <React.Fragment key={type}>
+            <Grid item={true}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => history.push(`${location.pathname}/${type}`)}
               >
                 {translate('GENERATE_THING', { $thing: translateRaw(typeInfo[type].name) })}
-              </Link>
-            </div>
-          </div>
+              </Button>
+            </Grid>
+          </React.Fragment>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Template>
   );
 };
 
-export default WalletTypes;
+export default withStyles(styles)(WalletTypes);
