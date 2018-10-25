@@ -1,17 +1,15 @@
 import { IFullWallet } from 'ethereumjs-wallet';
 import {
-  signMessageWithPrivKeyV2,
-  signRawTxWithPrivKey,
-  wanSignRawTxWithPrivKey
-} from 'libs/signing';
-import {
   EncryptedPrivateKeyWallet,
   MewV1Wallet,
   PresaleWallet,
   PrivKeyWallet,
   UtcWallet
 } from './wallets';
-import Tx from 'ethereumjs-tx';
+
+const CryptoCurveSDK = require('cryptocurve-sdk');
+const eth = CryptoCurveSDK.eth;
+const wan = CryptoCurveSDK.wan;
 
 enum KeystoreTypes {
   presale = 'presale',
@@ -22,8 +20,8 @@ enum KeystoreTypes {
 }
 
 interface ISignWrapper {
-  signRawTransaction(rawTx: Tx): Buffer;
-  wanSignRawTransaction(rawTx: Tx): Buffer;
+  signRawTransaction(rawTx: any): Buffer;
+  wanSignRawTransaction(rawTx: any): Buffer;
   signMessage(msg: string): string;
   unlock(): Promise<void>;
 }
@@ -32,9 +30,9 @@ export type WrappedWallet = IFullWallet & ISignWrapper;
 
 export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
-    signRawTransaction: (t: Tx) => signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
-    wanSignRawTransaction: (t: Tx) => wanSignRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
-    signMessage: (msg: string) => signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
+    signRawTransaction: (t: any) => eth.signRawTransaction(t, walletToWrap.getPrivateKey()),
+    wanSignRawTransaction: (t: any) => wan.signRawTransaction(t, walletToWrap.getPrivateKey()),
+    signMessage: (msg: string) => eth.signMessage(msg, walletToWrap.getPrivateKey()),
     unlock: () => Promise.resolve()
   });
 
