@@ -12,8 +12,9 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import BackgroundImage from 'assets/images/background/mycryptocurveMain.jpg';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Fade from '@material-ui/core/Fade/Fade';
+import { Theme } from '@material-ui/core';
 
-const styles = () =>
+const styles = (theme: Theme) =>
   createStyles({
     background: {
       backgroundImage: `url(${BackgroundImage})`,
@@ -25,7 +26,10 @@ const styles = () =>
       left: 0,
       width: '100%',
       height: '100%',
-      zIndex: -1
+      zIndex: -1,
+      [theme.breakpoints.only('xl')]: {
+        backgroundSize: 'cover'
+      }
     }
   });
 
