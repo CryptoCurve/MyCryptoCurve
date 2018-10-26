@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button/Button';
 import { NavigationLink, navigationLinksLandingPage } from 'config/navigation';
 import classnames from 'classnames';
 import Slide from '@material-ui/core/Slide/Slide';
+import { Colors } from '../../../Root';
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
@@ -27,7 +28,11 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       flexGrow: 1,
-      justifyContent: 'center'
+      justifyContent: 'center',
+      [theme.breakpoints.only('xs')]: {
+        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing.unit
+      }
     },
     subHeading: {
       marginTop: theme.spacing.unit * 3
@@ -46,7 +51,8 @@ const styles = (theme: Theme) =>
       textTransform: 'uppercase'
     },
     whiteText: {
-      color: '#fff'
+      color: Colors.white,
+      textAlign: 'center'
     }
   });
 
