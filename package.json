@@ -60,7 +60,8 @@
     "wallet-address-validator": "0.1.6",
     "wanchain-util": "^1.2.0",
     "whatwg-fetch": "2.0.3",
-    "zxcvbn": "4.4.2"
+    "zxcvbn": "4.4.2",
+    "web3": "https://github.com/ethereum/web3.js.git"
   },
   "devDependencies": {
     "@types/bip39": "2.4.0",

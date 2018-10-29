@@ -1754,6 +1754,11 @@ bignumber.js@^2.1.0:
   version "2.0.7"
   resolved "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934"
 
+"bignumber.js@github:frozeman/bignumber.js-nolookahead":
+  version "2.0.7"
+  uid "57692b3ecfc98bbdd6b3a516cb2353652ea49934"
+  resolved "https://codeload.github.com/frozeman/bignumber.js-nolookahead/tar.gz/57692b3ecfc98bbdd6b3a516cb2353652ea49934"
+
 bin-build@^2.0.0, bin-build@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/bin-build/-/bin-build-2.2.0.tgz#11f8dd61f70ffcfa2bdcaa5b46f5e8fedd4221cc"
@@ -14444,7 +14449,7 @@ wallet-address-validator@0.1.6:
     base-x "^3.0.4"
     jssha "2.3.1"
 
-wanchain-util@1.2.0:
+wanchain-util@1.2.0, wanchain-util@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/wanchain-util/-/wanchain-util-1.2.0.tgz#bb21aeb47e1564176534f68d5c6ee97544e6b0de"
   integrity sha512-u29WCWvAMohf/4sIzXoCDfnWIrUmtTdqF7fEQd0+BpDU9GfSe6U9bTHOI2aCPk3fuvUuIktFb6nghbiWh81tjw==
@@ -14729,6 +14734,16 @@ web3@^0.20.6:
   integrity sha512-VU6/DSUX93d1fCzBz7WP/SGCQizO1rKZi4Px9j/3yRyfssHyFcZamMw2/sj4E8TlfMXONvZLoforR8B4bRoyTQ==
   dependencies:
     bignumber.js "git+https://github.com/frozeman/bignumber.js-nolookahead.git"
+    crypto-js "^3.1.4"
+    utf8 "^2.1.1"
+    xhr2-cookies "^1.1.0"
+    xmlhttprequest "*"
+
+"web3@https://github.com/ethereum/web3.js.git":
+  version "0.20.7"
+  resolved "https://github.com/ethereum/web3.js.git#215e33c3117f456ff191ca716be6d8d2196d6c84"
+  dependencies:
+    bignumber.js "github:frozeman/bignumber.js-nolookahead"
     crypto-js "^3.1.4"
     utf8 "^2.1.1"
     xhr2-cookies "^1.1.0"
