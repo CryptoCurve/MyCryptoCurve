@@ -1,6 +1,6 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { ISignedMessage } from 'libs/signing';
+import { ISignedMessage } from 'isignedmessage';
 
 export type TSignMessageRequested = typeof signMessageRequested;
 export function signMessageRequested(payload: string): interfaces.SignMessageRequestedAction {

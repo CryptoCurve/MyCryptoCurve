@@ -5,12 +5,13 @@ import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transactio
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
-import { addHexPrefix } from 'ethereumjs-util';
 import { getWalletInst } from 'selectors/wallet';
 import { getResolvingDomain } from 'selectors/ens';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import './AddressInputFactory.scss';
+
+const sdk = require('cryptocurve-sdk');
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -48,7 +49,7 @@ class AddressInputFactoryClass extends Component<Props> {
   public render() {
     const { currentTo, onChange, isValid, withProps, isSelfAddress, isResolving } = this.props;
     const { value } = currentTo;
-    const addr = addHexPrefix(value ? value.toString('hex') : '0');
+    const addr = sdk.utils.eth.addHexPrefix(value ? value.toString('hex') : '0');
     return (
       <div className="AddressInput form-group">
         <div className="AddressInput-input">

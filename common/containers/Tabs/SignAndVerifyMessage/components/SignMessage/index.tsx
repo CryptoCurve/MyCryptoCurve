@@ -4,7 +4,7 @@ import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import translate, { translateRaw } from 'translations';
 import { signMessageRequested, TSignMessageRequested } from 'actions/message';
 import { resetWallet, TResetWallet } from 'actions/wallet';
-import { ISignedMessage } from 'libs/signing';
+import { ISignedMessage } from 'isignedmessage';
 import { IFullWallet } from 'libs/wallet';
 import { AppState } from 'reducers';
 import SignButton from './SignButton';

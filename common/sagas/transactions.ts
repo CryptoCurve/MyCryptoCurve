@@ -1,7 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { put, select, apply, call, take, takeEvery } from 'redux-saga/effects';
 import EthTx from 'ethereumjs-tx';
-import { toChecksumAddress } from 'ethereumjs-util';
 import {
   setTransactionData,
   FetchTransactionDataAction,
@@ -24,6 +23,8 @@ import { TypeKeys as ConfigTypeKeys } from 'actions/config';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'reducers';
+
+const sdk = require('cryptocurve-sdk');
 
 export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;
@@ -110,7 +111,7 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
     hash,
     from,
     chainId,
-    to: toChecksumAddress(fields.to),
+    to: sdk.utils.eth.toChecksumAddress(fields.to),
     value: fields.value,
     time: Date.now()
   };

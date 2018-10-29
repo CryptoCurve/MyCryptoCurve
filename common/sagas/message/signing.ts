@@ -2,7 +2,6 @@ import { SagaIterator } from 'redux-saga';
 import { put, take, apply, takeEvery, call, select } from 'redux-saga/effects';
 import translate, { translateRaw } from 'translations';
 import { showNotification } from 'actions/notifications';
-import { verifySignedMessage } from 'libs/signing';
 import {
   TypeKeys,
   SignMessageRequestedAction,
@@ -18,6 +17,8 @@ import {
 import { IFullWallet } from 'libs/wallet';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 import { messageToData, signingWrapper } from './helpers';
+
+const sdk = require('cryptocurve-sdk');
 
 function* signLocalMessage(wallet: IFullWallet, msg: string): SagaIterator {
   const address = yield apply(wallet, wallet.getAddressString);
@@ -68,7 +69,7 @@ function* handleMessageRequest(action: SignMessageRequestedAction): SagaIterator
 }
 
 function* verifySignature(action: SignLocalMessageSucceededAction): SagaIterator {
-  const success = yield call(verifySignedMessage, action.payload);
+  const success = yield call(sdk.utils.eth.verifySignedMessage, action.payload);
 
   if (success) {
     yield put(

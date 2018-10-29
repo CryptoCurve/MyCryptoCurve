@@ -1,4 +1,3 @@
-import { toChecksumAddress, isValidPrivate, sha3 } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
@@ -14,6 +13,8 @@ import {
 import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import BN from 'bn.js';
+
+const sdk = require('cryptocurve-sdk');
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidAddress(address: string): boolean {
@@ -57,26 +58,6 @@ export function isValidWANAddress(address: string): boolean {
   } else {
     return isWanChecksumAddress(address);
   }
-}
-export function toChecksumWaddress(address: string): boolean {
-  /* stripHexPrefix */
-  if (typeof address !== 'string') {
-    return false;
-  }
-  address = address.slice(0, 2) === '0x' ? address.slice(2) : address;
-  address = address.toLowerCase();
-  /* toChecksumWaddress */
-  const hash = sha3(address).toString('hex');
-  let ret = '0x';
-
-  for (let i = 0; i < address.length; i++) {
-    if (parseInt(hash[i], 16) < 8) {
-      ret += address[i].toUpperCase();
-    } else {
-      ret += address[i];
-    }
-  }
-  return ret;
 }
 
 export const isCreationAddress = (address: string): boolean =>
@@ -126,13 +107,20 @@ export function isValidENSAddress(address: string): boolean {
 }
 
 function isChecksumAddress(address: string): boolean {
-  return address === toChecksumAddress(address) || address === toChecksumWaddress(address);
+  if (address !== sdk.utils.eth.toChecksumAddress(address)) {
+    try {
+      return address === sdk.utils.wan.toChecksumAddress(address);
+    } catch (err) {
+      return false;
+    }
+  }
+  return true;
 }
 function isEthChecksumAddress(address: string): boolean {
-  return address === toChecksumAddress(address);
+  return address === sdk.utils.eth.toChecksumAddress(address);
 }
 function isWanChecksumAddress(address: string): boolean {
-  return address === toChecksumWaddress(address);
+  return address === sdk.utils.wan.toChecksumAddress(address);
 }
 
 export function isValidPrivKey(privkey: string | Buffer): boolean {
@@ -141,11 +129,11 @@ export function isValidPrivKey(privkey: string | Buffer): boolean {
     const initialCheck = strippedKey.length === 64;
     if (initialCheck) {
       const keyBuffer = Buffer.from(strippedKey, 'hex');
-      return isValidPrivate(keyBuffer);
+      return sdk.utils.eth.isValidPrivateKey(keyBuffer);
     }
     return false;
   } else if (privkey instanceof Buffer) {
-    return privkey.length === 32 && isValidPrivate(privkey);
+    return privkey.length === 32 && sdk.utils.eth.isValidPrivateKey(privkey);
   } else {
     return false;
   }

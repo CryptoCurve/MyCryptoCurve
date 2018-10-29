@@ -18,12 +18,10 @@
     "bn.js": "4.11.8",
     "bootstrap-sass": "3.3.7",
     "classnames": "^2.2.6",
-    "cryptocurve-sdk": "2.0.0",
+    "cryptocurve-sdk": "3.0.0",
     "electron-updater": "2.21.4",
     "ethereum-blockies-base64": "1.0.1",
     "ethereumjs-abi": "git://github.com/ethereumjs/ethereumjs-abi.git#09c3c48fd3bed143df7fa8f36f6f164205e23796",
-    "ethereumjs-tx": "1.3.4",
-    "ethereumjs-util": "5.1.5",
     "ethereumjs-wallet": "0.6.0",
     "font-awesome": "4.7.0",
     "hdkey": "0.8.0",
@@ -199,7 +197,6 @@
     "package.json",
     "common/freezer.ts",
     "common/store.ts",
-    "common/libs/decrypt.ts",
-    "common/libs/signing.ts"
+    "common/libs/decrypt.ts"
   ]
 }

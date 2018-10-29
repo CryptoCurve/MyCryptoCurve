@@ -6,7 +6,6 @@ import {
   broadcastTransactionQueued,
   resetTransactionRequested
 } from 'actions/transaction';
-import { bufferToHex } from 'ethereumjs-util';
 import { showNotification } from 'actions/notifications';
 import React from 'react';
 import { getNetworkConfig } from 'selectors/config';
@@ -26,6 +25,8 @@ import {
   shouldBroadcastTransaction
 } from 'sagas/transaction/broadcast/helpers';
 import { isSchedulingEnabled } from 'selectors/schedule/fields';
+
+const sdk = require('cryptocurve-sdk');
 
 describe('broadcastTransactionWrapper*', () => {
   const indexingHash = 'indexingHash';
@@ -101,7 +102,7 @@ describe('broadcastTransactionWrapper*', () => {
   });
 
   it('should call bufferToHex with serializedTransactioin', () => {
-    expect(gens.gen.next().value).toEqual(call(bufferToHex, serializedTransaction));
+    expect(gens.gen.next().value).toEqual(call(sdk.utils.eth.bufferToHex, serializedTransaction));
   });
 
   it('should call func with stringTx', () => {

@@ -12,7 +12,8 @@ import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
 import { Input, Dropdown } from 'components/ui';
 import { INode } from 'libs/nodes';
-import { bufferToHex } from 'ethereumjs-util';
+
+const sdk = require('cryptocurve-sdk');
 
 interface StateProps {
   nodeLib: INode;
@@ -130,7 +131,7 @@ class InteractExplorerClass extends Component<Props, State> {
               const o = outputs[parsedName];
               const rawFieldValue = o === null || o === undefined ? '' : o;
               const decodedFieldValue = Buffer.isBuffer(rawFieldValue)
-                ? bufferToHex(rawFieldValue)
+                ? sdk.utils.eth.bufferToHex(rawFieldValue)
                 : rawFieldValue;
 
               return (

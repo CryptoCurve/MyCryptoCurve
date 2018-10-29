@@ -1,5 +1,4 @@
 import React from 'react';
-import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
@@ -7,6 +6,8 @@ import { QRCode } from 'components/ui';
 import { GenerateKeystoreModal, TogglablePassword, AddressField } from 'components';
 import './Sets.scss';
 import { Link } from 'react-router-dom';
+
+const sdk = require('cryptocurve-sdk');
 
 interface Props {
   wallet: IWallet;
@@ -97,7 +98,7 @@ export default class Sets extends React.PureComponent<Props, State> {
   }
 
   private setStateFromWallet(wallet: IWallet) {
-    const address = toChecksumAddress(wallet.getAddressString());
+    const address = sdk.utils.eth.toChecksumAddress(wallet.getAddressString());
     const privateKey = wallet.getPrivateKeyString ? wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }

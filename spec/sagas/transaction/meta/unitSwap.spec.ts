@@ -15,7 +15,6 @@ import {
   swapTokenToToken
 } from 'actions/transaction/actionCreators/swap';
 import { encodeTransfer } from 'libs/transaction';
-import { bufferToHex } from 'ethereumjs-util';
 import { rebaseUserInput, validateInput } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
@@ -23,6 +22,8 @@ import { isNetworkUnit } from 'selectors/config';
 import { SagaIterator } from 'redux-saga';
 import BN from 'bn.js';
 import { setSchedulingToggle } from 'actions/schedule';
+
+const sdk = require('cryptocurve-sdk');
 
 const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
@@ -165,7 +166,7 @@ describe('handleSetUnitMeta*', () => {
       tokenTo?: any
     ) => {
       const base = {
-        data: { raw: bufferToHex(data), value: data },
+        data: { raw: sdk.utils.eth.bufferToHex(data), value: data },
         to: { raw: '', value: Address(toAddress) },
         tokenValue: { raw, value },
         decimal

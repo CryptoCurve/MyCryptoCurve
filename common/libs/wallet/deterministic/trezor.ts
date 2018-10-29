@@ -1,6 +1,5 @@
 import BN from 'bn.js';
 import EthTx, { TxObj } from 'ethereumjs-tx';
-import { addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
@@ -9,6 +8,8 @@ import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
+
+const sdk = require('cryptocurve-sdk');
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 
@@ -39,9 +40,9 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
           // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
           const txToSerialize: TxObj = {
             ...strTx,
-            v: addHexPrefix(new BN(result.v).toString(16)),
-            r: addHexPrefix(result.r),
-            s: addHexPrefix(result.s)
+            v: sdk.utils.eth.addHexPrefix(new BN(result.v).toString(16)),
+            r: sdk.utils.eth.addHexPrefix(result.r),
+            s: sdk.utils.eth.addHexPrefix(result.s)
           };
           const eTx = new EthTx(txToSerialize);
           const serializedTx = eTx.serialize();

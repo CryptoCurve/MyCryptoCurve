@@ -3,12 +3,13 @@ import { select, call, put } from 'redux-saga/effects';
 import { setDataField } from 'actions/transaction';
 import { encodeTransfer } from 'libs/transaction/utils/token';
 import { getTokenValue } from 'selectors/transaction/meta';
-import { bufferToHex, toBuffer } from 'ethereumjs-util';
 import { getTokenTo, getData } from 'selectors/transaction';
 import { handleTokenTo, handleTokenValue } from 'sagas/transaction/meta/token';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { SagaIterator } from 'redux-saga';
 configuredStore.getState();
+
+const sdk = require('cryptocurve-sdk');
 
 const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
@@ -49,7 +50,7 @@ describe('handleTokenTo*', () => {
     expect(gens.gen.next(data).value).toEqual(
       put(
         setDataField({
-          raw: bufferToHex(data),
+          raw: sdk.utils.eth.bufferToHex(data),
           value: data
         })
       )
@@ -68,7 +69,7 @@ describe('handleTokenValue*', () => {
   const tokenTo: any = {
     value: 'value2'
   };
-  const data: any = toBuffer('0x0a');
+  const data: any = sdk.utils.eth.toBuffer('0x0a');
   const prevData: any = {
     raw: '0x0b'
   };
@@ -99,12 +100,12 @@ describe('handleTokenValue*', () => {
   it('should put setDataField', () => {
     gens.clone2 = gens.gen.clone();
     expect(gens.gen.next(data).value).toEqual(
-      put(setDataField({ raw: bufferToHex(data), value: data }))
+      put(setDataField({ raw: sdk.utils.eth.bufferToHex(data), value: data }))
     );
   });
 
   it('should return if prevData is equal to data', () => {
-    const sameData = toBuffer('0xb');
+    const sameData = sdk.utils.eth.toBuffer('0xb');
     expect(gens.clone2.next(sameData).done).toEqual(true);
   });
 

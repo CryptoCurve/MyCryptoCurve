@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import { verifySignedMessage, ISignedMessage } from 'libs/signing';
+import { ISignedMessage } from 'isignedmessage';
 import './index.scss';
 import { TextArea } from 'components/ui';
+
+const sdk = require('cryptocurve-sdk');
 
 interface Props {
   showNotification: TShowNotification;
@@ -80,7 +82,7 @@ export class VerifyMessage extends Component<Props, State> {
     try {
       const parsedSignature: ISignedMessage = JSON.parse(this.state.signature);
 
-      if (!verifySignedMessage(parsedSignature)) {
+      if (!sdk.utils.eth.verifySignedMessage(parsedSignature)) {
         throw Error();
       }
 

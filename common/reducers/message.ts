@@ -1,5 +1,5 @@
 import { MessageAction, SignLocalMessageSucceededAction, TypeKeys } from 'actions/message';
-import { ISignedMessage } from 'libs/signing';
+import { ISignedMessage } from 'isignedmessage';
 
 export interface State {
   signed?: ISignedMessage | null;

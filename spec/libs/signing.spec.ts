@@ -1,5 +1,6 @@
 import { getPrivKeyWallet } from 'libs/wallet';
-import { signMessageWithPrivKeyV2, verifySignedMessage } from 'libs/signing';
+
+const sdk = require('cryptocurve-sdk');
 
 describe('lib/signing', () => {
   const msgToSign = 'Testing your code is great!';
@@ -15,11 +16,13 @@ describe('lib/signing', () => {
     ''
   );
 
-  it('signMessageWithPrivKeyV2 properly signs a message', () => {
-    expect(signMessageWithPrivKeyV2(msgWallet.getPrivateKey(), msgToSign)).toEqual(msgToVerify.sig);
+  it('sdk.utils.eth.signMessage properly signs a message', () => {
+    expect(sdk.utils.eth.signMessage(msgToSign, msgWallet.getPrivateKey())).toEqual(
+      msgToVerify.sig
+    );
   });
 
-  it('verifySignedMessage properly verifies a signed message', () => {
-    expect(verifySignedMessage(msgToVerify)).toBeTruthy();
+  it('sdk.utils.eth.verifySignedMessage properly verifies a signed message', () => {
+    expect(sdk.utils.eth.verifySignedMessage(msgToVerify)).toBeTruthy();
   });
 });

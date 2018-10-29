@@ -1,5 +1,4 @@
 import abi from 'ethereumjs-abi';
-import { toChecksumAddress, addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import {
   FuncParams,
@@ -9,6 +8,8 @@ import {
   ITypeMapping,
   ISuppliedArgs
 } from './types';
+
+const sdk = require('cryptocurve-sdk');
 
 export default class AbiFunction {
   public constant: boolean;
@@ -35,7 +36,7 @@ export default class AbiFunction {
 
   public decodeInput = (argString: string) => {
     // Remove method selector from data, if present
-    argString = argString.replace(addHexPrefix(this.methodSelector), '');
+    argString = argString.replace(sdk.utils.eth.addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
     const argBuffer = new Buffer(argString, 'hex');
     // Decode!
@@ -53,7 +54,7 @@ export default class AbiFunction {
 
   public decodeOutput = (argString: string) => {
     // Remove method selector from data, if present
-    argString = argString.replace(addHexPrefix(this.methodSelector), '');
+    argString = argString.replace(sdk.utils.eth.addHexPrefix(this.methodSelector), '');
 
     // Remove 0x prefix
     argString = argString.replace('0x', '');
@@ -87,7 +88,7 @@ export default class AbiFunction {
 
   private parsePostDecodedValue = (type: string, value: any) => {
     const valueMapping: ITypeMapping = {
-      address: (val: any) => toChecksumAddress(val.toString(16))
+      address: (val: any) => sdk.utils.eth.toChecksumAddress(val.toString(16))
     };
 
     const mapppedType = valueMapping[type];
@@ -113,7 +114,7 @@ export default class AbiFunction {
 
   private makeEncodedFuncCall = (args: string[]) => {
     const encodedArgs = abi.rawEncode(this.inputTypes, args).toString('hex');
-    return addHexPrefix(`${this.methodSelector}${encodedArgs}`);
+    return sdk.utils.eth.addHexPrefix(`${this.methodSelector}${encodedArgs}`);
   };
 
   private processSuppliedArgs = (suppliedArgs: ISuppliedArgs) =>

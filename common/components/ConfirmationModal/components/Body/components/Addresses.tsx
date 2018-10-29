@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
 import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
-import { toChecksumAddress } from 'ethereumjs-util';
 import translate from 'translations';
+
+const sdk = require('cryptocurve-sdk');
 
 interface StateProps {
   from: AppState['transaction']['meta']['from'];
@@ -26,7 +27,7 @@ class AddressesClass extends Component<StateProps> {
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
-          const toFormatted = toChecksumAddress(
+          const toFormatted = sdk.utils.eth.toChecksumAddress(
             isToken ? ERC20.transfer.decodeInput(data)._to : to
           );
           return (
@@ -39,7 +40,7 @@ class AddressesClass extends Component<StateProps> {
                         {translate('CONFIRM_TX_FROM')}{' '}
                       </h5>
                       <h5 className="tx-modal-address-from-address small">
-                        {toChecksumAddress(from)}
+                        {sdk.utils.eth.toChecksumAddress(from)}
                       </h5>
                     </div>
                   </React.Fragment>
@@ -60,7 +61,7 @@ class AddressesClass extends Component<StateProps> {
                       className="small tx-modal-address-tkn-contract-link"
                       href={ETHAddressExplorer(to)}
                     >
-                      {toChecksumAddress(to)}
+                      {sdk.utils.eth.toChecksumAddress(to)}
                     </a>
                   </div>
                 </div>

@@ -44,7 +44,8 @@ import {
 import { getScheduleState } from 'selectors/schedule/fields';
 import { Nonce, Wei } from 'libs/units';
 import { getWalletInst } from 'selectors/wallet';
-import { bufferToHex } from 'ethereumjs-util';
+
+const sdk = require('cryptocurve-sdk');
 
 export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const { isFullTransaction } = getTransaction(state);
@@ -188,8 +189,8 @@ export const getValidateScheduleParamsCallPayload = (
   const fromAddress = wallet.getAddressString();
 
   const data = getValidateRequestParamsData(
-    bufferToHex(currentTo.value),
-    callData.value ? bufferToHex(callData.value) : '',
+    sdk.utils.eth.bufferToHex(currentTo.value),
+    callData.value ? sdk.utils.eth.bufferToHex(callData.value) : '',
     callGasLimit,
     currentValue.value,
     windowSizeBlockToMin(windowSize.value, scheduleType.value),

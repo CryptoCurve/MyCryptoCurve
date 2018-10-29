@@ -1,9 +1,10 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
-import { toBuffer } from 'ethereumjs-util';
 import RequestFactory from './contracts/RequestFactory';
 import { ICurrentValue } from 'selectors/transaction';
+
+const sdk = require('cryptocurve-sdk');
 
 const TIME_BOUNTY_MIN = Wei('1');
 
@@ -97,7 +98,7 @@ export const getScheduleData = (
   }
 
   if (typeof callData === 'string') {
-    callData = toBuffer(callData);
+    callData = sdk.utils.eth.toBuffer(callData);
   }
 
   /*

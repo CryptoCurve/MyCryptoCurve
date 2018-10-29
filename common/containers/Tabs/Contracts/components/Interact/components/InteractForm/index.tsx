@@ -10,8 +10,9 @@ import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { getCurrentTo } from 'selectors/transaction';
-import { addHexPrefix } from 'ethereumjs-util';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+
+const sdk = require('cryptocurve-sdk');
 
 interface ContractOption {
   name: string;
@@ -79,7 +80,7 @@ class InteractForm extends Component<Props, State> {
     const { contracts, accessContract, currentTo } = this.props;
     const { abiJson, contract } = this.state;
     const validEthAddress = isValidETHAddress(
-      currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : ''
+      currentTo.value ? sdk.utils.eth.addHexPrefix(currentTo.value.toString('hex')) : ''
     );
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;

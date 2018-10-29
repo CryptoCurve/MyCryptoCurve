@@ -4,7 +4,8 @@ import { SagaIterator } from 'redux-saga';
 import { call } from 'redux-saga/effects';
 import networkConfigs from 'libs/ens/networkConfigs';
 import { makeEthCallAndDecode } from 'sagas/ens/helpers';
-import ethUtil from 'ethereumjs-util';
+
+const sdk = require('cryptocurve-sdk');
 
 const { main } = networkConfigs;
 
@@ -72,7 +73,7 @@ const modeMap: IModeMap = {
 };
 
 export function* resolveDomainRequest(name: string): SagaIterator {
-  const hash = ethUtil.sha3(name);
+  const hash = sdk.utils.eth.sha3(name);
   const nameHash = getNameHash(`${name}.eth`);
 
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {

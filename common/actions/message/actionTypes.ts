@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { ISignedMessage } from 'libs/signing';
+import { ISignedMessage } from 'isignedmessage';
 
 export interface SignMessageRequestedAction {
   type: TypeKeys.SIGN_MESSAGE_REQUESTED;

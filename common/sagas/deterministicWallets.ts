@@ -5,7 +5,6 @@ import {
   updateDeterministicWallet
 } from 'actions/deterministicWallets';
 import { showNotification } from 'actions/notifications';
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
 import { SagaIterator } from 'redux-saga';
@@ -16,6 +15,8 @@ import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
+
+const sdk = require('cryptocurve-sdk');
 
 export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
@@ -40,10 +41,10 @@ export function* getDeterministicWallets(action: GetDeterministicWalletsAction):
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);
-    const address = publicToAddress(dkey.publicKey, true).toString('hex');
+    const address = sdk.utils.eth.publicToAddress(dkey.publicKey, true).toString('hex');
     wallets.push({
       index,
-      address: toChecksumAddress(address),
+      address: sdk.utils.eth.toChecksumAddress(address),
       tokenValues: {}
     });
   }

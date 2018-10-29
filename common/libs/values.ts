@@ -1,6 +1,7 @@
 import { Wei, toTokenBase } from 'libs/units';
-import { addHexPrefix } from 'ethereumjs-util';
 import { AppState } from 'reducers';
+
+const sdk = require('cryptocurve-sdk');
 
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
@@ -11,7 +12,7 @@ export function stripHexPrefixAndLower(value: string): string {
 }
 
 export function toHexWei(weiString: string): string {
-  return addHexPrefix(Wei(weiString).toString(16));
+  return sdk.utils.eth.addHexPrefix(Wei(weiString).toString(16));
 }
 
 export function padLeftEven(hex: string) {

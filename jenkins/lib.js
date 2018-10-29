@@ -3,7 +3,7 @@ const { createHash } = require('crypto');
 const { readFileSync } = require('fs');
 const { spawn } = require('child_process');
 
-const { hashPersonalMessage, ecsign, toBuffer, addHexPrefix } = require('ethereumjs-util');
+const sdk = require('cryptocurve-sdk');
 
 const genCommitFilename = (name, version, commit, buildId, isCodeSigning) => {
   const winRegex = /exe$/;
@@ -70,7 +70,7 @@ const genManifestFilename = (flavor, version, commit, buildId) =>
 
 const genSignatureFile = (manifestHash, pKeyString) => {
   const pKeyBuffer = Buffer.from(pKeyString, 'hex');
-  return signMessageWithPrivKeyV2(pKeyBuffer, manifestHash);
+  return sdk.utils.eth.signMessage(manifestHash, pKeyBuffer);
 };
 
 const genSignatureFilename = (flavor, version, commit, buildId) =>
@@ -90,19 +90,6 @@ const genManifest = (fileList, version, jenkinsBuildId, gitCommit, gitCommitShor
     };
   });
 
-function signMessageWithPrivKeyV2(privKey, msg) {
-  const hash = hashPersonalMessage(toBuffer(msg));
-  const signed = ecsign(hash, privKey);
-  const combined = Buffer.concat([
-    Buffer.from(signed.r),
-    Buffer.from(signed.s),
-    Buffer.from([signed.v])
-  ]);
-  const combinedHex = combined.toString('hex');
-
-  return addHexPrefix(combinedHex);
-}
-
 module.exports = {
   genCommitFilename,
   genManifestFile,
@@ -110,7 +97,6 @@ module.exports = {
   genSha512,
   genS3Url,
   uploadToS3,
-  signMessageWithPrivKeyV2,
   genManifestFilename,
   genManifest,
   genSignatureFile,

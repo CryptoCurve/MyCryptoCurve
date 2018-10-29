@@ -1,7 +1,8 @@
-import { sha256 } from 'ethereumjs-util';
 import { State as SwapState } from 'reducers/swap';
 import { IWallet, WalletConfig } from 'libs/wallet';
 import { AppState } from 'reducers';
+
+const sdk = require('cryptocurve-sdk');
 
 export const REDUX_STATE = 'REDUX_STATE';
 
@@ -59,5 +60,5 @@ export function loadWalletConfig(wallet: IWallet): WalletConfig {
 
 function getWalletConfigKey(wallet: IWallet): string {
   const address = wallet.getAddressString();
-  return sha256(`${address}-mycrypto`).toString('hex');
+  return sdk.utils.eth.sha256(`${address}-mycrypto`).toString('hex');
 }

@@ -1,10 +1,11 @@
 import ledger from 'ledgerco';
 import EthTx, { TxObj } from 'ethereumjs-tx';
-import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
+
+const sdk = require('cryptocurve-sdk');
 
 export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   private ethApp: ledger.eth;
@@ -20,8 +21,8 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
   public signRawTransaction(t: EthTx): Promise<Buffer> {
     t.v = Buffer.from([t._chainId]);
-    t.r = toBuffer(0);
-    t.s = toBuffer(0);
+    t.r = sdk.utils.eth.toBuffer(0);
+    t.s = sdk.utils.eth.toBuffer(0);
 
     return new Promise((resolve, reject) => {
       this.ethApp
@@ -30,9 +31,9 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
           const strTx = getTransactionFields(t);
           const txToSerialize: TxObj = {
             ...strTx,
-            v: addHexPrefix(result.v),
-            r: addHexPrefix(result.r),
-            s: addHexPrefix(result.s)
+            v: sdk.utils.eth.addHexPrefix(result.v),
+            r: sdk.utils.eth.addHexPrefix(result.r),
+            s: sdk.utils.eth.addHexPrefix(result.s)
           };
 
           const serializedTx = new EthTx(txToSerialize).serialize();
@@ -53,7 +54,7 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     const msgHex = Buffer.from(msg).toString('hex');
 
     const signed = await this.ethApp.signPersonalMessage_async(this.getPath(), msgHex);
-    const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
+    const combined = sdk.utils.eth.addHexPrefix(signed.r + signed.s + signed.v.toString(16));
     return combined;
   }
 

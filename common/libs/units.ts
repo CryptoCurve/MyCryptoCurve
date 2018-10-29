@@ -1,6 +1,7 @@
 import BN from 'bn.js';
-import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
+
+const sdk = require('cryptocurve-sdk');
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -51,9 +52,9 @@ const handleValues = (input: string | BN) => {
   }
 };
 
-const Address = (input: string) => toBuffer(addHexPrefix(input));
+const Address = (input: string) => sdk.utils.eth.toBuffer(sdk.utils.eth.addHexPrefix(input));
 
-const Data = (input: string) => toBuffer(addHexPrefix(input));
+const Data = (input: string) => sdk.utils.eth.toBuffer(sdk.utils.eth.addHexPrefix(input));
 
 const Nonce = (input: string | BN) => handleValues(input);
 

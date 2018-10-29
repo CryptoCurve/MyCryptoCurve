@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import { NodeConfig } from 'types/node';
 import translate from 'translations';
 import { CodeBlock, Input } from 'components/ui';
-import { addHexPrefix } from 'ethereumjs-util';
+
+const sdk = require('cryptocurve-sdk');
 
 interface StateProps {
   node: NodeConfig;
@@ -33,7 +34,7 @@ class DetailsClass extends Component<StateProps> {
                 </label>
                 <label className="input-group">
                   <div className="input-group-header">{translate('SEND_SIGNED')}</div>
-                  <CodeBlock>{addHexPrefix(_)} </CodeBlock>
+                  <CodeBlock>{sdk.utils.eth.addHexPrefix(_)} </CodeBlock>
                 </label>
               </React.Fragment>
             );

@@ -15,8 +15,9 @@ import { getWalletType, IWalletType } from 'selectors/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import translate from 'translations';
-import { addHexPrefix } from 'ethereumjs-util';
 import { CodeBlock } from 'components/ui';
+
+const sdk = require('cryptocurve-sdk');
 
 export interface CallbackProps {
   disabled: boolean;
@@ -90,7 +91,9 @@ export class GenerateTransactionFactoryClass extends Component<Props> {
                     ? 'Serialized Transaction Parameters'
                     : translate('SEND_SIGNED')}
                 </label>
-                <CodeBlock>{addHexPrefix(serializedTransaction.toString('hex'))}</CodeBlock>
+                <CodeBlock>
+                  {sdk.utils.eth.addHexPrefix(serializedTransaction.toString('hex'))}
+                </CodeBlock>
               </div>
             )}
             <OfflineBroadcast />

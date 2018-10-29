@@ -1,10 +1,11 @@
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
-import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
 import { configuredStore } from 'store';
 import { getNodeLib, getNetworkNameByChainId } from 'selectors/config';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
+
+const sdk = require('cryptocurve-sdk');
 
 export default class Web3Wallet implements IFullWallet {
   private address: string;
@@ -16,7 +17,7 @@ export default class Web3Wallet implements IFullWallet {
   }
 
   public getAddressString(): string {
-    return toChecksumAddress(this.address);
+    return sdk.utils.eth.toChecksumAddress(this.address);
   }
 
   public signRawTransaction(): Promise<Buffer> {
@@ -24,7 +25,7 @@ export default class Web3Wallet implements IFullWallet {
   }
 
   public async signMessage(msg: string): Promise<string> {
-    const msgHex = bufferToHex(Buffer.from(msg));
+    const msgHex = sdk.utils.eth.bufferToHex(Buffer.from(msg));
     const state = configuredStore.getState();
     const nodeLib: Web3Node | INode = getNodeLib(state);
 

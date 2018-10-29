@@ -1,6 +1,7 @@
 import { IFullWallet, fromPrivateKey } from 'ethereumjs-wallet';
-import { toBuffer } from 'ethereumjs-util';
 import Worker from 'worker-loader!./workers/fromV3.worker.ts';
+
+const sdk = require('cryptocurve-sdk');
 
 export default function fromV3(
   keystore: string,
@@ -13,7 +14,7 @@ export default function fromV3(
     worker.onmessage = (ev: MessageEvent) => {
       const data = ev.data;
       try {
-        const wallet = fromPrivateKey(toBuffer(data));
+        const wallet = fromPrivateKey(sdk.utils.eth.toBuffer(data));
         resolve(wallet);
       } catch (e) {
         reject(e);

@@ -13,7 +13,6 @@ import {
   TypeKeys as TK,
   resetTransactionRequested
 } from 'actions/transaction';
-import { bufferToHex } from 'ethereumjs-util';
 import {
   BroadcastRequestedAction,
   StateSerializedTx,
@@ -27,6 +26,8 @@ import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSu
 import { computeIndexingHash } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { isSchedulingEnabled } from 'selectors/schedule/fields';
+
+const sdk = require('cryptocurve-sdk');
 
 export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
   function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
@@ -52,7 +53,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
         serializedTransaction
       });
       yield put(queueAction);
-      const stringTx: string = yield call(bufferToHex, serializedTransaction);
+      const stringTx: string = yield call(sdk.utils.eth.bufferToHex, serializedTransaction);
       const broadcastedHash: string = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
       yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 

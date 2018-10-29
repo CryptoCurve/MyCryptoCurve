@@ -12,12 +12,13 @@ import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs
 import { QRCode, Input, CodeBlock } from 'components/ui';
 import EthTx from 'ethereumjs-tx';
 import { SendButton } from 'components/SendButton';
-import { toBuffer, bufferToHex } from 'ethereumjs-util';
 import { getSerializedTransaction } from 'selectors/transaction';
 import { AppState } from 'reducers';
 import './index.scss';
 import { Switch, Route, RouteComponentProps } from 'react-router';
 import { RouteNotFound } from 'components/RouteNotFound';
+
+const sdk = require('cryptocurve-sdk');
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -82,7 +83,9 @@ class BroadcastTx extends Component<Props> {
                   <SendButton className="form-group" />
 
                   <div className="BroadcastTx-qr">
-                    {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}
+                    {stateTransaction && (
+                      <QRCode data={sdk.utils.eth.bufferToHex(stateTransaction)} />
+                    )}
                   </div>
                 </div>
               )}
@@ -98,7 +101,7 @@ class BroadcastTx extends Component<Props> {
     const { value } = currentTarget;
     this.setState({ userInput: value });
     try {
-      const bufferTransaction = toBuffer(value);
+      const bufferTransaction = sdk.utils.eth.toBuffer(value);
       const tx = new EthTx(bufferTransaction);
       if (!tx.verifySignature()) {
         throw Error();

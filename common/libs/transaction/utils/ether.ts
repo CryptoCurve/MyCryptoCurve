@@ -1,5 +1,4 @@
 import Tx from 'ethereumjs-tx';
-import { bufferToHex } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { IFullWallet } from 'libs/wallet';
@@ -8,8 +7,11 @@ import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
 import { TransactionFieldValues } from 'selectors/transaction/helpers';
 
+const sdk = require('cryptocurve-sdk');
+
 // we dont include the signature paramaters because web3 transactions are unsigned
-const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));
+const computeIndexingHash = (tx: Buffer) =>
+  sdk.utils.eth.bufferToHex(makeTransaction(tx).hash(false));
 
 // Get useable fields from an EthTx object.
 const getTransactionFields = (t: Tx): IHexStrTransaction => {
@@ -69,7 +71,7 @@ const gasParamsInRange = (t: ITransaction) => {
 };
 
 const validAddress = (t: ITransaction) => {
-  if (!isValidETHAddress(bufferToHex(t.to))) {
+  if (!isValidETHAddress(sdk.utils.eth.bufferToHex(t.to))) {
     throw Error(translateRaw('ERROR_5'));
   }
 };

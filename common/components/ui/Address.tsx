@@ -1,8 +1,9 @@
 import React from 'react';
-import { toChecksumAddress } from 'ethereumjs-util';
 import NewTabLink from './NewTabLink';
 import { IWallet } from 'libs/wallet';
 import { BlockExplorerConfig } from 'types/network';
+
+const sdk = require('cryptocurve-sdk');
 
 interface BaseProps {
   explorer?: BlockExplorerConfig | null;
@@ -28,7 +29,7 @@ const Address: React.SFC<Props> = props => {
   } else {
     addr = props.wallet.getAddressString();
   }
-  addr = toChecksumAddress(addr);
+  addr = sdk.utils.eth.toChecksumAddress(addr);
 
   if (props.explorer) {
     return <NewTabLink href={props.explorer.addressUrl(addr)}>{addr}</NewTabLink>;

@@ -19,9 +19,10 @@ import {
 } from 'actions/transaction/actionCreators/swap';
 import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
-import { bufferToHex } from 'ethereumjs-util';
 import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
 import { setSchedulingToggle } from 'actions/schedule';
+
+const sdk = require('cryptocurve-sdk');
 
 export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
@@ -78,7 +79,7 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     const data = encodeTransfer(addressToEncode, valueToEncode);
 
     const basePayload = {
-      data: { raw: bufferToHex(data), value: data },
+      data: { raw: sdk.utils.eth.bufferToHex(data), value: data },
       to: { raw: '', value: Address(currentToken.address) },
       tokenValue: { raw, value: isValid ? value : null },
       decimal

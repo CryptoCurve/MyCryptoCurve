@@ -1,5 +1,6 @@
 import uts46 from 'idna-uts46';
-import ethUtil from 'ethereumjs-util';
+
+const sdk = require('cryptocurve-sdk');
 
 export function normalise(name: string): string {
   try {
@@ -15,7 +16,7 @@ export const getNameHash = (name: string = ''): string => {
   }
 
   const normalizedName = normalise(name);
-  const sha3 = ethUtil.sha3;
+  const sha3 = sdk.utils.eth.sha3;
   const labels = normalizedName.split('.');
   const emptyNode = Buffer.alloc(32);
   const rawNode = labels.reduceRight((node, currentLabel) => {
