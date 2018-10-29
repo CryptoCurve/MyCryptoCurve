@@ -2,9 +2,18 @@ import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
 import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
-import { TogglablePassword } from 'components';
-import { Input } from 'components/ui';
-import DeprecationWarning from './DeprecationWarning';
+import Button from '@material-ui/core/Button/Button';
+import FormControl from '@material-ui/core/FormControl/FormControl';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import Grid from '@material-ui/core/Grid/Grid';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { Theme } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import Input from '@material-ui/core/Input/Input';
+import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
+import Fade from '@material-ui/core/Fade/Fade';
+import VPNKey from '@material-ui/icons/VpnKey';
+import Grow from '@material-ui/core/Grow/Grow';
 
 export interface PrivateKeyValue {
   key: string;
@@ -18,6 +27,23 @@ interface Validated {
   isPassRequired: boolean;
   valid: boolean;
 }
+
+const styles = (theme: Theme) =>
+  createStyles({
+    formGrid: {
+      marginTop: theme.spacing.unit * 5
+    },
+    submitButton: {
+      marginTop: theme.spacing.unit
+    },
+    keyLabelIcon: {
+      marginRight: theme.spacing.unit
+    },
+    keyLabel: {
+      display: 'flex',
+      alignItems: 'center'
+    }
+  });
 
 function validatePkeyAndPass(pkey: string, pass: string): Validated {
   const fixedPkey = stripHexPrefix(pkey).trim();
@@ -43,49 +69,77 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
 
 interface Props {
   value: PrivateKeyValue;
+
   onChange(value: PrivateKeyValue): void;
+
   onUnlock(): void;
 }
 
-export class PrivateKeyDecrypt extends PureComponent<Props> {
+class PrivateKeyDecryptClass extends PureComponent<Props & WithStyles<typeof styles>> {
+  public componentDidMount() {
+    // setTimeout(() => this.props.onUnlock(), 500);
+  }
+
   public render() {
-    const { key, password } = this.props.value;
+    const { classes, value } = this.props;
+    const { key, password } = value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
     return (
       <form id="selectedTypeKey" onSubmit={this.unlock}>
-        <div className="input-group-wrapper">
-          <label className="input-group">
+        <Grid
+          container={true}
+          justify="center"
+          className={classes.formGrid}
+          direction="column"
+          alignItems="center"
+        >
+          <FormControl margin="normal" fullWidth={true} error={false}>
+            <InputLabel color="primary-text" htmlFor="pKey" className={classes.keyLabel}>
+              <VPNKey className={classes.keyLabelIcon} /> {translateRaw('X_PRIVKEY2')}
+            </InputLabel>
             <Input
+              error={key.length > 0 && !isValidPkey}
               value={key}
-              onChange={this.onPasswordChange}
-              placeholder={translateRaw('X_PRIVKEY2')}
-              isValid={isValidPkey}
+              type="text"
+              id="pKey"
+              autoComplete="current-password"
               onChange={this.onPkeyChange}
-              onEnter={this.props.onUnlock}
             />
-          </label>
-        </div>
-        {isValidPkey &&
-          isPassRequired && (
-            <div className="input-group-wrapper">
-              <label className="input-group">
-                <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
-                <Input
-                  className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
-                  value={password}
-                  onChange={this.onPasswordChange}
-                  onKeyDown={this.onKeyDown}
-                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-                  type="password"
-                />
-              </label>
-            </div>
-          )}
-        <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
-          {translate('ADD_LABEL_6_SHORT')}
-        </button>
+            <Fade in={key.length > 0 && isValidPkey && isPassRequired}>
+              <FormHelperText id="component-error-text">{translate('ADD_LABEL_3')}</FormHelperText>
+            </Fade>
+          </FormControl>
+          {isValidPkey &&
+            isPassRequired && (
+              <Grow in={true}>
+                <FormControl margin="normal" required={true} fullWidth={true} error={false}>
+                  <InputLabel color="primary-text" htmlFor="password">
+                    {translateRaw('INPUT_PASSWORD_LABEL')}
+                  </InputLabel>
+                  <Input
+                    error={key.length > 0 && !isValidPkey}
+                    value={password}
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={this.onPasswordChange}
+                  />
+                </FormControl>
+              </Grow>
+            )}
+
+          <Button
+            className={classes.submitButton}
+            type="submit"
+            variant="raised"
+            color="primary"
+            disabled={unlockDisabled}
+          >
+            {translate('ADD_LABEL_6_SHORT')}
+          </Button>
+        </Grid>
       </form>
     );
   }
@@ -98,7 +152,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
     this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
   };
 
-  private onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+  private onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // NOTE: Textareas don't support password type, so we replace the value
     // with an equal length number of dots. On change, we replace
     const pkey = this.props.value.key;
@@ -112,15 +166,11 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
     });
   };
 
-  private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.keyCode === 13) {
-      this.unlock(e);
-    }
-  };
-
   private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
     this.props.onUnlock();
   };
 }
+
+export const PrivateKeyDecrypt = withStyles(styles)(PrivateKeyDecryptClass);

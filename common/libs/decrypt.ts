@@ -1,14 +1,14 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { createDecipheriv, createHash } from 'crypto';
-import { privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
 import { stripHexPrefixAndLower } from 'libs/values';
+
+const sdk = require('cryptocurve-sdk');
 
 // adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L230
 export function decryptPrivKey(encprivkey: string, password: string): Buffer {
   const cipher = encprivkey.slice(0, 128);
   const decryptedCipher = decodeCryptojsSalt(cipher);
-  console.log(decryptedCipher);
   const evp = evp_kdf(new Buffer(password), decryptedCipher.salt, {
     keysize: 32,
     ivsize: 16
@@ -87,7 +87,7 @@ export function decryptMnemonicToPrivKey(
   const seed = mnemonicToSeed(phrase, pass);
   const derived = HDkey.fromMasterSeed(seed).derive(path);
   const dPrivKey = derived.privateKey;
-  const dAddress = privateToAddress(dPrivKey).toString('hex');
+  const dAddress = sdk.utils.eth.privateToAddress(dPrivKey).toString('hex');
 
   if (dAddress !== address) {
     throw new Error(`Derived ${dAddress}, expected ${address}`);

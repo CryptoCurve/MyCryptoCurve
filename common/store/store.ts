@@ -10,8 +10,7 @@ import {
 } from 'reducers/transactions';
 import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
 import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reducers/wallet';
-import { applyMiddleware, createStore, Store } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { applyMiddleware, compose, createStore, Store } from 'redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
@@ -23,6 +22,7 @@ import {
   getConfigAndCustomTokensStateToSubscribe
 } from './configAndTokens';
 
+const withLogger = false;
 const configureStore = () => {
   const logger = createLogger({
     collapsed: true
@@ -31,10 +31,12 @@ const configureStore = () => {
   let middleware;
   let store: Store<AppState>;
 
+  const windowIfDefined = typeof window === 'undefined' ? null : (window as any);
+  const composeEnhancers = windowIfDefined.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   if (process.env.NODE_ENV !== 'production') {
-    middleware = composeWithDevTools(
-      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history as any))
-    );
+    middleware = withLogger
+      ? composeEnhancers(applyMiddleware(sagaMiddleware, logger, routerMiddleware(history as any)))
+      : composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history as any)));
   } else {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history as any));
   }

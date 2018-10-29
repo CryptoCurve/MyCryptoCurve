@@ -10,7 +10,7 @@ const paths = {
   electron: path.join(__dirname, '../electron-app'),
   shared: path.join(__dirname, '../shared'),
   modules: path.join(__dirname, '../node_modules'),
-}
+};
 
 module.exports = {
   // Configuration

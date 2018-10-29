@@ -10,7 +10,7 @@ export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
 export const VERSION_RAW = packageJson.version;
-export const VERSION = `${VERSION_RAW} (Release Candidate 2)`;
+export const VERSION = `V${VERSION_RAW}`;
 export const N_FACTOR = 8192;
 
 // Bricks the app once this date has been exceeded. Remember to update these 2
@@ -77,6 +77,7 @@ export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
 
 export enum SecureWalletName {}
+
 //WEB3 = 'web3'
 
 export enum HardwareWalletName {

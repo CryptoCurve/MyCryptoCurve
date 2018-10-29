@@ -85,4 +85,6 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-export const SendButtonFactory = connect(mapStateToProps)(SendButtonFactoryClass);
+export const SendButtonFactory = connect(mapStateToProps)(
+  SendButtonFactoryClass
+) as React.ComponentClass<OwnProps>;

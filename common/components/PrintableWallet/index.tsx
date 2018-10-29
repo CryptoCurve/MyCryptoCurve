@@ -1,53 +1,63 @@
 import { PaperWallet } from 'components';
-import React from 'react';
-import printElement from 'utils/printElement';
+import * as React from 'react';
 import { stripHexPrefix } from 'libs/values';
-import translate, { translateRaw } from 'translations';
+import Grid from '@material-ui/core/Grid/Grid';
+import ReactToPrint from 'react-to-print';
+import Button from '@material-ui/core/Button/Button';
+import { Theme, WithStyles } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
 
-export const print = (address: string, privateKey: string) => () =>
-  address &&
-  privateKey &&
-  printElement(<PaperWallet address={address} privateKey={privateKey} />, {
-    popupFeatures: {
-      scrollbars: 'no'
-    },
-    styles: `
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: Lato, sans-serif;
-        font-size: 1rem;
-        line-height: 1.4;
-        margin: 0;
-      }
-    `
+const styles = (theme: Theme) =>
+  createStyles({
+    buttonRow: {
+      marginTop: theme.spacing.unit * 5
+    }
   });
 
-interface Props {
+interface OwnProps {
   address: string;
   privateKey: string;
 }
 
-const PrintableWallet: React.SFC<Props> = ({ address, privateKey }) => {
+const PrintableWallet: React.SFC<OwnProps & WithStyles<typeof styles>> = props => {
+  const { address, privateKey, classes } = props;
+  let PaperWalletRef: any;
   const pkey = stripHexPrefix(privateKey);
 
   return (
-    <div>
-      <PaperWallet address={address} privateKey={pkey} />
-      <a
-        role="button"
-        aria-label={translateRaw('X_PRINT')}
-        aria-describedby="x_PrintDesc"
-        className="btn btn-lg btn-primary btn-block"
-        onClick={print(address, pkey)}
-        style={{ margin: '10px auto 0', maxWidth: '260px' }}
-      >
-        {translate('X_PRINT')}
-      </a>
-    </div>
+    <Grid container={true} direction="column">
+      <PaperWallet
+        address={address}
+        privateKey={pkey}
+        ref={el => {
+          PaperWalletRef = el;
+        }}
+      />
+      <Grid container={true} direction="row" justify="space-between" className={classes.buttonRow}>
+        <Grid item={true}>
+          <ReactToPrint
+            trigger={() => (
+              <Button variant="raised" color="primary">
+                Print Paper Wallet
+              </Button>
+            )}
+            content={() => PaperWalletRef}
+          />
+        </Grid>
+        <Grid item={true}>
+          <Button
+            component={(linkProps: any) => <Link to="/account" {...linkProps} />}
+            variant="raised"
+            color="primary"
+          >
+            Open your wallet
+          </Button>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
-export default PrintableWallet;
+export default withStyles(styles)(PrintableWallet) as React.ComponentClass<OwnProps>;

@@ -6,19 +6,25 @@ import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
 import closeIcon from 'assets/images/close.svg';
 import './UnlockHeader.scss';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props {
+interface OwnProps {
   title?: string;
-  wallet: IWallet;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
+}
+
+interface StateProps {
+  wallet: IWallet;
 }
 
 interface State {
   isExpanded: boolean;
 }
 
-export class UnlockHeader extends React.PureComponent<Props, State> {
+type Props = OwnProps & StateProps & RouteComponentProps<{}>;
+
+export class UnlockHeader extends React.Component<Props, State> {
   public state = {
     isExpanded: !this.props.wallet
   };
@@ -32,40 +38,48 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
   public render() {
     const { title, wallet, disabledWallets, showGenerateLink } = this.props;
     const { isExpanded } = this.state;
-
     return (
-      <article className="UnlockHeader">
-        {title && <h1 className="UnlockHeader-title">{title}</h1>}
-        {wallet &&
-          !isExpanded && (
-            <button
-              className="UnlockHeader-open btn btn-default btn-smr"
-              onClick={this.toggleisExpanded}
-            >
-              <span>
-                <span className="hidden-xs UnlockHeader-open-text">
-                  {translate('CHANGE_WALLET')}
-                </span>
-                <i className="fa fa-refresh" />
-              </span>
-            </button>
-          )}
-        {wallet &&
-          isExpanded && (
-            <button className="UnlockHeader-close" onClick={this.toggleisExpanded}>
-              <img src={closeIcon} alt="close" />
-            </button>
-          )}
+      <React.Fragment>
         <WalletDecrypt
           hidden={!this.state.isExpanded}
           disabledWallets={disabledWallets}
           showGenerateLink={showGenerateLink}
         />
-      </article>
+        {false && (
+          <article className="UnlockHeader">
+            {title && <h1 className="UnlockHeader-title">{title}</h1>}
+            {wallet &&
+              !isExpanded && (
+                <button
+                  className="UnlockHeader-open btn btn-default btn-smr"
+                  onClick={this.toggleIsExpanded}
+                >
+                  <span>
+                    <span className="hidden-xs UnlockHeader-open-text">
+                      {translate('CHANGE_WALLET')}
+                    </span>
+                    <i className="fa fa-refresh" />
+                  </span>
+                </button>
+              )}
+            {wallet &&
+              isExpanded && (
+                <button className="UnlockHeader-close" onClick={this.toggleIsExpanded}>
+                  <img src={closeIcon} alt="close" />
+                </button>
+              )}
+            <WalletDecrypt
+              hidden={!this.state.isExpanded}
+              disabledWallets={disabledWallets}
+              showGenerateLink={showGenerateLink}
+            />
+          </article>
+        )}
+      </React.Fragment>
     );
   }
 
-  public toggleisExpanded = (_: React.FormEvent<HTMLButtonElement>) => {
+  public toggleIsExpanded = () => {
     this.setState(state => {
       return { isExpanded: !state.isExpanded };
     });
@@ -78,4 +92,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(UnlockHeader);
+export default withRouter(connect(mapStateToProps)(UnlockHeader)) as React.ComponentClass<OwnProps>;

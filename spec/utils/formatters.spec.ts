@@ -4,7 +4,8 @@ import {
   toFixedIfLarger,
   formatNumber,
   formatGasLimit,
-  formatMnemonic
+  formatMnemonic,
+  hexToNumber
 } from '../../common/utils/formatters';
 configuredStore.getState();
 
@@ -117,5 +118,19 @@ describe('formatMnemonic', () => {
 
   it('should trim any stray space characters throughout the phrase', () => {
     expect(formatMnemonic(testPhraseExtraSpaces)).toEqual(formattedTestPhrase);
+  });
+});
+
+describe('convertHexToNumber', () => {
+  const hexValueWithPrefix = '0x73144CF8E12e061991258Aaa2d7bA654063567fB';
+  const hexValueWithoutPrefix = '73144CF8E12e061991258Aaa2d7bA654063567fB';
+  const hexValueAsBigNumber = '656986658771785236348307412391604841263224154107';
+
+  it('should convert a hex number with a 0x prefix', () => {
+    expect(hexToNumber(hexValueWithPrefix).toString(10)).toEqual(hexValueAsBigNumber);
+  });
+
+  it('should convert a hex number without the 0x prefix', () => {
+    expect(hexToNumber(hexValueWithoutPrefix).toString(10)).toEqual(hexValueAsBigNumber);
   });
 });

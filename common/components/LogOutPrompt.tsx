@@ -92,4 +92,4 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   resetWallet,
   web3UnsetNode
-})(withRouter<Props>(LogOutPromptClass));
+})(withRouter<Props>(LogOutPromptClass)) as React.ComponentClass<{}>;

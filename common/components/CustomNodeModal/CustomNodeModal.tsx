@@ -48,6 +48,10 @@ interface State {
 type Props = OwnProps & StateProps & DispatchProps;
 
 class CustomNodeModal extends React.Component<Props, State> {
+  private static makeCustomNetworkId(config: CustomNetworkConfig): string {
+    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
+  }
+
   public INITIAL_STATE = {
     name: '',
     url: '',
@@ -309,7 +313,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     const networkId =
       network === CUSTOM.value
-        ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
+        ? CustomNodeModal.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
         : network;
 
     const node: Omit<CustomNodeConfig, 'lib'> = {
@@ -350,10 +354,6 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     this.props.addCustomNode({ config: node, id: node.id });
   };
-
-  private makeCustomNetworkId(config: CustomNetworkConfig): string {
-    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
-  }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
@@ -366,4 +366,6 @@ const mapDispatchToProps: DispatchProps = {
   addCustomNetwork
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomNodeModal);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  CustomNodeModal
+) as React.ComponentClass<OwnProps>;

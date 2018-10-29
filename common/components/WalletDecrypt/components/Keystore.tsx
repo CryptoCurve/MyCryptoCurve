@@ -1,22 +1,30 @@
 import { isKeystorePassRequired } from 'libs/wallet';
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import translate, { translateRaw } from 'translations';
-import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
-import { Input } from 'components/ui';
-import DeprecationWarning from './DeprecationWarning';
+import Button from '@material-ui/core/Button/Button';
+import { Theme, WithStyles } from '@material-ui/core';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import FormControl from '@material-ui/core/FormControl/FormControl';
+import Input from '@material-ui/core/Input/Input';
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
+import { green } from '@material-ui/core/colors';
 
 export interface KeystoreValue {
-  file: string;
+  file: string | null | ArrayBuffer;
   password: string;
   filename: string;
   valid: boolean;
 }
 
-function isPassRequired(file: string): boolean {
+function isPassRequired(file: string | null | ArrayBuffer): boolean {
   let passReq = false;
   try {
-    passReq = isKeystorePassRequired(file);
+    passReq = file !== null && isKeystorePassRequired(file);
   } catch (e) {
     // TODO: communicate invalid file to user
   }
@@ -28,57 +36,104 @@ function isValidFile(rawFile: File): boolean {
   return fileType === '' || fileType === 'application/json';
 }
 
-export class KeystoreDecrypt extends PureComponent {
-  public props: {
-    value: KeystoreValue;
-    isWalletPending: boolean;
-    isPasswordPending: boolean;
-    onChange(value: KeystoreValue): void;
-    onUnlock(): void;
-    showNotification(level: string, message: string): TShowNotification;
-  };
+interface OwnProps {
+  value: KeystoreValue;
+  isWalletPending: boolean;
+  isPasswordPending: boolean;
 
+  onChange(value: KeystoreValue): void;
+
+  onUnlock(): void;
+
+  showNotification(level: string, message: string): TShowNotification;
+}
+
+const styles = (theme: Theme) =>
+  createStyles({
+    hidden: {
+      display: 'none'
+    },
+    formGrid: {
+      marginTop: theme.spacing.unit * 5
+    },
+    fileNameLabel: {
+      marginTop: theme.spacing.unit,
+      marginBottom: theme.spacing.unit,
+      textAlign: 'center'
+    },
+    submitButton: {
+      marginTop: theme.spacing.unit
+    },
+    wrapper: {
+      margin: theme.spacing.unit,
+      position: 'relative'
+    },
+    buttonProgress: {
+      color: green[500],
+      position: 'absolute',
+      top: 'calc(50% - 6px)',
+      left: 'calc(50% - 12px)'
+    }
+  });
+
+class KeystoreDecryptClass extends React.Component<OwnProps & WithStyles<typeof styles>> {
   public render() {
-    const { isWalletPending, value: { file, password, filename } } = this.props;
+    const { isWalletPending, classes, value: { file, password, filename } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
     return (
       <form onSubmit={this.unlock}>
-        <div className="form-group">
+        <Grid
+          container={true}
+          justify="center"
+          className={classes.formGrid}
+          direction="column"
+          alignItems="center"
+        >
           <input
-            className="hidden"
+            style={{ display: 'none' }}
             type="file"
             id="fselector"
             onChange={this.handleFileSelection}
           />
-          <label htmlFor="fselector" style={{ width: '100%' }}>
-            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translate('ADD_RADIO_2_SHORT')}
-            </a>
+          <label htmlFor="fselector">
+            <Button component="span" variant="outlined" color="primary">
+              {translate('ADD_RADIO_2_SHORTER')}
+            </Button>
           </label>
-
-          <label className="WalletDecrypt-decrypt-label" hidden={!file}>
-            <span>{filename}</span>
-          </label>
-
-          {isWalletPending ? <Spinner /> : ''}
-          <Input
-            className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
-              file.length && isWalletPending ? 'hidden' : ''
-            }`}
-            disabled={!file}
-            value={password}
-            onChange={this.onPasswordChange}
-            onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-            type="password"
-          />
-        </div>
-
-        <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translate('ADD_LABEL_6_SHORT')}
-        </button>
+          <Typography className={classes.fileNameLabel} variant="body1">
+            {filename}
+          </Typography>
+          <FormControl margin="normal" required={true} fullWidth={true} error={false}>
+            <InputLabel color="primary-text" htmlFor="password">
+              {translate('INPUT_PASSWORD_LABEL')}
+            </InputLabel>
+            <Input
+              error={!!file && password.length === 0}
+              disabled={!file}
+              value={password}
+              name="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={this.onPasswordChange}
+              onKeyDown={this.onKeyDown}
+            />
+          </FormControl>
+          <div className={classes.wrapper}>
+            <Button
+              className={classes.submitButton}
+              type="submit"
+              variant="raised"
+              color="primary"
+              disabled={unlockDisabled || isWalletPending}
+            >
+              {translate('ADD_LABEL_6_SHORT')}
+            </Button>
+            {isWalletPending && <CircularProgress size={24} className={classes.buttonProgress} />}
+          </div>
+        </Grid>
       </form>
     );
   }
@@ -96,7 +151,8 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   private onPasswordChange = (e: any) => {
-    const valid = this.props.value.file.length && e.target.value.length;
+    const { file } = this.props.value;
+    const valid = file !== null && file.toString().length && e.target.value.length;
     this.props.onChange({
       ...this.props.value,
       password: e.target.value,
@@ -117,7 +173,7 @@ export class KeystoreDecrypt extends PureComponent {
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq,
+        valid: keystore !== null && keystore.toString().length !== 0 && !passReq,
         password: '',
         filename: fileName
       });
@@ -130,3 +186,7 @@ export class KeystoreDecrypt extends PureComponent {
     }
   };
 }
+
+export const KeystoreDecrypt = withStyles(styles)(KeystoreDecryptClass) as React.ComponentClass<
+  OwnProps
+>;

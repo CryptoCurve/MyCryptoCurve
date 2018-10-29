@@ -7,9 +7,10 @@ import {
   UtcWallet
 } from './wallets';
 
-const CryptoCurveSDK = require('cryptocurve-sdk');
-const eth = CryptoCurveSDK.eth;
-const wan = CryptoCurveSDK.wan;
+// import typescript declaration
+import EthTx from 'ethereumjs-tx';
+
+const sdk = require('cryptocurve-sdk');
 
 enum KeystoreTypes {
   presale = 'presale',
@@ -20,8 +21,8 @@ enum KeystoreTypes {
 }
 
 interface ISignWrapper {
-  signRawTransaction(rawTx: any): Buffer;
-  wanSignRawTransaction(rawTx: any): Buffer;
+  signRawTransaction(rawTx: EthTx): Buffer;
+  wanSignRawTransaction(rawTx: EthTx): Buffer;
   signMessage(msg: string): string;
   unlock(): Promise<void>;
 }
@@ -30,14 +31,16 @@ export type WrappedWallet = IFullWallet & ISignWrapper;
 
 export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
-    signRawTransaction: (t: any) => eth.signRawTransaction(t, walletToWrap.getPrivateKey()),
-    wanSignRawTransaction: (t: any) => wan.signRawTransaction(t, walletToWrap.getPrivateKey()),
-    signMessage: (msg: string) => eth.signMessage(msg, walletToWrap.getPrivateKey()),
+    signRawTransaction: (t: EthTx) =>
+      sdk.utils.eth.signRawTransaction(t, walletToWrap.getPrivateKey()),
+    wanSignRawTransaction: (t: EthTx) =>
+      sdk.utils.wan.signRawTransaction(t, walletToWrap.getPrivateKey()),
+    signMessage: (msg: string) => sdk.utils.eth.signMessage(msg, walletToWrap.getPrivateKey()),
     unlock: () => Promise.resolve()
   });
 
-function determineKeystoreType(file: string): string {
-  const parsed = JSON.parse(file);
+function determineKeystoreType(file: string | ArrayBuffer): string {
+  const parsed = JSON.parse(file.toString());
   if (parsed.encseed) {
     return KeystoreTypes.presale;
   } else if (parsed.Crypto || parsed.crypto) {
@@ -53,7 +56,7 @@ function determineKeystoreType(file: string): string {
   }
 }
 
-const isKeystorePassRequired = (file: string): boolean => {
+const isKeystorePassRequired = (file: string | ArrayBuffer): boolean => {
   const keystoreType = determineKeystoreType(file);
   return (
     keystoreType === KeystoreTypes.presale ||

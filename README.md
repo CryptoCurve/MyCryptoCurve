@@ -1,42 +1,39 @@
 # MyCrypto Beta RC (VISIT [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com) for the current site)<br/>Just looking to download? Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/MyCryptoHq/MyCrypto.svg)](https://greenkeeper.io/)
-[![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
-
 ## Running the App
 
-This codebase targets Node 8.9.4 (LTS). After `npm install`ing all dependencies (You may be required to install additional system dependencies, see [Windows Installation](#windows-installation)), due to some node modules relying on them) you can run various commands depending on what you want to do:
+This codebase targets Node 8.9.4 (LTS). After `yarn install`ing all dependencies (You may be required to install additional system dependencies, see [Windows Installation](#windows-installation)), due to some node modules relying on them) you can run various commands depending on what you want to do:
 
 #### Development
 
 ```bash
 # run app in dev mode in browser, rebuild on file changes
-npm run dev
+yarn run dev
 ```
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
-npm run dev:electron
+yarn run dev:electron
 ```
 
 #### Build Releases
 
 ```bash
 # builds the production server app
-npm run build
+yarn run build
 ```
 
 ```bash
 # builds the downloadable version of the site
-npm run build:downloadable
+yarn run build:downloadable
 ```
 
 ```bash
 # builds the electron apps
-npm run build:electron
+yarn run build:electron
 
 # builds only one OS's electron app
-npm run build:electron:(osx|linux|windows)
+yarn run build:electron:(osx|linux|windows)
 ```
 
 All of these builds are output to a folder in `dist/`.
@@ -45,14 +42,14 @@ All of these builds are output to a folder in `dist/`.
 
 ```bash
 # run unit tests with Jest
-npm run test
+yarn run test
 ```
 
 #### Integration Tests:
 
 ```bash
 # run integration tests with Jest
-npm run test:int
+yarn run test:int
 ```
 
 #### Dev (HTTPS):
@@ -90,7 +87,7 @@ To test for correct address derivation, the address derivation checker uses mult
 The derivation checker utility runs as part of the integration test suite.
 
 ```bash
-npm run test:int
+yarn run test:int
 ```
 
 ## Folder structure:
@@ -112,7 +109,7 @@ npm run test:int
 │   ├── translations - Language JSON dictionaries
 │   ├── typescript - Typescript definition files
 │   ├── utils - Common use utility functions
-│   ├── index.tsx - Entry point for app
+│   ├── BalanceSidebar.tsx - Entry point for app
 │   ├── index.html - Html template file for html-webpack-plugin
 │   ├── Root.tsx - Root component for React
 │   └── store.ts - Redux reducer combiner and middleware injector
@@ -132,7 +129,7 @@ npm run test:int
     - Latest versions of Node.js and npm [(click here for update instructions)](https://stackoverflow.com/a/19584407/2860309)
     - Python 2.7.3
     - Visual Studio (any version, Community is free) - windows-build-tools are NOT sufficient (although worth installing if the npm install still doesn't succeed)
-
+    
 2. `npm install`
 3. `npm update`
 
