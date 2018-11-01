@@ -8,13 +8,12 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography/Typography';
 import { Colors } from '../../Root';
-import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput';
-import Button from '@material-ui/core/Button/Button';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import TwitterIcon from 'mdi-material-ui/Twitter';
 import FacebookIcon from 'mdi-material-ui/Facebook';
 import MediumIcon from 'mdi-material-ui/Medium';
 import FooterLogo from '../../assets/images/footer-logo.png';
+import Hidden from '@material-ui/core/Hidden/Hidden';
 
 interface OwnProps {
   latestBlock: string;
@@ -102,13 +101,20 @@ const styles = (theme: Theme) =>
       backgroundColor: Colors.dark,
       color: Colors.white,
       paddingTop: theme.spacing.unit * 10,
-      paddingBottom: theme.spacing.unit * 10
+      paddingBottom: theme.spacing.unit * 10,
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: theme.spacing.unit * 4,
+        paddingBottom: theme.spacing.unit * 4
+      }
     },
     bottomBar: {
       backgroundColor: theme.palette.primary.main,
       height: 65,
       padding: '0 45px',
-      color: Colors.white
+      color: Colors.white,
+      [theme.breakpoints.down('sm')]: {
+        justifyContent: 'center'
+      }
     },
     inputFocus: {
       color: Colors.white,
@@ -172,6 +178,18 @@ const styles = (theme: Theme) =>
       '&:focus': {
         color: Colors.white
       }
+    },
+    footerMenuGrid: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: theme.spacing.unit * 3
+      }
+    },
+    socialMediaGrid: {
+      [theme.breakpoints.down('sm')]: {
+        justifyContent: 'center'
+      }
     }
   });
 
@@ -188,37 +206,16 @@ class Footer extends React.PureComponent<Props, State> {
     return (
       <Grid container={true}>
         <Grid container={true} className={classes.footerContentGrid}>
-          <Grid item={true} md={3}>
-            <Grid container={true} direction="row" spacing={16} justify="center">
-              <img src={FooterLogo} className={classes.footerImage} />
-              {false && (
-                <React.Fragment>
-                  <Grid item={true}>
-                    <OutlinedInput
-                      type="email"
-                      name="email"
-                      autoComplete="email"
-                      labelWidth={0}
-                      classes={{
-                        notchedOutline: classes.inputBorder,
-                        focused: classes.inputFocus,
-                        root: classes.inputRoot
-                      }}
-                      placeholder="Email Address"
-                    />
-                  </Grid>
-                  <Grid item={true}>
-                    <Button variant="raised" color="primary" className={classes.submitButton}>
-                      Subscribe
-                    </Button>
-                  </Grid>
-                </React.Fragment>
-              )}
+          <Hidden smDown={true}>
+            <Grid item={true} md={3}>
+              <Grid container={true} direction="row" spacing={16} justify="center">
+                <img src={FooterLogo} className={classes.footerImage} />
+              </Grid>
             </Grid>
-          </Grid>
+          </Hidden>
           {footerMenuItems.map(column => (
-            <Grid key={column.title} item={true} md={2}>
-              <Grid container={true} direction="column">
+            <Grid key={column.title} item={true} md={2} xs={12}>
+              <Grid container={true} direction="column" className={classes.footerMenuGrid}>
                 <Typography color="inherit" className={classes.footerMenuHeaders}>
                   {column.title}
                 </Typography>
@@ -237,7 +234,14 @@ class Footer extends React.PureComponent<Props, State> {
               </Grid>
             </Grid>
           ))}
-          <Grid item={true} md={3} container={true} alignItems="center">
+          <Grid
+            item={true}
+            md={3}
+            xs={12}
+            container={true}
+            alignItems="center"
+            className={classes.socialMediaGrid}
+          >
             {socialMediaLinks.map((socialMediaItem, idx) => (
               <IconButton key={idx} color="inherit" className={classes.socialMediaButtons}>
                 <NewTabLink
