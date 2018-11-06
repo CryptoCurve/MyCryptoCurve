@@ -38,7 +38,7 @@
     "qrcode.react": "0.8.0",
     "query-string": "6.0.0",
     "rc-slider": "8.6.0",
-    "react": "16.3.2",
+    "react": "16.6.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-datetime": "2.14.0",
     "react-dom": "16.3.2",
@@ -50,6 +50,7 @@
     "react-stepper-horizontal": "1.0.9",
     "react-to-print": "^2.0.0-alpha-3",
     "react-transition-group": "2.3.1",
+    "reactn": "^0.1.0",
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
     "redux-saga": "0.16.0",
@@ -59,9 +60,9 @@
     "uuid": "3.2.1",
     "wallet-address-validator": "0.1.6",
     "wanchain-util": "^1.2.0",
+    "web3": "https://github.com/ethereum/web3.js.git",
     "whatwg-fetch": "2.0.3",
-    "zxcvbn": "4.4.2",
-    "web3": "https://github.com/ethereum/web3.js.git"
+    "zxcvbn": "4.4.2"
   },
   "devDependencies": {
     "@types/bip39": "2.4.0",
@@ -77,7 +78,7 @@
     "@types/qrcode.react": "0.6.3",
     "@types/query-string": "5.1.0",
     "@types/rc-slider": "8.2.3",
-    "@types/react": "16.3.11",
+    "@types/react": "^16.4.18",
     "@types/react-dom": "16.0.5",
     "@types/react-redux": "5.0.15",
     "@types/react-router-dom": "4.2.6",

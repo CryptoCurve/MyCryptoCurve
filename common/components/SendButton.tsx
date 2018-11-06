@@ -15,21 +15,24 @@ export const SendButton: React.SFC<{
     <SendButtonFactory
       signing={signing}
       Modal={customModal ? customModal : ConfirmationModal}
-      withProps={({ disabled, openModal, signTx }) => (
-        <React.Fragment>
-          <Button
-            color="primary"
-            variant="raised"
-            disabled={disabled}
-            className={`SendButton btn btn-primary btn-block ${className}`}
-            onClick={() => {
-              signing ? (signTx(), openModal()) : openModal();
-            }}
-          >
-            {translate('SEND_TRANS')}
-          </Button>
-        </React.Fragment>
-      )}
+      withProps={({ disabled, openModal, signTx }) => {
+        console.log(disabled);
+        return (
+          <React.Fragment>
+            <Button
+              color="primary"
+              variant="raised"
+              disabled={false}
+              className={`SendButton btn btn-primary btn-block ${className}`}
+              onClick={() => {
+                signing ? (signTx(), openModal()) : openModal();
+              }}
+            >
+              {translate('SEND_TRANS')}
+            </Button>
+          </React.Fragment>
+        );
+      }}
     />
     <SigningStatus />
   </React.Fragment>

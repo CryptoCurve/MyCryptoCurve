@@ -26,6 +26,7 @@ export interface AAttributes {
   shape?: 'default' | 'rect' | 'circle' | 'poly';
   target?: '_blank' | '_parent' | '_self' | '_top';
   type?: string;
+
   onClick?(ev: React.MouseEvent<HTMLAnchorElement>): void;
 }
 
@@ -33,14 +34,11 @@ interface NewTabLinkProps extends AAttributes {
   href: string;
   content?:
     | React.ReactElement<any>
+    | Element
     | string
     | number
     | (string | number | React.ReactElement<any>)[];
-  children?:
-    | React.ReactElement<any>
-    | string
-    | number
-    | (string | number | React.ReactElement<any>)[];
+  children?: any;
 }
 
 export class NewTabLink extends React.Component<NewTabLinkProps> {

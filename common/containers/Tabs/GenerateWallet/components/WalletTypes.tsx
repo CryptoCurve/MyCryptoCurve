@@ -25,7 +25,10 @@ const styles = (theme: Theme) =>
       alignItems: 'center'
     },
     buttonRow: {
-      marginTop: theme.spacing.unit * 20
+      marginTop: theme.spacing.unit * 20,
+      [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing.unit * 5
+      }
     }
   });
 

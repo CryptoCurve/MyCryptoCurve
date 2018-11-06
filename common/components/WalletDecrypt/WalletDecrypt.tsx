@@ -25,7 +25,6 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   ViewOnlyDecrypt,
-  WalletButton,
   Web3Decrypt
 } from './components';
 import { AppState } from 'reducers';
@@ -140,7 +139,6 @@ type Wallets = SecureWallets & InsecureWallets & MiscWallet;
 const WEB3_TYPE: keyof typeof WEB3_TYPES | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
 
-const SECURE_WALLETS = Object.values(SecureWalletName);
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
 
 // const MISC_WALLETS = Object.values(MiscWalletName);
@@ -247,7 +245,7 @@ class WalletDecrypt extends Component<
     hasAcknowledgedInsecure: false,
     loginSelectorOpen: false,
     loginSelectorValue: InsecureWalletName.KEYSTORE_FILE
-    // loginSelectorValue: InsecureWalletName.PRIVATE_KEY
+    // loginSelectorValue: WalletName.PRIVATE_KEY
   };
 
   public componentWillMount() {
@@ -256,10 +254,6 @@ class WalletDecrypt extends Component<
     if (params.action === 'view') {
       this.setState({ selectedWalletKey: MiscWalletName.VIEW_ONLY });
     }
-  }
-
-  public componentDidMount() {
-    // setTimeout(()=>this.handleWalletChoice(this.state.loginSelectorValue).then(),500);
   }
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -305,60 +299,36 @@ class WalletDecrypt extends Component<
   }
 
   public getDecryptionComponent() {
-    const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
+    const { selectedWalletKey } = this.state;
     const selectedWallet = this.getSelectedWallet();
 
     if (!selectedWalletKey || !selectedWallet) {
       return null;
     }
 
-    /*if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
-      return (
-        <div className="WalletDecrypt-decrypt">
-          <InsecureWalletWarning
-            walletType={translateRaw(selectedWallet.lid)}
-            onContinue={this.handleAcknowledgeInsecure}
-            onCancel={this.clearWalletChoice}
-          />
-        </div>
-      );
-    }*/
     return (
       <Grid container={true}>
-        {/*<button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>*/}
-        {/*<i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}*/}
-        {/*</button>*/}
-        {/*<h2 className="WalletDecrypt-decrypt-title">*/}
-        {/*{!selectedWallet.isReadOnly} {translate(selectedWallet.lid)}*/}
-        {/*</h2>*/}
-        <Errorable
-          errorMessage={`Oops, looks like ${translateRaw(
-            selectedWallet.lid
-          )} is not supported by your browser`}
-          onError={this.clearWalletChoice}
-        >
-          <selectedWallet.component
-            value={this.state.value}
-            onChange={this.onChange}
-            onUnlock={(value: any) => {
-              if (selectedWallet.redirect) {
-                this.props.history.push(selectedWallet.redirect);
-              }
-              this.onUnlock(value);
-            }}
-            showNotification={this.props.showNotification}
-            isWalletPending={
-              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                ? this.props.isWalletPending
-                : undefined
+        <selectedWallet.component
+          value={this.state.value}
+          onChange={this.onChange}
+          onUnlock={(value: any) => {
+            if (selectedWallet.redirect) {
+              this.props.history.push(selectedWallet.redirect);
             }
-            isPasswordPending={
-              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                ? this.props.isPasswordPending
-                : undefined
-            }
-          />
-        </Errorable>
+            this.onUnlock(value);
+          }}
+          showNotification={this.props.showNotification}
+          isWalletPending={
+            this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+              ? this.props.isWalletPending
+              : undefined
+          }
+          isPasswordPending={
+            this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+              ? this.props.isPasswordPending
+              : undefined
+          }
+        />
       </Grid>
     );
   }
@@ -476,7 +446,7 @@ class WalletDecrypt extends Component<
           {!hidden && (
             <Grid container={true} item={true} alignItems="center" justify="center">
               <TransitionGroup>
-                {decryptionComponent && selectedWallet ? (
+                {false && decryptionComponent && selectedWallet ? (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
                     {decryptionComponent}
                   </CSSTransition>
@@ -509,10 +479,6 @@ class WalletDecrypt extends Component<
     const unlockValue = value && !isEmpty(value) ? value : payload;
     this.WALLETS[selectedWalletKey].unlock(unlockValue);
     this.props.resetTransactionRequested();
-  };
-
-  private isWalletDisabled = (walletKey: WalletName) => {
-    return this.props.computedDisabledWallets.wallets.indexOf(walletKey) !== -1;
   };
 }
 

@@ -1,4 +1,5 @@
 declare module 'react-to-print';
+declare module 'reactn';
 
 declare module '*.svg' {
   const content: any;

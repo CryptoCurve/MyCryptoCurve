@@ -12,20 +12,28 @@ import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener';
 import Zoom from '@material-ui/core/Zoom/Zoom';
+import Hidden from '@material-ui/core/Hidden/Hidden';
 
 interface OwnProps {
-  children: React.ReactElement<any>;
+  children: React.ReactElement<any> | any;
   version?: number;
   title?: string;
   tooltip?: string;
   hideButton?: boolean;
+  buttonAction?(): void;
 }
 
 const styles = (theme: Theme) =>
   createStyles({
     mainGrid: {
       marginTop: theme.spacing.unit * 10,
-      marginBottom: theme.spacing.unit * 20
+      marginBottom: theme.spacing.unit * 20,
+      [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing.unit * 10,
+        marginBottom: theme.spacing.unit * 10,
+        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing.unit
+      }
     },
     layout: {
       display: 'flex',
@@ -44,7 +52,10 @@ const styles = (theme: Theme) =>
       alignItems: 'center'
     },
     buttonRow: {
-      marginTop: theme.spacing.unit * 20
+      marginTop: theme.spacing.unit * 20,
+      [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing.unit * 5
+      }
     },
     tooltip: {
       ...theme.typography.caption,
@@ -128,7 +139,16 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 
   public render() {
-    const { children, version, history, classes, title, tooltip, hideButton } = this.props;
+    const {
+      children,
+      version,
+      history,
+      classes,
+      title,
+      tooltip,
+      hideButton,
+      buttonAction
+    } = this.props;
     const { tooltipOpen } = this.state;
     return version === 2 && title ? (
       <React.Fragment>
@@ -141,18 +161,20 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
             alignItems="center"
             spacing={16}
           >
-            {!hideButton && (
-              <Grid item={true} xs={12} md={2} className={classes.buttonGridItem}>
-                <Button
-                  variant="fab"
-                  color="primary"
-                  aria-label="Back"
-                  onClick={() => history.push('/')}
-                >
-                  <ArrowBack />
-                </Button>
-              </Grid>
-            )}
+            <Hidden smDown={true}>
+              {!hideButton && (
+                <Grid item={true} xs={12} md={2} className={classes.buttonGridItem}>
+                  <Button
+                    variant="fab"
+                    color="primary"
+                    aria-label="Back"
+                    onClick={() => (buttonAction ? buttonAction() : history.push('/'))}
+                  >
+                    <ArrowBack />
+                  </Button>
+                </Grid>
+              )}
+            </Hidden>
             <Grid
               item={true}
               container={true}
@@ -179,7 +201,9 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
                     title={
                       <React.Fragment>
                         {translate(tooltip)}
-                        <span className={classes.arrowArrow} />
+                        <Hidden smDown={true}>
+                          <span className={classes.arrowArrow} />
+                        </Hidden>
                       </React.Fragment>
                     }
                   >
@@ -215,6 +239,6 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 }
 
-export default withStyles(styles)(withRouter(GenerateWalletTemplate)) as React.ComponentClass<
-  OwnProps
->;
+export default (withStyles(styles)(
+  withRouter(GenerateWalletTemplate)
+) as unknown) as React.ComponentClass<OwnProps>;

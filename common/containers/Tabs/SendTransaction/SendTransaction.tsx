@@ -28,6 +28,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { OwnProps } from '../../../components/ConfirmationModalTemplate';
 import { Colors } from '../../../Root';
 import { TabType } from '../../../components/SubTabs/SubTabs';
+import Wallet from '../../../ccContainers/Tabs/Wallet/Wallet';
 
 const Send = () => (
   <React.Fragment>
@@ -77,6 +78,8 @@ type Props = StateProps & DispatchProps & RouteComponentProps<{}> & WithStyles<t
 class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, match, location, history, dispatchResetWallet, classes } = this.props;
+    console.log('WALLET', wallet);
+
     const currentPath = match.url;
     const tabs: TabType[] = [
       {
@@ -87,7 +90,8 @@ class SendTransaction extends React.Component<Props> {
     ];
     return (
       <React.Fragment>
-        {!wallet && <UnlockHeader showGenerateLink={true} />}
+        <Wallet />
+        {false && !wallet && <UnlockHeader showGenerateLink={true} />}
         {wallet && (
           <React.Fragment>
             <Grid container={true} className={classes.walletGrid}>
@@ -155,7 +159,7 @@ class SendTransaction extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(
+export default (withStyles(styles)(
   connect(
     (state: AppState) => ({
       wallet: getWalletInst(state),
@@ -165,4 +169,4 @@ export default withStyles(styles)(
       dispatchResetWallet: resetWallet
     }
   )(SendTransaction)
-) as React.ComponentClass<OwnProps>;
+) as unknown) as React.ComponentClass<OwnProps>;

@@ -31,6 +31,8 @@ import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import WebTemplate from './containers/TabSection/WebTemplate';
+import AppDialog from './ccComponents/AppDialog';
+import './state';
 
 export enum Colors {
   white = '#fff',
@@ -116,7 +118,7 @@ const theme = createMuiTheme({
         minHeight: 60,
         textTransform: 'none',
         fontSize: 22,
-        minWidth: 330
+        minWidth: 300
       },
       outlined: {
         borderWidth: ['2px', '!important'].join(' ')
@@ -258,6 +260,7 @@ class RootClass extends Component<Props, State> {
     );
 
     // Creating new base to handle the new design
+    // @ts-ignore
     return (
       <React.Fragment>
         <CssBaseline />
@@ -291,6 +294,7 @@ class RootClass extends Component<Props, State> {
             )}
           </Provider>
           <div id="ModalContainer" />
+          <AppDialog />
         </MuiThemeProvider>
       </React.Fragment>
     );

@@ -19,10 +19,6 @@ interface OwnProps {
   latestBlock: string;
 }
 
-interface State {
-  isDisclaimerOpen: boolean;
-}
-
 interface FooterMenuItem {
   name: string;
   link: string;
@@ -113,7 +109,9 @@ const styles = (theme: Theme) =>
       padding: '0 45px',
       color: Colors.white,
       [theme.breakpoints.down('sm')]: {
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: 0,
+        paddingBottom: 8
       }
     },
     inputFocus: {
@@ -195,60 +193,56 @@ const styles = (theme: Theme) =>
 
 type Props = OwnProps & WithStyles<typeof styles>;
 
-class Footer extends React.PureComponent<Props, State> {
-  public state: State = {
-    isDisclaimerOpen: false
-  };
-
-  public render() {
-    const { classes } = this.props;
-
-    return (
-      <Grid container={true}>
-        <Grid container={true} className={classes.footerContentGrid}>
-          <Hidden smDown={true}>
-            <Grid item={true} md={3}>
-              <Grid container={true} direction="row" spacing={16} justify="center">
-                <img src={FooterLogo} className={classes.footerImage} />
-              </Grid>
+const Footer = (props: Props) => {
+  const { classes } = props;
+  return (
+    <Grid container={true}>
+      <Grid container={true} className={classes.footerContentGrid}>
+        <Hidden smDown={true}>
+          <Grid item={true} md={3}>
+            <Grid container={true} direction="row" spacing={16} justify="center">
+              <img src={FooterLogo} className={classes.footerImage} />
             </Grid>
-          </Hidden>
-          {footerMenuItems.map(column => (
-            <Grid key={column.title} item={true} md={2} xs={12}>
-              <Grid container={true} direction="column" className={classes.footerMenuGrid}>
-                <Typography color="inherit" className={classes.footerMenuHeaders}>
-                  {column.title}
-                </Typography>
-                {column.items.map(item => (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className={classes.footerLinks}
-                  >
-                    <Typography key={item.name} color="inherit" className={classes.footerMenuItem}>
-                      {item.name}
-                    </Typography>
-                  </a>
-                ))}
-              </Grid>
-            </Grid>
-          ))}
-          <Grid
-            item={true}
-            md={3}
-            xs={12}
-            container={true}
-            alignItems="center"
-            className={classes.socialMediaGrid}
-          >
-            {socialMediaLinks.map((socialMediaItem, idx) => (
-              <IconButton key={idx} color="inherit" className={classes.socialMediaButtons}>
-                <NewTabLink
-                  href={socialMediaItem.link}
-                  aria-label={socialMediaItem.text}
-                  className={classes.socialMediaButtonsLink}
+          </Grid>
+        </Hidden>
+        {footerMenuItems.map(column => (
+          <Grid key={column.title} item={true} md={2} xs={12}>
+            <Grid container={true} direction="column" className={classes.footerMenuGrid}>
+              <Typography color="inherit" className={classes.footerMenuHeaders}>
+                {column.title}
+              </Typography>
+              {column.items.map(item => (
+                <a
+                  key={item.name}
+                  href={item.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className={classes.footerLinks}
                 >
+                  <Typography key={item.name} color="inherit" className={classes.footerMenuItem}>
+                    {item.name}
+                  </Typography>
+                </a>
+              ))}
+            </Grid>
+          </Grid>
+        ))}
+        <Grid
+          item={true}
+          md={3}
+          xs={12}
+          container={true}
+          alignItems="center"
+          className={classes.socialMediaGrid}
+        >
+          {socialMediaLinks.map((socialMediaItem, idx) => (
+            <IconButton key={idx} color="inherit" className={classes.socialMediaButtons}>
+              <NewTabLink
+                href={socialMediaItem.link}
+                aria-label={socialMediaItem.text}
+                className={classes.socialMediaButtonsLink}
+              >
+                <React.Fragment>
                   {socialMediaItem.text === 'twitter' ? (
                     <TwitterIcon />
                   ) : socialMediaItem.text === 'medium' ? (
@@ -256,28 +250,30 @@ class Footer extends React.PureComponent<Props, State> {
                   ) : (
                     <FacebookIcon />
                   )}
-                </NewTabLink>
-              </IconButton>
-            ))}
-          </Grid>
-        </Grid>
-        <Grid
-          container={true}
-          className={classes.bottomBar}
-          alignItems="center"
-          direction="row"
-          spacing={16}
-        >
-          <Grid item={true}>
-            <Typography color="inherit">{`© ${new Date().getFullYear()} CryptoCurve & MyCrypto, Inc.`}</Typography>
-          </Grid>
-          <Grid item={true}>
-            <Typography color="inherit">{VERSION}</Typography>
-          </Grid>
+                </React.Fragment>
+              </NewTabLink>
+            </IconButton>
+          ))}
         </Grid>
       </Grid>
-    );
-  }
-}
+      <Grid
+        container={true}
+        className={classes.bottomBar}
+        alignItems="center"
+        direction="row"
+        spacing={16}
+      >
+        <Grid item={true}>
+          <Typography color="inherit">{`© ${new Date().getFullYear()} CryptoCurve & MyCrypto, Inc.`}</Typography>
+        </Grid>
+        <Grid item={true}>
+          <Typography color="inherit">
+            {VERSION} {open ? 'true' : 'false'}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
 
-export default withStyles(styles)(Footer);
+export default withStyles(styles)(Footer) as React.ComponentClass<OwnProps>;

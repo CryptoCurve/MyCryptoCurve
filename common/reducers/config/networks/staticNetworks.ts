@@ -1,13 +1,6 @@
-import {
-  ethPlorer,
-  ETHTokenExplorer,
-  gasPriceDefaults,
-  InsecureWalletName,
-  SecureWalletName
-} from 'config/data';
+import { gasPriceDefaults, InsecureWalletName, SecureWalletName } from 'config/data';
 import {
   ELLA_DEFAULT,
-  WAN_DEFAULT,
   ETC_LEDGER,
   ETC_TREZOR,
   ETH_DEFAULT,
@@ -67,7 +60,7 @@ export const INITIAL_STATE: State = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: WAN_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
-      [InsecureWalletName.MNEMONIC_PHRASE]: WAN_DEFAULT
+      [WalletName.MNEMONIC_PHRASE]: WAN_DEFAULT
     },
     gasPriceSettings: {
       min: 0.1,
