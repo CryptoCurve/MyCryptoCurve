@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './Template.scss';
 import translate from 'translations';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -20,6 +20,7 @@ interface OwnProps {
   title?: string;
   tooltip?: string;
   hideButton?: boolean;
+
   buttonAction?(): void;
 }
 
@@ -139,18 +140,9 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 
   public render() {
-    const {
-      children,
-      version,
-      history,
-      classes,
-      title,
-      tooltip,
-      hideButton,
-      buttonAction
-    } = this.props;
+    const { children, history, classes, title, tooltip, hideButton, buttonAction } = this.props;
     const { tooltipOpen } = this.state;
-    return version === 2 && title ? (
+    return (
       <React.Fragment>
         <Grid container={true} className={classes.mainGrid}>
           <Grid
@@ -183,7 +175,7 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
               justify="center"
               alignItems="center"
             >
-              <span className={classes.title}>{translate(title)}</span>
+              <span className={classes.title}>{title ? translate(title) : ''}</span>
               {tooltip && (
                 <ClickAwayListener onClickAway={this.handleTooltipClose}>
                   <Tooltip
@@ -219,13 +211,6 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
           {children}
         </Grid>
       </React.Fragment>
-    ) : (
-      <div className="GenerateWallet Tab-content-pane">
-        {children}
-        <Link className="GenerateWallet-back" to="/generate">
-          <i className="fa fa-arrow-left" /> {translate('MODAL_BACK')}
-        </Link>
-      </div>
     );
   }
 

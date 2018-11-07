@@ -5,7 +5,7 @@ import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-rout
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
-import SendTransaction from 'containers/Tabs/SendTransaction';
+// import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
@@ -33,6 +33,7 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import WebTemplate from './containers/TabSection/WebTemplate';
 import AppDialog from './ccComponents/AppDialog';
 import './state';
+import Wallet from 'ccContainers/Tabs/Wallet';
 
 export enum Colors {
   white = '#fff',
@@ -241,8 +242,9 @@ class RootClass extends Component<Props, State> {
     const routes: React.ReactNode = (
       <CaptureRouteNotFound>
         <Switch>
-          <Route path="/account" exact={true} component={SendTransaction} />
-          <Route path="/account/:action?" component={SendTransaction} />
+          <Route path="/account" exact={true} component={Wallet} />
+          {/*<Route path="/account" exact={true} component={SendTransaction} />*/}
+          {/*<Route path="/account/:action?" component={SendTransaction} />*/}
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />

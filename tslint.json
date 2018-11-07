@@ -31,7 +31,8 @@
       true,
       "allow-fast-null-checks"
     ],
-    "no-empty-interface": false
+    "no-empty-interface": false,
+    "jsx-boolean-value": false
   },
   "rulesDirectory": ["node_modules/tslint-microsoft-contrib"]
 }
