@@ -113,7 +113,11 @@ class SendTransaction extends React.Component<Props> {
                     render={() => (
                       <RedirectWithQuery
                         from={`${currentPath}`}
-                        to={`${wallet.isReadOnly ? `${currentPath}/info` : `${currentPath}/send`}`}
+                        to={`${
+                          wallet !== null && wallet !== undefined && wallet.isReadOnly
+                            ? `${currentPath}/info`
+                            : `${currentPath}/send`
+                        }`}
                       />
                     )}
                   />
@@ -121,7 +125,11 @@ class SendTransaction extends React.Component<Props> {
                     exact={true}
                     path={`${currentPath}/send`}
                     render={() => {
-                      return wallet.isReadOnly ? <Redirect to={`${currentPath}/info`} /> : <Send />;
+                      return wallet !== null && wallet !== undefined && wallet.isReadOnly ? (
+                        <Redirect to={`${currentPath}/info`} />
+                      ) : (
+                        <Send />
+                      );
                     }}
                   />
                   <Route

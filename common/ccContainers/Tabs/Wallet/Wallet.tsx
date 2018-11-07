@@ -1,6 +1,7 @@
 import * as Reactn from 'reactn';
 import * as React from 'react';
 import OpenWallet from './OpenWallet';
+import OpenedWallet from './OpenedWallet';
 
 interface OwnProps {}
 
@@ -17,6 +18,7 @@ class Wallet extends Reactn.Component<Props> {
     return (
       <React.Fragment>
         <OpenWallet />
+        {/*<OpenedWallet />*/}
       </React.Fragment>
     );
   }

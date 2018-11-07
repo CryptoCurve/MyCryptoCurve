@@ -1,6 +1,5 @@
 import * as Reactn from 'reactn';
 import * as React from 'react';
-import WalletDecrypt from '../../../components/WalletDecrypt';
 import Template from '../../../containers/Tabs/GenerateWallet/components/Template';
 import Grid from '@material-ui/core/Grid/Grid';
 import Select from '@material-ui/core/Select/Select';
@@ -118,7 +117,6 @@ class OpenWallet extends Reactn.Component<Props, State> {
             )}
           </Grid>
         </Template>
-        <WalletDecrypt />
       </React.Fragment>
     );
   }
@@ -154,6 +152,7 @@ class OpenWallet extends Reactn.Component<Props, State> {
     console.log(payload);
     console.log(value);
     console.log(selectedWalletKey);
+    console.log(this.global);
   };
 
   private getDecryptionComponent() {
