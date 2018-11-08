@@ -75,9 +75,9 @@ export const theme = createMuiTheme({
     MuiButton: {
       root: {
         borderRadius: 50,
-        minHeight: 60,
+        minHeight: 50,
         textTransform: 'none',
-        fontSize: 22,
+        fontSize: 20,
         minWidth: 300
       },
       outlined: {
@@ -124,3 +124,16 @@ export const theme = createMuiTheme({
     }
   }
 });
+
+export const customStyles = {
+  darkButton: {
+    color: Colors.white,
+    backgroundColor: Colors.dark,
+    '&:hover': {
+      backgroundColor: Colors.darkHover
+    }
+  },
+  buttonEndIconSpacing: {
+    marginLeft: theme.spacing.unit * 2
+  }
+};
