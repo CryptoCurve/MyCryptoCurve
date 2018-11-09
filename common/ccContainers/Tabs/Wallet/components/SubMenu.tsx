@@ -6,7 +6,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography/Typography';
 import Button from '@material-ui/core/Button/Button';
 import { customStyles } from '../../../../ccTheme/theme';
-import { IconArrowForward } from '../../../../ccTheme/icons';
 
 interface OwnProps {}
 
