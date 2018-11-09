@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Footer, Header } from 'components';
 import { AppState } from 'reducers';
@@ -40,13 +40,13 @@ interface StateProps {
 
 interface OwnProps {
   isUnavailableOffline?: boolean;
-  // children: string | React.ReactElement<string> | React.ReactElement<string>[];
-  routes: React.ReactNode;
+  children?: string | React.ReactElement<string> | React.ReactElement<string>[];
+  routes: JSX.Element;
 }
 
-type Props = OwnProps & StateProps & RouteComponentProps<{}>;
+type Props = OwnProps & StateProps & RouteComponentProps<{}> & WithStyles<typeof styles>;
 
-class WebTemplate extends Component<Props & WithStyles<typeof styles>, {}> {
+class WebTemplate extends React.Component<Props, {}> {
   public render() {
     const { routes, classes, isUnavailableOffline, isOffline, latestBlock, location } = this.props;
     return (
@@ -76,4 +76,6 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default withStyles(styles)(withRouter(connect(mapStateToProps, {})(WebTemplate)));
+export default withStyles(styles)(
+  withRouter(connect(mapStateToProps, {})(WebTemplate))
+) as React.ComponentClass<OwnProps>;

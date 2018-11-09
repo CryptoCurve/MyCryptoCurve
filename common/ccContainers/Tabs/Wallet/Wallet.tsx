@@ -61,36 +61,38 @@ class Wallet extends Reactn.Component<Props, State> {
     return (
       <React.Fragment>
         <MuiThemeProvider theme={mainTheme}>
-          {false && <OpenWallet />}
-          <Grid container className={classes.walletGridContainer}>
-            <Grid xs={8} item />
-            <Grid item xs={4} className={classes.subNavBar}>
-              <Button variant="raised" className={classes.darkButton}>
-                Change Wallet <IconArrowForward className={classes.buttonEndIconSpacing} />
-              </Button>
-            </Grid>
-            <Grid item container xs={8} direction="column">
-              <Grid item>
-                <Tabs
-                  value={openTab}
-                  onChange={this.handleTabChange}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  fullWidth
-                >
-                  <Tab label="Send" />
-                  <Tab label="Tab Placeholder" />
-                  <Tab label="Tab Placeholder" />
-                </Tabs>
+          {<OpenWallet />}
+          {false && (
+            <Grid container className={classes.walletGridContainer}>
+              <Grid xs={8} item />
+              <Grid item xs={4} className={classes.subNavBar}>
+                <Button variant="raised" className={classes.darkButton}>
+                  Change Wallet <IconArrowForward className={classes.buttonEndIconSpacing} />
+                </Button>
               </Grid>
-              <Grid container className={classes.tabContent} item>
-                <SendTransaction />
+              <Grid item container xs={8} direction="column">
+                <Grid item>
+                  <Tabs
+                    value={openTab}
+                    onChange={this.handleTabChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    fullWidth
+                  >
+                    <Tab label="Send" />
+                    <Tab label="Tab Placeholder" />
+                    <Tab label="Tab Placeholder" />
+                  </Tabs>
+                </Grid>
+                <Grid container className={classes.tabContent} item>
+                  <SendTransaction />
+                </Grid>
+              </Grid>
+              <Grid item xs={4} className={classes.walletGridSubMenu}>
+                <SubMenu />
               </Grid>
             </Grid>
-            <Grid item xs={4} className={classes.walletGridSubMenu}>
-              <SubMenu />
-            </Grid>
-          </Grid>
+          )}
         </MuiThemeProvider>
       </React.Fragment>
     );

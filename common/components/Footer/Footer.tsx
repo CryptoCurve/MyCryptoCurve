@@ -267,9 +267,7 @@ const Footer = (props: Props) => {
           <Typography color="inherit">{`© ${new Date().getFullYear()} CryptoCurve & MyCrypto, Inc.`}</Typography>
         </Grid>
         <Grid item={true}>
-          <Typography color="inherit">
-            {VERSION} {open ? 'true' : 'false'}
-          </Typography>
+          <Typography color="inherit">{VERSION}</Typography>
         </Grid>
       </Grid>
     </Grid>

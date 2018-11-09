@@ -1,10 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
-import TabSection from '../../containers/TabSection/index';
 import './PageNotFound.scss';
 
-const PageNotFound: React.SFC = () => (
-  <TabSection>
+const PageNotFound = () => {
+  return (
     <section className="Tab-content PageNotFound">
       <div className="Tab-content-pane">
         <h1 className="PageNotFound-header">/ᐠ≗ᆽ≗ᐟ \</h1>
@@ -16,7 +15,7 @@ const PageNotFound: React.SFC = () => (
         </main>
       </div>
     </section>
-  </TabSection>
-);
+  );
+};
 
 export default PageNotFound;
