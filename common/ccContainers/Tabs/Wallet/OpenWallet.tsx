@@ -13,6 +13,13 @@ import { WalletName, WalletType, walletTypes } from '../../../ccConstants/wallet
 import { PrivateKeyValue } from '../../../components/WalletDecrypt/components';
 import { InsecureWalletName } from '../../../config';
 
+import {
+  getKeystoreWallet,
+  getPrivKeyWallet,
+  getMnemonicWallet
+} from '../../../libs/wallet/non-deterministic/helpers';
+import { IFullWallet } from 'libs/wallet';
+
 type UnlockParams = {} | PrivateKeyValue;
 
 interface OwnProps {}
@@ -45,9 +52,11 @@ const styles = (theme: Theme) =>
 type Props = OwnProps & WithStyles<typeof styles>;
 
 class OpenWallet extends Reactn.Component<Props, State> {
+  selectedWalletKey: string | null;
+  value: any;
   public state = {
-    selectedWalletKey: null,
-    value: null,
+    selectedWalletKey: this.selectedWalletKey,
+    value: this.value,
     loginSelectorValue: WalletName.PRIVATE_KEY
   };
 
@@ -149,10 +158,67 @@ class OpenWallet extends Reactn.Component<Props, State> {
   private onUnlock = (payload: any) => {
     const { value, selectedWalletKey } = this.state;
 
+    // TODO unset wallet
+
     console.log(payload);
-    console.log(value);
-    console.log(selectedWalletKey);
-    console.log(this.global);
+
+    // keystore:
+    // {
+    //    file: "{"version":3,"id":"21b880d2-b450-45a7-a14c-9880408…512087c0a92540bdf5f617dabfe703a32b220aebec2c31"}}",
+    //    password: "79e6c763d48b1f4581937ea5b82955260c182d49a34ca67e988932f069f7f4f4",
+    //    valid: 64,
+    //    filename: "UTC--2018-08-14T01-29-10.758Z--674118a4b7121fab8c811c15722e8188959eb62f"
+    // }
+    // private key:
+    // {
+    //    key: "aa628d568082ee43d2aa946f9dc2d233748b70d5b02de9160783ba940555682b",
+    //    password: "",
+    //    valid: true
+    // }
+    // console.log(value);
+
+    // keystore: keystoreFile
+    // private key: privateKey
+    // console.log(selectedWalletKey);
+
+    switch (selectedWalletKey) {
+      case 'mnemonic':
+        try {
+          this.global.setWallet(
+            getMnemonicWallet(value.phrase, value.password, value.path, value.address)
+          );
+        } catch (err) {
+          console.log('show translated ERROR_14 (wallet not found)');
+        }
+        break;
+      case 'privateKey':
+        try {
+          this.global.setWallet(getPrivKeyWallet(value.key, value.password));
+        } catch (e) {
+          console.log('ERROR ' + e.message);
+        }
+        break;
+      case 'keystoreFile':
+        try {
+          this.global.setWallet(getKeystoreWallet(value.file, value.password));
+        } catch (e) {
+          if (
+            value.password === '' &&
+            e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
+          ) {
+            // yield put(setPasswordPrompt());
+            console.log('show password prompt');
+          } else {
+            // yield put(showNotification('danger', translate('ERROR_6')));
+            console.log('show translated ERROR_6 (invalid password)');
+          }
+        }
+        break;
+    }
+
+    // {dialog: {…}, wallet: {…}, dialogToggleOpen: ƒ, setWallet: ƒ}
+    //console.log('this.global');
+    //console.log(this.global);
   };
 
   private getDecryptionComponent() {
