@@ -121,7 +121,11 @@ const styles = (theme: Theme) =>
     logoGrid: {
       paddingLeft: theme.spacing.unit * 10,
       paddingRight: theme.spacing.unit * 10,
-      textAlign: 'center'
+      textAlign: 'center',
+      [theme.breakpoints.down('xs')]: {
+        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing.unit
+      }
     },
     tabsGrid: {
       [theme.breakpoints.only('xs')]: {
@@ -201,7 +205,12 @@ class Header extends Component<Props, State> {
           <Grid container={true} className={classes.headerGrid} alignItems="center">
             <Grid item={true} xs={12} sm={2} className={classes.logoGrid}>
               <Link to={'/'} className={classes.link} onClick={this.handleChange.bind(this, {}, 0)}>
-                <Typography variant="headline" color="inherit" className={classes.logoText}>
+                <Typography
+                  variant="headline"
+                  color="inherit"
+                  className={classes.logoText}
+                  align="center"
+                >
                   MyCryptoCurve
                 </Typography>
               </Link>

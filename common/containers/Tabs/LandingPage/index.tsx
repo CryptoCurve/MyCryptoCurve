@@ -11,10 +11,10 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Typography from '@material-ui/core/Typography/Typography';
 import Grid from '@material-ui/core/Grid/Grid';
 import Button from '@material-ui/core/Button/Button';
-import { NavigationLink, navigationLinksLandingPage } from 'config/navigation';
 import classnames from 'classnames';
 import Slide from '@material-ui/core/Slide/Slide';
 import { Colors } from '../../../Root';
+import { NewTabLink } from '../../../components/ui';
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
@@ -53,6 +53,12 @@ const styles = (theme: Theme) =>
     whiteText: {
       color: Colors.white,
       textAlign: 'center'
+    },
+    newTabLink: {
+      color: Colors.white,
+      '&:hover': {
+        color: Colors.white
+      }
     }
   });
 
@@ -87,19 +93,24 @@ class LandingPage extends React.Component<Props & WithStyles<typeof styles>> {
             alignItems="center"
             spacing={24}
           >
-            {navigationLinksLandingPage.map((link: NavigationLink, index: number) => (
-              <React.Fragment key={index}>
-                <Grid item={true}>
-                  <Button
-                    variant="outlined"
-                    classes={{ outlined: classes.button }}
-                    onClick={() => this.handleClick(link.to)}
-                  >
-                    {translate(link.name)}
-                  </Button>
-                </Grid>
-              </React.Fragment>
-            ))}
+            <React.Fragment>
+              <Grid item={true}>
+                <Button
+                  variant="outlined"
+                  classes={{ outlined: classes.button }}
+                  onClick={() => this.handleClick('/account')}
+                >
+                  {translate('NAV_VIEW')}
+                </Button>
+              </Grid>
+              <Grid item={true}>
+                <Button variant="outlined" classes={{ outlined: classes.button }}>
+                  <NewTabLink href="https://cryptocurve.io/#faq" className={classes.newTabLink}>
+                    {translate('NAV_LEARN')}
+                  </NewTabLink>
+                </Button>
+              </Grid>
+            </React.Fragment>
           </Grid>
         </main>
       </Slide>

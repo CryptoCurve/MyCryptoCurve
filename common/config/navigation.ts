@@ -28,7 +28,8 @@ const learnMore: NavigationLink = {
 };
 
 /* Collections of navigation links */
-export const navigationLinks: NavigationLink[] = [openWallet, newWallet, viewAddress].filter(
+// export const navigationLinks: NavigationLink[] = [openWallet, newWallet, viewAddress].filter(
+export const navigationLinks: NavigationLink[] = [openWallet, newWallet].filter(
   (link: NavigationLink) => !link.disabled
 );
 
