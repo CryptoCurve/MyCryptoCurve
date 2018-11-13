@@ -114,7 +114,7 @@ class TokenBalances extends React.Component<Props> {
     } else if (!walletTokens) {
       content = (
         <Grid item={true} className={classes.topMargin}>
-          <Button onClick={this.scanWalletForTokens} variant="raised" color="primary">
+          <Button onClick={this.scanWalletForTokens} variant="contained" color="primary">
             {translate('SCAN_TOKENS')}
           </Button>
         </Grid>

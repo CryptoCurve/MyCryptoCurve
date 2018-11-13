@@ -119,7 +119,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props & WithStyles<typeof style
             <Button
               className={classes.submitButton}
               color="primary"
-              variant="raised"
+              variant="contained"
               disabled={!isValid}
             >
               {translate('VIEW_ADDR')}

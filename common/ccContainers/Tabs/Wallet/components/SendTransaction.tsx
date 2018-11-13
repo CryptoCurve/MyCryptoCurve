@@ -60,7 +60,7 @@ class SendTransaction extends Reactn.Component<Props, State> {
           />
         </Grid>
         <Grid item className={classes.gridItem}>
-          <Button variant="raised" color="primary">
+          <Button variant="contained" color="primary">
             Send Transaction
           </Button>
         </Grid>

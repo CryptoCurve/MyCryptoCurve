@@ -125,7 +125,7 @@ class KeystoreDecryptClass extends React.Component<OwnProps & WithStyles<typeof 
             <Button
               className={classes.submitButton}
               type="submit"
-              variant="raised"
+              variant="contained"
               color="primary"
               disabled={unlockDisabled || isWalletPending}
             >

@@ -23,6 +23,7 @@ export const theme = createMuiTheme({
     }
   },
   typography: {
+    useNextVariants: true,
     fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
     headline: {
       fontFamily: [

@@ -179,7 +179,7 @@ class EnterPassword extends Component<OwnProps & WithStyles<typeof styles>, Stat
               <Button
                 disabled={!canSubmit}
                 type="submit"
-                variant="raised"
+                variant="contained"
                 color="primary"
                 className={classes.submit}
               >

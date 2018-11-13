@@ -113,7 +113,7 @@ export default withStyles(styles)(
           <Grid container={true} spacing={8} className={classes.topMargin}>
             <Grid item={true} xs={6}>
               <Button
-                variant="raised"
+                variant="contained"
                 size="small"
                 className={classnames(classes.darkButtons, classes.narrowButton)}
                 onClick={this.props.toggleForm}
@@ -123,7 +123,7 @@ export default withStyles(styles)(
             </Grid>
             <Grid item={true} xs={6}>
               <Button
-                variant="raised"
+                variant="contained"
                 color="primary"
                 type="submit"
                 size="small"

@@ -386,7 +386,7 @@ class WalletDecrypt extends Component<
         </Grid>
         <Grid item={true}>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             onClick={this.handleWalletChoice.bind(this, loginSelectorValue)}
           >

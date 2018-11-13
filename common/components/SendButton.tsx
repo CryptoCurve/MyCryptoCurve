@@ -21,7 +21,7 @@ export const SendButton: React.SFC<{
           <React.Fragment>
             <Button
               color="primary"
-              variant="raised"
+              variant="contained"
               disabled={false}
               className={`SendButton btn btn-primary btn-block ${className}`}
               onClick={() => {

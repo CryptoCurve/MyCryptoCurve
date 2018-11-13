@@ -110,7 +110,7 @@ export default withStyles(styles)(
           <Grid container={true} spacing={8} className={classes.topMargin}>
             <Grid item={true} xs={6}>
               <Button
-                variant="raised"
+                variant="contained"
                 color="primary"
                 size="small"
                 className={classes.narrowButton}
@@ -121,7 +121,7 @@ export default withStyles(styles)(
             </Grid>
             <Grid item={true} xs={6}>
               <Button
-                variant="raised"
+                variant="contained"
                 color="primary"
                 size="small"
                 className={classes.narrowButton}

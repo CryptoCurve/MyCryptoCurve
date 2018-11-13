@@ -73,7 +73,7 @@ class PaperWallet extends React.Component<OwnProps & WithStyles<typeof styles>, 
       >
         <Grid container={true} item={true} justify="center" className={classes.privateKeyGrid}>
           <CopyToClipboard text={stripHexPrefix(privateKey)} onCopy={this.handleOnCopy}>
-            <Button variant="raised" classes={{ contained: classes.saveKeyButton }}>
+            <Button variant="contained" classes={{ contained: classes.saveKeyButton }}>
               {stripHexPrefix(privateKey)}
             </Button>
           </CopyToClipboard>

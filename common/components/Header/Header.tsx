@@ -206,7 +206,7 @@ class Header extends Component<Props, State> {
             <Grid item={true} xs={12} sm={2} className={classes.logoGrid}>
               <Link to={'/'} className={classes.link} onClick={this.handleChange.bind(this, {}, 0)}>
                 <Typography
-                  variant="headline"
+                  variant="h5"
                   color="inherit"
                   className={classes.logoText}
                   align="center"

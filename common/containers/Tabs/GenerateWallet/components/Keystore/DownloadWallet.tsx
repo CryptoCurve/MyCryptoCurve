@@ -63,7 +63,7 @@ class DownloadWallet extends Component<OwnProps & WithStyles<typeof styles>, Sta
         </Grid>
         <Grid item={true}>
           <Button
-            variant="raised"
+            variant="contained"
             onClick={this.handleContinue}
             disabled={!hasDownloadedWallet}
             color="primary"

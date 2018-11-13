@@ -3,6 +3,7 @@ import { IWallet } from './libs/wallet';
 
 interface DialogState {
   title: string;
+  body: string;
   open: boolean;
 }
 
@@ -14,6 +15,7 @@ interface GlobalState {
 const initialState: GlobalState = {
   dialog: {
     title: 'Initial Title',
+    body: 'Initial text for the body',
     open: false
   },
   wallet: {}
@@ -21,8 +23,12 @@ const initialState: GlobalState = {
 
 setGlobal(initialState);
 
-addReducer('dialogToggleOpen', (state: GlobalState) => ({
-  dialog: { ...state.dialog, open: !state.dialog.open }
+addReducer('dialogClose', (state: GlobalState) => ({
+  dialog: { ...state.dialog, open: false }
+}));
+
+addReducer('dialogShow', (state: GlobalState, title: string, body: string) => ({
+  dialog: { ...state.dialog, open: true, title, body }
 }));
 
 addReducer('setWallet', (state: GlobalState, wallet: IWallet) => ({

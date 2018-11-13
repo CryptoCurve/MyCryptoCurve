@@ -56,7 +56,8 @@ class OpenWallet extends Reactn.Component<Props, State> {
   public state = {
     selectedWalletKey: this.selectedWalletKey,
     value: this.value,
-    loginSelectorValue: WalletName.PRIVATE_KEY
+    // loginSelectorValue: WalletName.PRIVATE_KEY
+    loginSelectorValue: WalletName.KEYSTORE_FILE
   };
 
   public render() {
@@ -67,65 +68,62 @@ class OpenWallet extends Reactn.Component<Props, State> {
     const decryptionComponent = this.getDecryptionComponent();
     console.log(selectedWallet, decryptionComponent);
     return (
-      <React.Fragment>
-        <Template
-          version={2}
-          title={selectedWallet ? selectedWallet.lid : 'OPEN_WALLET_SELECT'}
-          hideButton={!(selectedWallet && selectedWallet.lid)}
-          buttonAction={this.onBackButton}
-        >
-          <Grid container={true} item={true} alignItems="center" justify="center">
-            {selectedWallet && decryptionComponent ? (
-              <Grid
-                item={true}
-                container={true}
-                className={classes.decryptComponentGrid}
-                direction="column"
-                spacing={40}
-              >
-                <Grid item={true}>{decryptionComponent}</Grid>
+      <Template
+        title={selectedWallet ? selectedWallet.lid : 'OPEN_WALLET_SELECT'}
+        hideButton={!(selectedWallet && selectedWallet.lid)}
+        buttonAction={this.onBackButton}
+      >
+        <Grid container={true} item={true} alignItems="center" justify="center">
+          {selectedWallet && decryptionComponent ? (
+            <Grid
+              item={true}
+              container={true}
+              className={classes.decryptComponentGrid}
+              direction="column"
+              spacing={40}
+            >
+              <Grid item={true}>{decryptionComponent}</Grid>
+            </Grid>
+          ) : (
+            <Grid
+              item={true}
+              container={true}
+              className={classes.loginSelectItem}
+              direction="column"
+              spacing={40}
+            >
+              <Grid item={true}>
+                <Select
+                  // open={loginSelectorOpen}
+                  onClose={this.handleLoginSelectorClose}
+                  onOpen={this.handleLoginSelectorOpen}
+                  value={loginSelectorValue}
+                  onChange={this.handleLoginSelectorChange}
+                  className={classes.loginSelector}
+                >
+                  {Object.keys(walletTypes).map((walletType: WalletName) => {
+                    const wallet = walletTypes[walletType];
+                    return (
+                      <MenuItem key={walletType} value={walletType}>
+                        {translateRaw(wallet.lid)}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
               </Grid>
-            ) : (
-              <Grid
-                item={true}
-                container={true}
-                className={classes.loginSelectItem}
-                direction="column"
-                spacing={40}
-              >
-                <Grid item={true}>
-                  <Select
-                    // open={loginSelectorOpen}
-                    onClose={this.handleLoginSelectorClose}
-                    onOpen={this.handleLoginSelectorOpen}
-                    value={loginSelectorValue}
-                    onChange={this.handleLoginSelectorChange}
-                    className={classes.loginSelector}
-                  >
-                    {Object.keys(walletTypes).map((walletType: WalletName) => {
-                      const wallet = walletTypes[walletType];
-                      return (
-                        <MenuItem key={walletType} value={walletType}>
-                          {translateRaw(wallet.lid)}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </Grid>
-                <Grid item={true} className={classes.buttonGrid}>
-                  <Button
-                    variant="raised"
-                    color="primary"
-                    onClick={this.handleWalletChoice.bind(this, loginSelectorValue)}
-                  >
-                    {translateRaw('ACTION_14')}
-                  </Button>
-                </Grid>
+              <Grid item={true} className={classes.buttonGrid}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleWalletChoice.bind(this, loginSelectorValue)}
+                >
+                  {translateRaw('ACTION_14')}
+                </Button>
               </Grid>
-            )}
-          </Grid>
-        </Template>
-      </React.Fragment>
+            </Grid>
+          )}
+        </Grid>
+      </Template>
     );
   }
 
@@ -208,14 +206,19 @@ class OpenWallet extends Reactn.Component<Props, State> {
             // yield put(setPasswordPrompt());
             console.log('show password prompt');
           } else {
-            // yield put(showNotification('danger', translate('ERROR_6')));
-            console.log('show translated ERROR_6 (invalid password)');
+            console.log(value, selectedWalletKey);
+            // check whether a password was provided
+            if (value.password) {
+              const { dialogShow } = this.global;
+              dialogShow('Invalid Password', 'Invalid password provided');
+              // yield put(showNotification('danger', translate('ERROR_6')));
+              console.log('show translated ERROR_6 (invalid password)');
+            }
           }
         }
         break;
     }
 
-    // {dialog: {…}, wallet: {…}, dialogToggleOpen: ƒ, setWallet: ƒ}
     //console.log('this.global');
     //console.log(this.global);
   };

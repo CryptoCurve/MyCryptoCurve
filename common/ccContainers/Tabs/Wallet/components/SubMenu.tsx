@@ -37,7 +37,7 @@ class SubMenu extends Reactn.Component<Props, State> {
         <div className={classes.subSection}>
           <Typography variant="title">Token Balances</Typography>
           <div className={classes.subSectionContent}>
-            <Button variant="raised" color="primary">
+            <Button variant="contained" color="primary">
               Scan for Tokens
             </Button>
           </div>
@@ -55,7 +55,7 @@ class SubMenu extends Reactn.Component<Props, State> {
           </div>
         </div>
         <div className={classes.subSection}>
-          <Button variant="raised" color="primary">
+          <Button variant="contained" color="primary">
             View Transaction History
           </Button>
         </div>
@@ -65,4 +65,4 @@ class SubMenu extends Reactn.Component<Props, State> {
 }
 
 // @ts-ignore
-export default (withStyles(styles)(SubMenu) as unknown) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(SubMenu) as React.ComponentClass<OwnProps>;

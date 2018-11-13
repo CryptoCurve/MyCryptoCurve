@@ -10,16 +10,16 @@ type Props = OwnProps;
 class AppDialog extends Reactn.Component<Props> {
   public render() {
     console.log('Render AppDialog');
-    const { title, open } = this.global.dialog;
+    const { title, open, body } = this.global.dialog;
     return (
       <Dialog open={open}>
         <DialogTitle>{title}</DialogTitle>
-        <div onClick={this.handleClick}>This will be the body</div>
+        <div onClick={this.handleClick}>{body}</div>
       </Dialog>
     );
   }
   private handleClick = () => {
-    this.global.dialogToggleOpen();
+    this.global.dialogClose();
   };
 }
 

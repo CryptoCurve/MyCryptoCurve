@@ -31,7 +31,7 @@ import {
   getKeystoreWallet,
   determineKeystoreType,
   KeystoreTypes,
-  getUtcWallet,
+  // getUtcWallet,
   signWrapper,
   WalletConfig
 } from 'libs/wallet';

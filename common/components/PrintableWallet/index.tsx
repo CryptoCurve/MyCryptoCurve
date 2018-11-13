@@ -39,7 +39,7 @@ const PrintableWallet: React.SFC<OwnProps & WithStyles<typeof styles>> = props =
         <Grid item={true}>
           <ReactToPrint
             trigger={() => (
-              <Button variant="raised" color="primary">
+              <Button variant="contained" color="primary">
                 Print Paper Wallet
               </Button>
             )}
@@ -49,7 +49,7 @@ const PrintableWallet: React.SFC<OwnProps & WithStyles<typeof styles>> = props =
         <Grid item={true}>
           <Button
             component={(linkProps: any) => <Link to="/account" {...linkProps} />}
-            variant="raised"
+            variant="contained"
             color="primary"
           >
             Open your wallet

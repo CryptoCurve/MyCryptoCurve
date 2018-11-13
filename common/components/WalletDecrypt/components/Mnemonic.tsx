@@ -156,7 +156,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               <Button
                 className={classes.submitButton}
                 type="submit"
-                variant="raised"
+                variant="contained"
                 color="primary"
                 disabled={!isValidMnemonic || loading}
               >

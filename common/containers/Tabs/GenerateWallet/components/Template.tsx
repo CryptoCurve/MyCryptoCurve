@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './Template.scss';
 import translate from 'translations';
@@ -224,6 +224,6 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 }
 
-export default (withStyles(styles)(
-  withRouter(GenerateWalletTemplate)
-) as unknown) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(withRouter(GenerateWalletTemplate)) as React.ComponentClass<
+  OwnProps
+>;

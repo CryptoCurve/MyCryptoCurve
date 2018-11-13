@@ -133,7 +133,7 @@ class PrivateKeyDecryptClass extends PureComponent<Props & WithStyles<typeof sty
           <Button
             className={classes.submitButton}
             type="submit"
-            variant="raised"
+            variant="contained"
             color="primary"
             disabled={unlockDisabled}
           >

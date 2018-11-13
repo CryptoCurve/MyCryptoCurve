@@ -68,7 +68,7 @@ class Wallet extends Reactn.Component<Props, State> {
             <Grid container className={classes.walletGridContainer}>
               <Grid xs={8} item />
               <Grid item xs={4} className={classes.subNavBar}>
-                <Button variant="raised" className={classes.darkButton} onClick={unsetWallet}>
+                <Button variant="contained" className={classes.darkButton} onClick={unsetWallet}>
                   Change Wallet <IconArrowForward className={classes.buttonEndIconSpacing} />
                 </Button>
               </Grid>
@@ -106,4 +106,4 @@ class Wallet extends Reactn.Component<Props, State> {
 }
 
 // @ts-ignore
-export default withStyles(styles)(Wallet as unknown) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(Wallet) as React.ComponentClass<OwnProps>;

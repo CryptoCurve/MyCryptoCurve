@@ -207,7 +207,7 @@ class AccountInfo extends React.Component<Props, State> {
               {/*<Typography variant="display1">{translate('SIDEBAR_TRANSHISTORY')}</Typography>*/}
               {!!blockExplorer && (
                 <Grid item={true}>
-                  <Button variant="raised" color="primary">
+                  <Button variant="contained" color="primary">
                     <NewTabLink
                       className={classes.whiteText}
                       href={blockExplorer.addressUrl(address)}
@@ -219,7 +219,7 @@ class AccountInfo extends React.Component<Props, State> {
               )}
               {network.name === 'ETH' && (
                 <Grid item={true}>
-                  <Button variant="raised" color="primary">
+                  <Button variant="contained" color="primary">
                     <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
                       {`${network.name} (${etherChainExplorerInst.origin})`}
                     </NewTabLink>
@@ -228,7 +228,7 @@ class AccountInfo extends React.Component<Props, State> {
               )}
               {!!tokenExplorer && (
                 <Grid item={true}>
-                  <Button variant="raised" color="primary">
+                  <Button variant="contained" color="primary">
                     <NewTabLink href={tokenExplorer.address(address)}>
                       {`Tokens (${tokenExplorer.name})`}
                     </NewTabLink>

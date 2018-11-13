@@ -328,14 +328,14 @@ class DeterministicWalletsModalClass extends React.PureComponent<
           </Grid>
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <Button onClick={onCancel} variant="raised">
+          <Button onClick={onCancel} variant="contained">
             {translate('ACTION_2')}
           </Button>
           <Button
             disabled={!selectedAddress}
             onClick={this.handleConfirmAddress}
             color="primary"
-            variant="raised"
+            variant="contained"
           >
             {translate('ACTION_3')}
           </Button>
