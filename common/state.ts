@@ -28,3 +28,7 @@ addReducer('dialogToggleOpen', (state: GlobalState) => ({
 addReducer('setWallet', (state: GlobalState, wallet: IWallet) => ({
   wallet: { ...state.wallet, ...wallet }
 }));
+
+addReducer('unsetWallet', () => ({
+  wallet: {}
+}));

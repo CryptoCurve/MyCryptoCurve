@@ -56,17 +56,19 @@ class Wallet extends Reactn.Component<Props, State> {
   public render() {
     const { classes } = this.props;
     const { openTab } = this.state;
+    const { wallet, unsetWallet } = this.global;
     // const {wallet} = this.global;
     console.log(this.global);
+    console.log(wallet);
     return (
       <React.Fragment>
         <MuiThemeProvider theme={mainTheme}>
-          {<OpenWallet />}
-          {false && (
+          {!wallet._privKey && <OpenWallet />}
+          {wallet._privKey && (
             <Grid container className={classes.walletGridContainer}>
               <Grid xs={8} item />
               <Grid item xs={4} className={classes.subNavBar}>
-                <Button variant="raised" className={classes.darkButton}>
+                <Button variant="raised" className={classes.darkButton} onClick={unsetWallet}>
                   Change Wallet <IconArrowForward className={classes.buttonEndIconSpacing} />
                 </Button>
               </Grid>

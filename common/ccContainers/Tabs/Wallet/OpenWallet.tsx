@@ -17,8 +17,7 @@ import {
   getKeystoreWallet,
   getPrivKeyWallet,
   getMnemonicWallet
-} from '../../../libs/wallet/non-deterministic/helpers';
-import { IFullWallet } from 'libs/wallet';
+} from '../../../libs/wallet/non-deterministic';
 
 type UnlockParams = {} | PrivateKeyValue;
 
@@ -52,8 +51,8 @@ const styles = (theme: Theme) =>
 type Props = OwnProps & WithStyles<typeof styles>;
 
 class OpenWallet extends Reactn.Component<Props, State> {
-  selectedWalletKey: string | null;
-  value: any;
+  public selectedWalletKey: string | null;
+  public value: any;
   public state = {
     selectedWalletKey: this.selectedWalletKey,
     value: this.value,
