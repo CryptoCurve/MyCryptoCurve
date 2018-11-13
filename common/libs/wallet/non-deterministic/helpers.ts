@@ -6,6 +6,7 @@ import {
   PrivKeyWallet,
   UtcWallet
 } from './wallets';
+import { MnemonicWallet } from '../deterministic/mnemonic';
 
 // import typescript declaration
 import EthTx from 'ethereumjs-tx';
@@ -41,19 +42,30 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
 
 function determineKeystoreType(file: string | ArrayBuffer): string {
   const parsed = JSON.parse(file.toString());
-  if (parsed.encseed) {
-    return KeystoreTypes.presale;
-  } else if (parsed.Crypto || parsed.crypto) {
-    return KeystoreTypes.utc;
-  } else if (parsed.hash && parsed.locked === true) {
-    return KeystoreTypes.v1Encrypted;
-  } else if (parsed.hash && parsed.locked === false) {
-    return KeystoreTypes.v1Unencrypted;
-  } else if (parsed.publisher === 'MyEtherWallet') {
-    return KeystoreTypes.v2Unencrypted;
-  } else {
-    throw new Error('Invalid keystore');
+
+  for (var property in parsed) {
+    switch (property.toLowerCase()) {
+      case 'encseed':
+        return KeystoreTypes.presale;
+      case 'crypto':
+        return KeystoreTypes.utc;
+      case 'hash':
+        if (parsed.locked === true) {
+          return KeystoreTypes.v1Encrypted;
+        }
+        if (parsed.locked === false) {
+          return KeystoreTypes.v1Unencrypted;
+        }
+        break;
+      case 'publisher':
+        if (parsed.publisher === 'MyEtherWallet') {
+          return KeystoreTypes.v2Unencrypted;
+        }
+        break;
+    }
   }
+
+  throw new Error('Invalid keystore');
 }
 
 const isKeystorePassRequired = (file: string | ArrayBuffer): boolean => {
@@ -65,14 +77,13 @@ const isKeystorePassRequired = (file: string | ArrayBuffer): boolean => {
   );
 };
 
-const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
-  return UtcWallet(file, password);
-};
-
 const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
     ? PrivKeyWallet(Buffer.from(key, 'hex'))
     : EncryptedPrivateKeyWallet(key, password);
+
+const getMnemonicWallet = (phrase: string, password: string, path: string, address: string) =>
+  MnemonicWallet(phrase, password, path, address);
 
 const getKeystoreWallet = (file: string, password: string) => {
   const parsed = JSON.parse(file);
@@ -90,6 +101,8 @@ const getKeystoreWallet = (file: string, password: string) => {
     case KeystoreTypes.v2Unencrypted:
       return PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
 
+    case KeystoreTypes.utc:
+      return UtcWallet(file, password);
     default:
       throw Error('Unknown wallet');
   }
@@ -100,6 +113,6 @@ export {
   determineKeystoreType,
   getPrivKeyWallet,
   getKeystoreWallet,
-  getUtcWallet,
+  getMnemonicWallet,
   KeystoreTypes
 };
