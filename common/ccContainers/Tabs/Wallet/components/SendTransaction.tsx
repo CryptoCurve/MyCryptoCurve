@@ -37,7 +37,14 @@ class SendTransaction extends Reactn.Component<Props, State> {
   public render() {
     const { classes } = this.props;
     const { amount, toAddress } = this.state;
-    console.log(this.global);
+    var fromAddress = this.global.wallet.address;
+    console.log('from ' + fromAddress);
+    console.log(amount + ' to ' + toAddress);
+    // TODO HERE IS WHERE WE USE THE WALLET TO PREPARE AND SIGN THE TRANSACTION
+    // TODO validate address
+    // TODO check balance
+    // TODO action on success - enable send transaction button
+    // TODO action on failure - disable send transaction button
     return (
       <Grid container className={classes.containerGrid} direction="column" justify="flex-end">
         <Grid item className={classes.gridItem}>

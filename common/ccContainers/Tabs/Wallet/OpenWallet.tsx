@@ -152,10 +152,15 @@ class OpenWallet extends Reactn.Component<Props, State> {
     this.setState({ value });
   };
 
+  private onMnemonicUnlock = () => {
+    // receives mnemonic and optional password, returns array of addresses for selection
+    console.log('onMnemonicUnlock called');
+  };
+
   private onUnlock = (payload: any) => {
     const { value, selectedWalletKey } = this.state;
-
-    // TODO unset wallet
+    this.global.unsetWallet();
+    var wallet = null;
 
     console.log(payload);
 
@@ -181,23 +186,24 @@ class OpenWallet extends Reactn.Component<Props, State> {
     switch (selectedWalletKey) {
       case 'mnemonic':
         try {
-          this.global.setWallet(
-            getMnemonicWallet(value.phrase, value.password, value.path, value.address)
-          );
+          // TODO find address part for claude
+          wallet = getMnemonicWallet(value.phrase, value.password, value.path, value.address);
+          // TODO action on successful wallet change
         } catch (err) {
           console.log('show translated ERROR_14 (wallet not found)');
+          // TODO action on unlock failure
         }
         break;
       case 'privateKey':
         try {
-          this.global.setWallet(getPrivKeyWallet(value.key, value.password));
+          wallet = getPrivKeyWallet(value.key, value.password);
         } catch (e) {
           console.log('ERROR ' + e.message);
         }
         break;
       case 'keystoreFile':
         try {
-          this.global.setWallet(getKeystoreWallet(value.file, value.password));
+          wallet = getKeystoreWallet(value.file, value.password);
         } catch (e) {
           if (
             value.password === '' &&
@@ -223,8 +229,10 @@ class OpenWallet extends Reactn.Component<Props, State> {
         break;
     }
 
-    //console.log('this.global');
-    //console.log(this.global);
+    if (wallet) {
+      this.global.setWallet(wallet);
+    }
+    //console.log(this.global.wallet);
   };
 
   private getDecryptionComponent() {

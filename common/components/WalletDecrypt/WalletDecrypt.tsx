@@ -9,7 +9,6 @@ import {
   TUnlockMnemonic,
   TUnlockPrivateKey,
   TUnlockWeb3,
-  unlockKeystore,
   unlockMnemonic,
   unlockPrivateKey,
   unlockWeb3
@@ -506,7 +505,6 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 export default withStyles(styles)(
   withRouter(
     connect(mapStateToProps, {
-      unlockKeystore,
       unlockMnemonic,
       unlockPrivateKey,
       unlockWeb3,
