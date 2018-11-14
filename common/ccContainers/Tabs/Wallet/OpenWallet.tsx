@@ -209,10 +209,14 @@ class OpenWallet extends Reactn.Component<Props, State> {
             console.log(value, selectedWalletKey);
             // check whether a password was provided
             if (value.password) {
-              const { dialogShow } = this.global;
-              dialogShow('Invalid Password', 'Invalid password provided');
+              const { snackBarPush } = this.global;
               // yield put(showNotification('danger', translate('ERROR_6')));
               console.log('show translated ERROR_6 (invalid password)');
+              snackBarPush({
+                key: new Date().toString(),
+                message: translateRaw('ERROR_6'),
+                type: 'error'
+              });
             }
           }
         }

@@ -14,6 +14,7 @@ import FacebookIcon from 'mdi-material-ui/Facebook';
 import MediumIcon from 'mdi-material-ui/Medium';
 import FooterLogo from '../../assets/images/footer-logo.png';
 import Hidden from '@material-ui/core/Hidden/Hidden';
+import * as Reactn from 'reactn';
 
 interface OwnProps {
   latestBlock: string;
@@ -193,85 +194,100 @@ const styles = (theme: Theme) =>
 
 type Props = OwnProps & WithStyles<typeof styles>;
 
-const Footer = (props: Props) => {
-  const { classes } = props;
-  return (
-    <Grid container={true}>
-      <Grid container={true} className={classes.footerContentGrid}>
-        <Hidden smDown={true}>
-          <Grid item={true} md={3}>
-            <Grid container={true} direction="row" spacing={16} justify="center">
-              <img src={FooterLogo} className={classes.footerImage} />
+class Footer extends Reactn.Component<Props> {
+  public render() {
+    const { classes } = this.props;
+    return (
+      <Grid container={true}>
+        <Grid container={true} className={classes.footerContentGrid}>
+          <Hidden smDown={true}>
+            <Grid item={true} md={3}>
+              <Grid container={true} direction="row" spacing={16} justify="center">
+                <img src={FooterLogo} className={classes.footerImage} />
+              </Grid>
             </Grid>
-          </Grid>
-        </Hidden>
-        {footerMenuItems.map(column => (
-          <Grid key={column.title} item={true} md={2} xs={12}>
-            <Grid container={true} direction="column" className={classes.footerMenuGrid}>
-              <Typography color="inherit" className={classes.footerMenuHeaders}>
-                {column.title}
-              </Typography>
-              {column.items.map(item => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className={classes.footerLinks}
-                >
-                  <Typography key={item.name} color="inherit" className={classes.footerMenuItem}>
-                    {item.name}
-                  </Typography>
-                </a>
-              ))}
+          </Hidden>
+          {footerMenuItems.map(column => (
+            <Grid key={column.title} item={true} md={2} xs={12}>
+              <Grid container={true} direction="column" className={classes.footerMenuGrid}>
+                <Typography color="inherit" className={classes.footerMenuHeaders}>
+                  {column.title}
+                </Typography>
+                {column.items.map(item => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className={classes.footerLinks}
+                  >
+                    <Typography key={item.name} color="inherit" className={classes.footerMenuItem}>
+                      {item.name}
+                    </Typography>
+                  </a>
+                ))}
+              </Grid>
             </Grid>
-          </Grid>
-        ))}
-        <Grid
-          item={true}
-          md={3}
-          xs={12}
-          container={true}
-          alignItems="center"
-          className={classes.socialMediaGrid}
-        >
-          {socialMediaLinks.map((socialMediaItem, idx) => (
-            <IconButton key={idx} color="inherit" className={classes.socialMediaButtons}>
-              <NewTabLink
-                href={socialMediaItem.link}
-                aria-label={socialMediaItem.text}
-                className={classes.socialMediaButtonsLink}
-              >
-                <React.Fragment>
-                  {socialMediaItem.text === 'twitter' ? (
-                    <TwitterIcon />
-                  ) : socialMediaItem.text === 'medium' ? (
-                    <MediumIcon />
-                  ) : (
-                    <FacebookIcon />
-                  )}
-                </React.Fragment>
-              </NewTabLink>
-            </IconButton>
           ))}
+          <Grid
+            item={true}
+            md={3}
+            xs={12}
+            container={true}
+            alignItems="center"
+            className={classes.socialMediaGrid}
+          >
+            {socialMediaLinks.map((socialMediaItem, idx) => (
+              <IconButton key={idx} color="inherit" className={classes.socialMediaButtons}>
+                <NewTabLink
+                  href={socialMediaItem.link}
+                  aria-label={socialMediaItem.text}
+                  className={classes.socialMediaButtonsLink}
+                >
+                  <React.Fragment>
+                    {socialMediaItem.text === 'twitter' ? (
+                      <TwitterIcon />
+                    ) : socialMediaItem.text === 'medium' ? (
+                      <MediumIcon />
+                    ) : (
+                      <FacebookIcon />
+                    )}
+                  </React.Fragment>
+                </NewTabLink>
+              </IconButton>
+            ))}
+          </Grid>
+        </Grid>
+        <Grid
+          container={true}
+          className={classes.bottomBar}
+          alignItems="center"
+          direction="row"
+          spacing={16}
+        >
+          <Grid item={true}>
+            <Typography color="inherit">{`© ${new Date().getFullYear()} CryptoCurve & MyCrypto, Inc.`}</Typography>
+          </Grid>
+          <Grid item={true}>
+            <Typography color="inherit" onClick={this.testFunction}>
+              {VERSION}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
-      <Grid
-        container={true}
-        className={classes.bottomBar}
-        alignItems="center"
-        direction="row"
-        spacing={16}
-      >
-        <Grid item={true}>
-          <Typography color="inherit">{`© ${new Date().getFullYear()} CryptoCurve & MyCrypto, Inc.`}</Typography>
-        </Grid>
-        <Grid item={true}>
-          <Typography color="inherit">{VERSION}</Typography>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
+    );
+  }
 
+  private testFunction = () => {
+    console.log('Test function to trigger events');
+    // console.log(this.global);
+    // this.global.snackBarPush({
+    //   key: new Date().toString(),
+    //   message: "This is a new test message",
+    //   type: "success"
+    // })
+  };
+}
+
+// @ts-ignore
 export default withStyles(styles)(Footer) as React.ComponentClass<OwnProps>;

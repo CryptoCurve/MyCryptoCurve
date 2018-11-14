@@ -8,7 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import SubMenu from './components/SubMenu';
 import { customStyles, theme as mainTheme } from '../../../ccTheme/theme';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { IconArrowForward } from '../../../ccTheme/icons';
+import { ArrowForwardIcon } from '../../../ccTheme/icons';
 import Button from '@material-ui/core/Button/Button';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
@@ -69,7 +69,7 @@ class Wallet extends Reactn.Component<Props, State> {
               <Grid xs={8} item />
               <Grid item xs={4} className={classes.subNavBar}>
                 <Button variant="contained" className={classes.darkButton} onClick={unsetWallet}>
-                  Change Wallet <IconArrowForward className={classes.buttonEndIconSpacing} />
+                  Change Wallet <ArrowForwardIcon className={classes.buttonEndIconSpacing} />
                 </Button>
               </Grid>
               <Grid item container xs={8} direction="column">

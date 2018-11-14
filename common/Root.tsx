@@ -20,6 +20,7 @@ import WebTemplate from './containers/TabSection/WebTemplate';
 import AppDialog from './ccComponents/AppDialog';
 import './state';
 import Wallet from 'ccContainers/Tabs/Wallet';
+import AppSnackBar from './ccComponents/AppSnackBar';
 
 export enum Colors {
   white = '#fff',
@@ -229,6 +230,7 @@ class RootClass extends Component<Props, State> {
           </Provider>
           <div id="ModalContainer" />
           <AppDialog />
+          <AppSnackBar />
         </MuiThemeProvider>
       </React.Fragment>
     );
