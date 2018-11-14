@@ -2,6 +2,7 @@ import * as Reactn from 'reactn';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import * as React from 'react';
+import { renderConsoleText } from '../ccHelpers/helpers';
 
 interface OwnProps {}
 
@@ -9,7 +10,7 @@ type Props = OwnProps;
 
 class AppDialog extends Reactn.Component<Props> {
   public render() {
-    console.log('Render AppDialog');
+    console.log(...renderConsoleText('Render AppDialog', 'lightGreen'));
     const { title, open, body } = this.global.dialog;
     return (
       <Dialog open={open}>

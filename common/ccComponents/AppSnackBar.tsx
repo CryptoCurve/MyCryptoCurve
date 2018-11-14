@@ -9,6 +9,7 @@ import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import { amber, green } from '@material-ui/core/colors';
 import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
+import { renderConsoleText } from '../ccHelpers/helpers';
 
 interface OwnProps {}
 
@@ -62,7 +63,7 @@ class AppSnackBar extends Reactn.Component<Props, State> {
     const { open, messageInfo } = this.state;
     const { classes } = this.props;
     const { key, message, type } = messageInfo;
-    console.log('Render AppSnackBar');
+    console.log(...renderConsoleText('Render AppSnackBar', 'lightGreen'));
 
     return (
       <div>

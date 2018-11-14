@@ -18,6 +18,7 @@ import {
   getPrivKeyWallet,
   getMnemonicWallet
 } from '../../../libs/wallet/non-deterministic';
+import { renderConsoleText } from '../../../ccHelpers/helpers';
 
 type UnlockParams = {} | PrivateKeyValue;
 
@@ -56,17 +57,15 @@ class OpenWallet extends Reactn.Component<Props, State> {
   public state = {
     selectedWalletKey: this.selectedWalletKey,
     value: this.value,
-    // loginSelectorValue: WalletName.PRIVATE_KEY
-    loginSelectorValue: WalletName.KEYSTORE_FILE
+    loginSelectorValue: WalletName.PRIVATE_KEY
   };
 
   public render() {
-    console.log('Render OpenWallet');
+    console.log(...renderConsoleText('Render OpenWallet', 'lightGreen'));
     const { classes } = this.props;
     const { loginSelectorValue } = this.state;
     const selectedWallet = this.getSelectedWallet();
     const decryptionComponent = this.getDecryptionComponent();
-    console.log(selectedWallet, decryptionComponent);
     return (
       <Template
         title={selectedWallet ? selectedWallet.lid : 'OPEN_WALLET_SELECT'}
@@ -152,18 +151,16 @@ class OpenWallet extends Reactn.Component<Props, State> {
     this.setState({ value });
   };
 
-  private onMnemonicUnlock = () => {
-    // receives mnemonic and optional password, returns array of addresses for selection
-    console.log('onMnemonicUnlock called');
-  };
+  // private onMnemonicUnlock = () => {
+  //   // receives mnemonic and optional password, returns array of addresses for selection
+  //   console.log('onMnemonicUnlock called');
+  // };
 
   private onUnlock = (payload: any) => {
     const { value, selectedWalletKey } = this.state;
-    this.global.unsetWallet();
-    var wallet = null;
-
+    // this.global.unsetWallet();
     console.log(payload);
-
+    let wallet = null;
     // keystore:
     // {
     //    file: "{"version":3,"id":"21b880d2-b450-45a7-a14c-9880408…512087c0a92540bdf5f617dabfe703a32b220aebec2c31"}}",

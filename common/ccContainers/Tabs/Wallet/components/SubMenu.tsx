@@ -35,7 +35,7 @@ class SubMenu extends Reactn.Component<Props, State> {
     return (
       <React.Fragment>
         <div className={classes.subSection}>
-          <Typography variant="title">Token Balances</Typography>
+          <Typography variant="h6">Token Balances</Typography>
           <div className={classes.subSectionContent}>
             <Button variant="contained" color="primary">
               Scan for Tokens
@@ -43,13 +43,13 @@ class SubMenu extends Reactn.Component<Props, State> {
           </div>
         </div>
         <div className={classes.subSection}>
-          <Typography variant="title">Account Address</Typography>
+          <Typography variant="h6">Account Address</Typography>
           <div className={classes.subSectionContent}>
             <Typography variant="body1">0x26D1804db95c3E71db834632D807CBe51938e774</Typography>
           </div>
         </div>
         <div className={classes.subSection}>
-          <Typography variant="title">Account Balance</Typography>
+          <Typography variant="h6">Account Balance</Typography>
           <div className={classes.subSectionContent}>
             <Typography variant="body1">1,326.26 WAN</Typography>
           </div>
