@@ -32,7 +32,12 @@ addReducer('dialogShow', (state: GlobalState, title: string, body: string) => ({
 }));
 
 addReducer('setWallet', (state: GlobalState, wallet: IWallet) => ({
-  wallet: { ...state.wallet, ...wallet }
+  wallet: {
+    ...state.wallet,
+    ...wallet,
+    address: wallet.getAddressString(),
+    publicKey: wallet.getPublicKeyString()
+  }
 }));
 
 addReducer('unsetWallet', () => ({
