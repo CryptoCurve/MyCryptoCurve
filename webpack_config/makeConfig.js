@@ -153,7 +153,7 @@ module.exports = function(opts = {}) {
   rules.push({
     include: [path.resolve(config.path.assets), path.resolve(config.path.modules)],
     test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
-    loader: 'file-loader'
+    loader: 'url-loader'
   });
 
   // ====================

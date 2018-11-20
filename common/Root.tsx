@@ -21,6 +21,8 @@ import AppDialog from './ccComponents/AppDialog';
 import './state';
 import Wallet from 'ccContainers/Tabs/Wallet';
 import AppSnackBar from './ccComponents/AppSnackBar';
+import './sass/fonts.scss';
+import CryptoCurveCss from './ccTheme/CryptoCurveCss';
 
 export enum Colors {
   white = '#fff',
@@ -220,6 +222,7 @@ class RootClass extends Component<Props, State> {
     return (
       <React.Fragment>
         <CssBaseline />
+        <CryptoCurveCss />
         <MuiThemeProvider theme={theme}>
           <Provider store={store} key={Math.random()}>
             <React.Fragment>

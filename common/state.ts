@@ -56,8 +56,9 @@ addReducer('setWallet', (state: GlobalState, wallet: IWallet) => ({
   wallet: {
     ...state.wallet,
     ...wallet,
-    address: wallet.getAddressString(),
-    publicKey: wallet.getPublicKeyString()
+    address: wallet.getAddressString()
+    // Removed this field as there are no such function on the wallet type
+    // publicKey: wallet.getPublicKeyString()
   }
 }));
 
