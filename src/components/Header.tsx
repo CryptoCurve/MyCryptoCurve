@@ -7,8 +7,10 @@ import Tab from '@material-ui/core/Tab/Tab';
 import Grid from '@material-ui/core/Grid/Grid';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
+import ButtonBase from '@material-ui/core/ButtonBase/ButtonBase';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 interface State {
   activeTab: number;
@@ -60,6 +62,10 @@ const styles = (theme: Theme) =>
       marginBottom: 3,
       letterSpacing: 4.6
     },
+    logoButton: {
+      paddingLeft: theme.spacing.unit / 2,
+      paddingTop: theme.spacing.unit / 2
+    },
     link: {
       color: '#ffffff',
       transition: 'transform 0.2s',
@@ -94,14 +100,16 @@ class Header extends React.Component<Props, State> {
         >
           <Grid container={true} className={classes.headerGrid} alignItems="center">
             <Grid item={true} xs={12} sm={2} className={classes.logoGrid}>
-              <Typography
-                variant="h3"
-                color="inherit"
-                className={classes.logoText}
-                align="center"
-              >
-                MyCryptoCurve
-              </Typography>
+              <ButtonBase className={classes.logoButton}>
+                <Typography
+                  variant="h3"
+                  color="inherit"
+                  className={classes.logoText}
+                  align="center"
+                >
+                  MyCryptoCurve
+                </Typography>
+              </ButtonBase>
             </Grid>
             <Grid className={classes.grow}/>
             <Grid item={true} className={classes.tabsGrid}>
