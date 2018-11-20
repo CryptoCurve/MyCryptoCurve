@@ -1,19 +1,21 @@
 @font-face {
-  font-family: Bebas Neue;
-  src: url(./BebasNeueBold.ttf);
+  font-family: 'BebasneueBold';
+  src: url('./bebasneue_bold-webfont.woff2') format('woff2'),
+  url('./bebasneue_bold-webfont.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
 }
-
 @font-face {
-  font-family: Bebas Neue Book;
-  src: url(./BebasNeueBook.ttf);
+  font-family: 'BebasneueRegular';
+  src: url('./bebasneue_regular-webfont.woff2') format('woff2'),
+  url('./bebasneue_regular-webfont.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
 }
-
 @font-face {
-  font-family: Abel;
-  src: url(./Abel-Regular.ttf);
-}
-
-@font-face {
-  font-family: Abel-Bold;
-  src: url(./abel-bold.otf);
+  font-family: 'Abel';
+  src: url('./abel-regular-webfont.woff2') format('woff2'),
+  url('./abel-regular-webfont.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
 }

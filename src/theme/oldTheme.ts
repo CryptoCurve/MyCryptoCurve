@@ -1,15 +1,7 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { Colors } from './theme';
 
-export const Colors = {
-  white: '#fff',
-  purpley: '#8964DC',
-  lavender: '#beaceb',
-  lightLavender: '#e4d9ff',
-  dark: '#272532',
-  darkHover: '#52505b'
-};
-
-export const cryptoCurveMainTheme = createMuiTheme({
+export const oldTheme = createMuiTheme({
   palette: {
     primary: {
       main: Colors.purpley
@@ -25,7 +17,7 @@ export const cryptoCurveMainTheme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
-    headline: {
+    h5: {
       fontFamily: [
         'bebasneue_bold',
         'Abel',
@@ -48,51 +40,44 @@ export const cryptoCurveMainTheme = createMuiTheme({
         'sans-serif'
       ].join(','),
       textTransform: 'uppercase',
-      fontSize: 25,
-      letterSpacing: 5,
-      lineHeight: '27px'
-    },
-    h1: {
-      fontFamily: ['BebasneueBold', 'Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'
-      ].join(','),
-      textTransform: 'uppercase',
-      fontSize: 40,
-      letterSpacing: 6,
-      lineHeight: '44px'
-    },
-    h3: {
-      fontFamily: ['BebasneueBold', 'Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
-      textTransform: 'uppercase',
-      fontSize: 25,
-      letterSpacing: 5,
-      lineHeight: '27px'
-    },
-    display1: {
-      fontFamily: ['BebasneueRegular', 'Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'
-      ].join(','),
-      textTransform: 'uppercase',
       fontSize: 35,
       letterSpacing: 7,
       lineHeight: '38px'
     },
-    body1: {
+    subheading: {
+      fontFamily: ['Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+      textTransform: 'uppercase',
+      fontSize: 18
+    },
+
+    caption: {
       fontSize: 20,
-      lineHeight: "26px",
-      letterSpacing: 1.5
+      fontWeight: 100,
+      letterSpacing: 2,
+      lineHeight: 1.3
+    },
+    display1: {
+      fontSize: 25,
+      fontFamily: [
+        'bebasneue_regular',
+        'Abel',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif'
+      ].join(',')
     },
     button: {
-      color: Colors.white,
-      letterSpacing: '2px',
-      lineHeight: '26px'
+      letterSpacing: '1px'
     }
   },
   overrides: {
     MuiButton: {
       root: {
         borderRadius: 50,
-        minHeight: 50,
+        minHeight: 60,
         textTransform: 'none',
-        fontSize: 20,
+        fontSize: 22,
         minWidth: 300
       },
       outlined: {
@@ -139,16 +124,3 @@ export const cryptoCurveMainTheme = createMuiTheme({
     }
   }
 });
-
-export const customStyles = {
-  darkButton: {
-    color: Colors.white,
-    backgroundColor: Colors.dark,
-    '&:hover': {
-      backgroundColor: Colors.darkHover
-    }
-  },
-  buttonEndIconSpacing: {
-    marginLeft: cryptoCurveMainTheme.spacing.unit * 2
-  }
-};

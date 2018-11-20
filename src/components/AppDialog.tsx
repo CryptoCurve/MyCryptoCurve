@@ -7,8 +7,9 @@ import { renderConsoleText } from '../helpers/helpers';
 interface OwnProps {}
 
 type Props = OwnProps;
-
 class AppDialog extends Reactn.Component<Props> {
+
+
   public render() {
     console.log(...renderConsoleText('Render AppDialog', 'lightGreen'));
     const { title, open, body } = this.global.dialog;
@@ -24,4 +25,5 @@ class AppDialog extends Reactn.Component<Props> {
   };
 }
 
-export default (AppDialog as unknown) as React.ComponentClass<OwnProps>;
+// @ts-ignore
+export default AppDialog as React.ComponentClass<OwnProps>;
