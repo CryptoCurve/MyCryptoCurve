@@ -1,7 +1,5 @@
-import * as Reactn from 'reactn';
 import * as React from 'react';
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
-import { SnackBarMsg, SnackBarState } from '../state/state';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import { CloseIcon } from '../theme/icons';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
@@ -10,6 +8,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import { amber, green } from '@material-ui/core/colors';
 import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
 import { renderConsoleText } from '../helpers/helpers';
+import { SnackBarMessages, SnackBarMsg, WithSnackBarContext, withSnackBarContext } from '../context/SnackBarContext';
 
 interface OwnProps {}
 
@@ -34,22 +33,18 @@ const styles = (theme: Theme) =>
 
 interface State {
   open: boolean;
-  messageInfo: SnackBarMsg;
+  messageInfo: SnackBarMsg | null;
 }
 
-type Props = OwnProps & WithStyles<typeof styles>;
+type Props = OwnProps & WithSnackBarContext & WithStyles<typeof styles>;
 
-class AppSnackBar extends Reactn.Component<Props, State> {
+class AppSnackBar extends React.Component<Props, State> {
   public state = {
     open: false,
-    messageInfo: {
-      key: '',
-      message: '',
-      type: ''
-    }
+    messageInfo: null
   };
 
-  public queue: SnackBarState = [];
+  public queue: SnackBarMessages = [];
 
   public componentDidMount() {
     this.checkSnackBarQueue();
@@ -62,7 +57,7 @@ class AppSnackBar extends Reactn.Component<Props, State> {
   public render() {
     const { open, messageInfo } = this.state;
     const { classes } = this.props;
-    const { key, message, type } = messageInfo;
+    const { key, message, type } = messageInfo || {key:"",message:"",type: "success"};
     console.log(...renderConsoleText('Render AppSnackBar', 'lightGreen'));
 
     return (
@@ -106,11 +101,11 @@ class AppSnackBar extends Reactn.Component<Props, State> {
 
   private checkSnackBarQueue = () => {
     const { open } = this.state;
-    const snackBar: SnackBarState = this.global.snackBar;
+    const snackBar: SnackBarMessages = this.props.snackBarContext.snackBarMessages;
 
     if (snackBar.length !== 0) {
       this.queue.push(snackBar[0]);
-      this.global.snackBarShift();
+      this.props.snackBarContext.snackBarShift();
       if (open) {
         // immediately begin dismissing current message
         // to start showing new one
@@ -119,13 +114,12 @@ class AppSnackBar extends Reactn.Component<Props, State> {
         this.processQueue();
       }
     }
-    console.log(this.queue);
   };
 
   private processQueue = () => {
     if (this.queue.length > 0) {
       this.setState({
-        messageInfo: this.queue.shift(),
+        messageInfo: this.queue.shift() as SnackBarMsg,
         open: true
       });
     }
@@ -143,5 +137,4 @@ class AppSnackBar extends Reactn.Component<Props, State> {
   };
 }
 
-// @ts-ignore
-export default withStyles(styles)(AppSnackBar) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(withSnackBarContext(AppSnackBar)) as React.ComponentClass<OwnProps>;

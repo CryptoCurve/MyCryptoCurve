@@ -26,11 +26,14 @@ import LandingPage from './containers/LandingPage/LandingPage';
 import Fade from '@material-ui/core/Fade/Fade';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import BackgroundImage from "./assets/images/mycryptocurveMain.jpg";
+import BackgroundImage from './assets/images/mycryptocurveMain.jpg';
 import { cryptoCurveMainTheme } from './theme/theme';
 import Header from './components/Header';
+import DialogContext from './context/DialogContext';
+import SnackBarContext from './context/SnackBarContext';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -67,33 +70,41 @@ class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     const { error } = this.state;
 
     if (error) {
-      return <ErrorScreen error={error} />;
+      return <ErrorScreen error={error}/>;
     }
 
     // const routes: JSX.Element = (
-          {/*<Route path="/account" exact={true} component={Wallet} />*/}
-          {/*<Route path="/generate" component={GenerateWallet} />*/}
-          {/*<Route path="/" component={LandingPage} />*/}
-          {/*<Redirect exact={true} from="/" to="/account" />*/}
+    {/*<Route path="/account" exact={true} component={Wallet} />*/
+    }
+    {/*<Route path="/generate" component={GenerateWallet} />*/
+    }
+    {/*<Route path="/" component={LandingPage} />*/
+    }
+    {/*<Redirect exact={true} from="/" to="/account" />*/
+    }
     // );
 
     return (
       <React.Fragment>
-        <CssBaseline />
-        <CryptoCurveCss />
+        <CssBaseline/>
+        <CryptoCurveCss/>
         <MuiThemeProvider theme={cryptoCurveMainTheme}>
-          <Fade in={location.pathname === '/'}>
-            <div className={classes.background} />
-          </Fade>
-          <Header />
-                {/*<WebTemplate routes={routes} />*/}
-                <LandingPage />
-          <AppDialog />
-          <AppSnackBar />
+          <DialogContext>
+            <SnackBarContext>
+              <Fade in={location.pathname === '/'}>
+                <div className={classes.background}/>
+              </Fade>
+              <Header/>
+              {/*<WebTemplate routes={routes} />*/}
+              <LandingPage/>
+              <AppDialog/>
+              <AppSnackBar/>
+            </SnackBarContext>
+          </DialogContext>
         </MuiThemeProvider>
       </React.Fragment>
     );

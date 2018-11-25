@@ -1,18 +1,18 @@
-import * as Reactn from 'reactn';
+import * as React from 'react';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
-import * as React from 'react';
 import { renderConsoleText } from '../helpers/helpers';
+import { WithDialogContext, withDialogContext } from '../context/DialogContext';
 
 interface OwnProps {}
 
-type Props = OwnProps;
-class AppDialog extends Reactn.Component<Props> {
+type Props = OwnProps & WithDialogContext;
 
+class AppDialog extends React.Component<Props> {
 
   public render() {
     console.log(...renderConsoleText('Render AppDialog', 'lightGreen'));
-    const { title, open, body } = this.global.dialog;
+    const { title, open, body } = this.props.dialogContext;
     return (
       <Dialog open={open}>
         <DialogTitle>{title}</DialogTitle>
@@ -21,9 +21,9 @@ class AppDialog extends Reactn.Component<Props> {
     );
   }
   private handleClick = () => {
-    this.global.dialogClose();
+    const {hideDialog} = this.props.dialogContext;
+    hideDialog();
   };
 }
 
-// @ts-ignore
-export default AppDialog as React.ComponentClass<OwnProps>;
+export default withDialogContext(AppDialog) as unknown as React.ComponentClass<OwnProps>;
