@@ -7,7 +7,7 @@ import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import { amber, green } from '@material-ui/core/colors';
 import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
-import { renderConsoleText } from '../helpers/helpers';
+import { helperRenderConsoleText } from '../helpers/helpers';
 import { SnackBarMessages, SnackBarMsg, WithSnackBarContext, withSnackBarContext } from '../context/SnackBarContext';
 
 interface OwnProps {}
@@ -58,7 +58,7 @@ class AppSnackBar extends React.Component<Props, State> {
     const { open, messageInfo } = this.state;
     const { classes } = this.props;
     const { key, message, type } = messageInfo || {key:"",message:"",type: "success"};
-    console.log(...renderConsoleText('Render AppSnackBar', 'lightGreen'));
+    console.log(...helperRenderConsoleText('Render AppSnackBar', 'lightGreen'));
 
     return (
       <div>

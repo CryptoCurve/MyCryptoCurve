@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import ButtonBase from '@material-ui/core/ButtonBase/ButtonBase';
+import { withRouteContext, WithRouteContext } from '../context/RouteContext';
+import { helperHandleNavigateTo, helperRenderConsoleText } from '../helpers/helpers';
 
 interface OwnProps {
 }
@@ -79,7 +81,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles>;
+type Props = OwnProps & WithStyles<typeof styles> & WithRouteContext;
 
 class Header extends React.Component<Props, State> {
   public state = {
@@ -87,7 +89,9 @@ class Header extends React.Component<Props, State> {
   };
 
   public render() {
-    const { classes } = this.props;
+    console.log(...helperRenderConsoleText('Render Header', 'lightGreen'));
+    const { classes,routeContext } = this.props;
+    const  {location,navigateTo} = routeContext;
     const { activeTab } = this.state;
     return (
       <React.Fragment>
@@ -95,12 +99,12 @@ class Header extends React.Component<Props, State> {
           position="static"
           className={classes.appBar}
           style={
-            location.pathname !== '/' ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }
+            location !== '' ? {} : { backgroundColor: 'transparent', boxShadow: 'none' }
           }
         >
           <Grid container={true} className={classes.headerGrid} alignItems="center">
             <Grid item={true} xs={12} sm={2} className={classes.logoGrid}>
-              <ButtonBase className={classes.logoButton}>
+              <ButtonBase className={classes.logoButton} onClick={helperHandleNavigateTo("",navigateTo)}>
                 <Typography
                   variant="h3"
                   color="inherit"
@@ -139,4 +143,4 @@ class Header extends React.Component<Props, State> {
   };
 }
 
-export default withStyles(styles)(Header) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(withRouteContext(Header)) as React.ComponentClass<OwnProps>;

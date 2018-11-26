@@ -1,7 +1,12 @@
 import * as React from 'react';
 
-interface RouteContextInterface {
+export type Routes = '' | 'wallet';
 
+interface RouteContextInterface {
+  location: Routes;
+  history: Routes[];
+  navigateTo: (location: Routes) => void,
+  navigateBack: () => void
 }
 
 const ctxt = React.createContext<RouteContextInterface | null>(null);
@@ -12,7 +17,24 @@ const RouteContextConsumer = ctxt.Consumer;
 
 class RouteContext extends React.Component<{}, RouteContextInterface> {
   // noinspection JSUnusedGlobalSymbols
-  public state = {};
+  public state = {
+    location: '' as Routes,
+    history: [],
+    navigateTo: (location: Routes) => {
+      const tmpHistory = this.state.history as Routes[];
+      if (location !== this.state.location) {
+        tmpHistory.push(location);
+        this.setState({ history: tmpHistory, location });
+      }
+    },
+    navigateBack: () => {
+      const tmpHistory = this.state.history as Routes[];
+      const tmpLocation = tmpHistory.length > 0 ? tmpHistory.shift() as Routes : null;
+      if (tmpLocation !== null) {
+        this.setState({ history: tmpHistory, location: tmpLocation });
+      }
+    }
+  };
 
   public render() {
     const { children } = this.props;

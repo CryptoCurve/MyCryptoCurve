@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
-import { renderConsoleText } from '../helpers/helpers';
+import { helperRenderConsoleText } from '../helpers/helpers';
 import { WithDialogContext, withDialogContext } from '../context/DialogContext';
 
 interface OwnProps {}
@@ -11,7 +11,7 @@ type Props = OwnProps & WithDialogContext;
 class AppDialog extends React.Component<Props> {
 
   public render() {
-    console.log(...renderConsoleText('Render AppDialog', 'lightGreen'));
+    console.log(...helperRenderConsoleText('Render AppDialog', 'lightGreen'));
     const { title, open, body } = this.props.dialogContext;
     return (
       <Dialog open={open}>

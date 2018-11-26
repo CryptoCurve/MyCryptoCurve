@@ -31,6 +31,8 @@ import { cryptoCurveMainTheme } from './theme/theme';
 import Header from './components/Header';
 import DialogContext from './context/DialogContext';
 import SnackBarContext from './context/SnackBarContext';
+import RouteContext, { WithRouteContext, withRouteContext } from './context/RouteContext';
+import { helperRenderConsoleText } from './helpers/helpers';
 
 interface OwnProps {
 }
@@ -70,9 +72,8 @@ class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { classes } = this.props;
+    console.log(...helperRenderConsoleText('Render App', 'lightGreen'));
     const { error } = this.state;
-
     if (error) {
       return <ErrorScreen error={error}/>;
     }
@@ -93,22 +94,35 @@ class App extends React.Component<Props, State> {
         <CssBaseline/>
         <CryptoCurveCss/>
         <MuiThemeProvider theme={cryptoCurveMainTheme}>
-          <DialogContext>
-            <SnackBarContext>
-              <Fade in={location.pathname === '/'}>
-                <div className={classes.background}/>
-              </Fade>
-              <Header/>
-              {/*<WebTemplate routes={routes} />*/}
-              <LandingPage/>
-              <AppDialog/>
-              <AppSnackBar/>
-            </SnackBarContext>
-          </DialogContext>
+          <RouteContext>
+            <DialogContext>
+              <SnackBarContext>
+                {/*<WebTemplate routes={routes} />*/}
+                <MainRouting/>
+                <AppDialog/>
+                <AppSnackBar/>
+              </SnackBarContext>
+            </DialogContext>
+          </RouteContext>
         </MuiThemeProvider>
       </React.Fragment>
     );
   }
 }
 
-export default withStyles(styles)(App);
+const MainRouting = withStyles(styles)(withRouteContext((props: WithRouteContext & WithStyles<typeof styles>) => {
+  console.log(props);
+  const { routeContext, classes } = props;
+  const { location } = routeContext;
+  return (
+    <React.Fragment>
+      <Fade in={location === ''}>
+        <div className={classes.background}/>
+      </Fade>
+      <Header/>
+      {location === 'wallet' ? <div/> :
+        <LandingPage/>}
+    </React.Fragment>
+  );
+}));
+export default App as React.ComponentClass<{}>;
