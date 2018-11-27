@@ -14,7 +14,7 @@ import Slide from '@material-ui/core/Slide/Slide';
 import { Colors } from '../../theme/theme';
 import NewTabLink from '../../components/NewTabLink';
 import { WithRouteContext, withRouteContext } from '../../context/RouteContext';
-import { helperHandleNavigateTo, helperRenderConsoleText } from '../../helpers/helpers';
+import { helperRenderConsoleText } from '../../helpers/helpers';
 // import { Colors } from '../../../Root';
 // import { NewTabLink } from '../../../components/ui';
 
@@ -96,7 +96,7 @@ class LandingPage extends React.Component<Props> {
                 <Button
                   variant="outlined"
                   classes={{ outlined: classes.button }}
-                  onClick={helperHandleNavigateTo("wallet",navigateTo)}
+                  onClick={navigateTo("wallet")}
                 >
                   Open Wallet
                 </Button>

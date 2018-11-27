@@ -5,7 +5,7 @@ export type Routes = '' | 'wallet';
 interface RouteContextInterface {
   location: Routes;
   history: Routes[];
-  navigateTo: (location: Routes) => void,
+  navigateTo: (location: Routes) => () => void,
   navigateBack: () => void
 }
 
@@ -20,7 +20,7 @@ class RouteContext extends React.Component<{}, RouteContextInterface> {
   public state = {
     location: '' as Routes,
     history: [],
-    navigateTo: (location: Routes) => {
+    navigateTo: (location: Routes) => () => {
       const tmpHistory = this.state.history as Routes[];
       if (location !== this.state.location) {
         tmpHistory.push(location);

@@ -1,23 +1,7 @@
 import * as React from 'react';
-// Components
-// import GenerateWallet from 'containers/Tabs/GenerateWallet';
-// import LandingPage from 'containers/Tabs/LandingPage';
-// import ErrorScreen from 'components/ErrorScreen';
-// import PageNotFound from 'components/PageNotFound';
-// import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
-// import { AppState } from 'reducers';
-// import { RouteNotFound } from 'components/RouteNotFound';
-// import 'what-input';
-// import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-// import { getNetworkUnit } from 'selectors/config';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-// import WebTemplate from './containers/TabSection/WebTemplate';
-// import AppDialog from './ccComponents/AppDialog';
-import './state/state';
-// import Wallet from 'ccContainers/Tabs/Wallet';
-// import AppSnackBar from './ccComponents/AppSnackBar';
 import CryptoCurveCss from './theme/CryptoCurveCss';
 import ErrorScreen from './components/ErrorScreen';
 import AppSnackBar from './components/AppSnackBar';
@@ -29,10 +13,10 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import BackgroundImage from './assets/images/mycryptocurveMain.jpg';
 import { cryptoCurveMainTheme } from './theme/theme';
 import Header from './components/Header';
-import DialogContext from './context/DialogContext';
-import SnackBarContext from './context/SnackBarContext';
-import RouteContext, { WithRouteContext, withRouteContext } from './context/RouteContext';
+import { WithRouteContext, withRouteContext } from './context/RouteContext';
 import { helperRenderConsoleText } from './helpers/helpers';
+import Wallet from './containers/Wallet/Wallet';
+import Context from './context/Context';
 
 interface OwnProps {
 }
@@ -78,32 +62,17 @@ class App extends React.Component<Props, State> {
       return <ErrorScreen error={error}/>;
     }
 
-    // const routes: JSX.Element = (
-    {/*<Route path="/account" exact={true} component={Wallet} />*/
-    }
-    {/*<Route path="/generate" component={GenerateWallet} />*/
-    }
-    {/*<Route path="/" component={LandingPage} />*/
-    }
-    {/*<Redirect exact={true} from="/" to="/account" />*/
-    }
-    // );
-
     return (
       <React.Fragment>
         <CssBaseline/>
         <CryptoCurveCss/>
         <MuiThemeProvider theme={cryptoCurveMainTheme}>
-          <RouteContext>
-            <DialogContext>
-              <SnackBarContext>
-                {/*<WebTemplate routes={routes} />*/}
-                <MainRouting/>
-                <AppDialog/>
-                <AppSnackBar/>
-              </SnackBarContext>
-            </DialogContext>
-          </RouteContext>
+          <Context>
+            {/*<WebTemplate routes={routes} />*/}
+            <MainRouting/>
+            <AppDialog/>
+            <AppSnackBar/>
+          </Context>
         </MuiThemeProvider>
       </React.Fragment>
     );
@@ -120,7 +89,7 @@ const MainRouting = withStyles(styles)(withRouteContext((props: WithRouteContext
         <div className={classes.background}/>
       </Fade>
       <Header/>
-      {location === 'wallet' ? <div/> :
+      {location === 'wallet' ? <Wallet/> :
         <LandingPage/>}
     </React.Fragment>
   );

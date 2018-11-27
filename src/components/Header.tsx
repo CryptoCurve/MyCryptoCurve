@@ -9,7 +9,7 @@ import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import ButtonBase from '@material-ui/core/ButtonBase/ButtonBase';
 import { withRouteContext, WithRouteContext } from '../context/RouteContext';
-import { helperHandleNavigateTo, helperRenderConsoleText } from '../helpers/helpers';
+import { helperRenderConsoleText } from '../helpers/helpers';
 
 interface OwnProps {
 }
@@ -104,7 +104,7 @@ class Header extends React.Component<Props, State> {
         >
           <Grid container={true} className={classes.headerGrid} alignItems="center">
             <Grid item={true} xs={12} sm={2} className={classes.logoGrid}>
-              <ButtonBase className={classes.logoButton} onClick={helperHandleNavigateTo("",navigateTo)}>
+              <ButtonBase className={classes.logoButton} onClick={navigateTo("")}>
                 <Typography
                   variant="h3"
                   color="inherit"
