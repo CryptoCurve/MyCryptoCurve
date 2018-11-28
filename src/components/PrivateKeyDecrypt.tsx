@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button/Button';
-// import FormControl from '@material-ui/core/FormControl/FormControl';
-// import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Grid from '@material-ui/core/Grid/Grid';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Theme } from '@material-ui/core';
@@ -9,11 +7,6 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField/TextField';
 import { VPNKeyIcon } from '../theme/icons';
 import Grow from '@material-ui/core/Grow/Grow';
-// import Input from '@material-ui/core/Input/Input';
-// import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
-// import Fade from '@material-ui/core/Fade/Fade';
-// import Grow from '@material-ui/core/Grow/Grow';
-// import { VPNKeyIcon } from '../theme/icons';
 
 export interface PrivateKeyValue {
   key: string;
@@ -22,13 +15,6 @@ export interface PrivateKeyValue {
   isValidPassword: boolean;
   isPasswordRequired: boolean;
 }
-
-// interface Validated {
-//   fixedPkey: string;
-//   isValidPkey: boolean;
-//   isPassRequired: boolean;
-//   valid: boolean;
-// }
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -51,10 +37,6 @@ const styles = (theme: Theme) =>
   });
 
 interface OwnProps {
-  value: PrivateKeyValue;
-
-  onChange(value: PrivateKeyValue): void;
-
   onUnlock(): void;
 }
 
