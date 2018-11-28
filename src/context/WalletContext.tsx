@@ -22,7 +22,9 @@ class WalletContext extends React.Component<{}, WalletContextInterface> {
     wallet: {
       _privKey: ""
     },
-    setWallet: (wallet: Wallet | any) => ()=>this.setState({ wallet })
+    setWallet: (wallet: Wallet | any) => ()=> {
+      return this.setState({ wallet });
+    }
   };
 
   public render() {

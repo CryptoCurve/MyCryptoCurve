@@ -9,7 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { helperRenderConsoleText } from '../../helpers/helpers';
 import Template from '../Template';
 import { WithSnackBarContext } from '../../context/SnackBarContext';
-import { WithWalletContext } from '../../context/WalletContext';
+import { withWalletContext, WithWalletContext } from '../../context/WalletContext';
 import PrivateKeyDecrypt from '../../components/PrivateKeyDecrypt';
 
 export interface PrivateKeyValue {
@@ -250,5 +250,4 @@ class OpenWallet extends React.Component<Props, State> {
   };
 }
 
-// @ts-ignore
-export default (withStyles(styles)(OpenWallet) as unknown) as React.ComponentClass<OwnProps>;
+export default (withStyles(styles)(withWalletContext(OpenWallet)) as unknown) as React.ComponentClass<OwnProps>;

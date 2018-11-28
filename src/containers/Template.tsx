@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener';
 import Zoom from '@material-ui/core/Zoom/Zoom';
 import Hidden from '@material-ui/core/Hidden/Hidden';
+import { withRouteContext, WithRouteContext } from '../context/RouteContext';
 
 interface OwnProps {
   children: React.ReactElement<any> | any;
@@ -129,7 +130,7 @@ interface State {
   tooltipOpen: boolean;
 }
 
-type Props = OwnProps & WithStyles<typeof styles>;
+type Props = OwnProps & WithStyles<typeof styles> & WithRouteContext;
 
 class GenerateWalletTemplate extends React.Component<Props, State> {
   public state = {
@@ -137,7 +138,8 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 
   public render() {
-    const { children, classes, title, tooltip, hideButton } = this.props;
+    const { buttonAction, children, classes, title, tooltip, hideButton,routeContext } = this.props;
+    const {navigateBack} = routeContext;
     const { tooltipOpen } = this.state;
     return (
       <React.Fragment>
@@ -157,7 +159,7 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
                     variant="fab"
                     color="primary"
                     aria-label="Back"
-                    // onClick={() => (buttonAction ? buttonAction() : history.push('/'))}
+                    onClick={buttonAction ? buttonAction : navigateBack}
                   >
                     <ArrowBack />
                   </Button>
@@ -221,4 +223,4 @@ class GenerateWalletTemplate extends React.Component<Props, State> {
   };
 }
 
-export default withStyles(styles)(GenerateWalletTemplate) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(withRouteContext(GenerateWalletTemplate)) as React.ComponentClass<OwnProps>;

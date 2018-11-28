@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid/Grid';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
+import TextField from '@material-ui/core/TextField/TextField';
+import { VPNKeyIcon } from '../theme/icons';
 // import Input from '@material-ui/core/Input/Input';
 // import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 // import Fade from '@material-ui/core/Fade/Fade';
@@ -39,6 +41,9 @@ const styles = (theme: Theme) =>
     keyLabel: {
       display: 'flex',
       alignItems: 'center'
+    },
+    errorText: {
+      color: theme.palette.error.dark,
     }
   });
 
@@ -49,13 +54,27 @@ interface OwnProps {
 
   onUnlock(): void;
 }
+
+interface State {
+  pKeyValue: PrivateKeyValue
+}
+
 type Props = OwnProps & WithStyles<typeof styles>;
 
-class PrivateKeyDecrypt extends React.Component<Props> {
+class PrivateKeyDecrypt extends React.Component<Props, State> {
+
+  public state = {
+    pKeyValue: {
+      key: '',
+      password: '',
+      valid: false
+    }
+  };
 
   public render() {
     const { classes } = this.props;
-    // const { key, password } = value;
+    const { pKeyValue } = this.state;
+    const { key,valid } = pKeyValue;
     // const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     // const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
@@ -68,46 +87,45 @@ class PrivateKeyDecrypt extends React.Component<Props> {
           direction="column"
           alignItems="center"
         >
-          {/*<TextField*/}
-            {/*label="To Address"*/}
-            {/*value={toAddress}*/}
-            {/*onChange={this.handleToAddressChange}*/}
-            {/*margin="normal"*/}
-            {/*fullWidth*/}
-          {/*/>*/}
+          <TextField
+            label={<React.Fragment><VPNKeyIcon className={classes.keyLabelIcon}/> Private Key</React.Fragment>}
+            InputLabelProps={{ className: classes.keyLabel }}
+            value={key}
+            onChange={this.onPkeyChange}
+            margin="normal"
+            fullWidth
+            error={key.length > 0 && !valid}
+            helperText={(key.length > 0 && !valid)?<span className={classes.errorText}>Your wallet is encrypted. Please enter the password.</span>:undefined}
+          />
           {/*<FormControl margin="normal" fullWidth={true} error={false}>*/}
-            {/*<InputLabel color="primary-text" htmlFor="pKey" className={classes.keyLabel}>*/}
-              {/*<VPNKeyIcon className={classes.keyLabelIcon} /> Private Key*/}
-            {/*</InputLabel>*/}
-            {/*<Input*/}
-              {/*error={key.length > 0 && !isValidPkey}*/}
-              {/*value={key}*/}
-              {/*type="text"*/}
-              {/*id="pKey"*/}
-              {/*autoComplete="current-password"*/}
-              {/*onChange={this.onPkeyChange}*/}
-            {/*/>*/}
-            {/*<Fade in={key.length > 0 && isValidPkey && isPassRequired}>*/}
-              {/*<FormHelperText id="component-error-text">Your wallet is encrypted. Please enter the password.</FormHelperText>*/}
-            {/*</Fade>*/}
+          {/*<Input*/}
+          {/*error={key.length > 0 && !isValidPkey}*/}
+          {/*value={key}*/}
+          {/*type="text"*/}
+          {/*id="pKey"*/}
+          {/*autoComplete="current-password"*/}
+          {/*/>*/}
+          {/*<Fade in={key.length > 0 && isValidPkey && isPassRequired}>*/}
+          {/*<FormHelperText id="component-error-text">Your wallet is encrypted. Please enter the password.</FormHelperText>*/}
+          {/*</Fade>*/}
           {/*</FormControl>*/}
           {/*{isValidPkey &&*/}
           {/*isPassRequired && (*/}
-            {/*<Grow in={true}>*/}
-              {/*<FormControl margin="normal" required={true} fullWidth={true} error={false}>*/}
-                {/*<InputLabel color="primary-text" htmlFor="password">*/}
-                  {/*Password*/}
-                {/*</InputLabel>*/}
-                {/*<Input*/}
-                  {/*error={key.length > 0 && !isValidPkey}*/}
-                  {/*value={password}*/}
-                  {/*type="password"*/}
-                  {/*id="password"*/}
-                  {/*autoComplete="current-password"*/}
-                  {/*onChange={this.onPasswordChange}*/}
-                {/*/>*/}
-              {/*</FormControl>*/}
-            {/*</Grow>*/}
+          {/*<Grow in={true}>*/}
+          {/*<FormControl margin="normal" required={true} fullWidth={true} error={false}>*/}
+          {/*<InputLabel color="primary-text" htmlFor="password">*/}
+          {/*Password*/}
+          {/*</InputLabel>*/}
+          {/*<Input*/}
+          {/*error={key.length > 0 && !isValidPkey}*/}
+          {/*value={password}*/}
+          {/*type="password"*/}
+          {/*id="password"*/}
+          {/*autoComplete="current-password"*/}
+          {/*onChange={this.onPasswordChange}*/}
+          {/*/>*/}
+          {/*</FormControl>*/}
+          {/*</Grow>*/}
           {/*)}*/}
 
           <Button
@@ -115,7 +133,7 @@ class PrivateKeyDecrypt extends React.Component<Props> {
             type="submit"
             variant="contained"
             color="primary"
-            // disabled={unlockDisabled}
+            disabled={!valid}
           >
             Unlock
           </Button>
@@ -124,13 +142,33 @@ class PrivateKeyDecrypt extends React.Component<Props> {
     );
   }
 
-  // private onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-  //   const pkey = e.currentTarget.value;
-  //   const pass = this.props.value.password;
-  //   const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
-  //
-  //   this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
+  // private privateKeyHelperText = ()=> {
+  //   const {pKeyValue} = this.state;
+  //   const {key,valid} = pKeyValue;
+  //   console.log(key,valid);
+  //   return(
+  //     <React.Fragment>
+  //       <Fade in={key.length > 0 && !valid}>
+  //         Your wallet is encrypted. Please enter the password.
+  //       </Fade>
+  //     </React.Fragment>
+  //   )
   // };
+
+  private onPkeyChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const { pKeyValue } = this.state;
+    const { password } = pKeyValue;
+    const key = e.currentTarget.value;
+    // TODO: Need to validate privateKey and password
+    const valid = false;
+    this.setState({
+      pKeyValue: {
+        key,
+        password,
+        valid
+      }
+    });
+  };
 
   // private onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   // NOTE: Textareas don't support password type, so we replace the value
