@@ -5,7 +5,7 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField/TextField';
-import { VPNKeyIcon } from '../theme/icons';
+import { VPNKeyIcon } from '../../../theme/icons';
 import Grow from '@material-ui/core/Grow/Grow';
 import Slide from '@material-ui/core/Slide/Slide';
 

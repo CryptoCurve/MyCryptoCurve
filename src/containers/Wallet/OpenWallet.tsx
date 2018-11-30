@@ -10,8 +10,9 @@ import { helperRenderConsoleText } from '../../helpers/helpers';
 import Template from '../Template';
 import { WithSnackBarContext } from '../../context/SnackBarContext';
 import { Wallet, withWalletContext, WithWalletContext } from '../../context/WalletContext';
-import PrivateKeyDecrypt, { PrivateKeyValue } from '../../components/PrivateKeyDecrypt';
+import PrivateKeyDecrypt, { PrivateKeyValue } from './components/PrivateKeyDecrypt';
 import Slide from '@material-ui/core/Slide/Slide';
+import { KeystoreDecrypt, KeystoreValue } from './components/KeyStoreDecrypt';
 
 export enum WalletName {
   PRIVATE_KEY = 'privateKey',
@@ -42,8 +43,7 @@ export const walletTypes = {
   [WalletName.KEYSTORE_FILE]: {
     title: 'Keystore File',
     example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-    component: PrivateKeyDecrypt,
-    // component: KeystoreDecrypt,
+    component: KeystoreDecrypt,
     initialParams: {
       file: '',
       password: ''
@@ -195,12 +195,12 @@ class OpenWallet extends React.Component<Props, State> {
   //   console.log('onMnemonicUnlock called');
   // };
 
-  private onUnlock = (payload: PrivateKeyValue) => {
+  private onUnlock = (payload: PrivateKeyValue | KeystoreValue) => {
     const { selectedWalletKey } = this.state;
     console.log(selectedWalletKey);
     console.log(payload);
     const wallet: Wallet = {
-      _privKey: payload.key,
+      _privKey: "Private key stuff here",
       address: '???'
     };
     if (wallet) {
