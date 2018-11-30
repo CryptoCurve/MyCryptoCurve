@@ -10,8 +10,13 @@ import { customStyles } from '../../theme/theme';
 import { WithWalletContext, withWalletContext } from '../../context/WalletContext';
 import { ArrowForwardIcon } from '../../theme/icons';
 import OpenWallet from './OpenWallet';
+import SubMenu from './components/SubMenu';
+import { helperRenderConsoleText } from '../../helpers/helpers';
+import SendTransaction from './components/SendTransaction';
+import Slide from '@material-ui/core/Slide/Slide';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,6 +26,7 @@ const styles = (theme: Theme) =>
       marginBottom: theme.spacing.unit * 6
     },
     walletGridSubMenu: {
+      overflowWrap: 'break-word',
       padding: theme.spacing.unit * 2
     },
     subNavBar: {
@@ -48,44 +54,48 @@ class Wallet extends React.Component<Props, State> {
   };
 
   public render() {
-    const { classes,walletContext } = this.props;
+    console.log(...helperRenderConsoleText('Render Wallet', 'lightGreen'));
+    const { classes, walletContext } = this.props;
     const { openTab } = this.state;
     const { wallet, setWallet } = walletContext;
-    console.log(wallet);
     return (
       <React.Fragment>
-          {!wallet._privKey && <OpenWallet />}
-          {wallet._privKey && (
-            <Grid container className={classes.walletGridContainer}>
-              <Grid xs={8} item />
-              <Grid item xs={4} className={classes.subNavBar}>
-                <Button variant="contained" className={classes.darkButton} onClick={setWallet(null)}>
-                  Change Wallet <ArrowForwardIcon className={classes.buttonEndIconSpacing} />
-                </Button>
-              </Grid>
-              <Grid item container xs={8} direction="column">
-                <Grid item>
-                  <Tabs
-                    value={openTab}
-                    onChange={this.handleTabChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    fullWidth
-                  >
-                    <Tab label="Send" />
-                    <Tab label="Tab Placeholder" />
-                    <Tab label="Tab Placeholder" />
-                  </Tabs>
+        {!wallet._privKey && <OpenWallet/>}
+        {wallet._privKey && (
+          <Slide in={!!wallet._privKey} direction="left">
+            <React.Fragment>
+              <Grid container className={classes.walletGridContainer}>
+                <Grid xs={8} item/>
+                <Grid item xs={4} className={classes.subNavBar}>
+                  <Button variant="contained" className={classes.darkButton} onClick={setWallet(null)}>
+                    Change Wallet <ArrowForwardIcon className={classes.buttonEndIconSpacing}/>
+                  </Button>
                 </Grid>
-                <Grid container className={classes.tabContent} item>
-                  {/*<SendTransaction />*/}
+                <Grid item container xs={8} direction="column">
+                  <Grid item>
+                    <Tabs
+                      value={openTab}
+                      onChange={this.handleTabChange}
+                      indicatorColor="primary"
+                      textColor="primary"
+                      fullWidth
+                    >
+                      <Tab label="Send"/>
+                      <Tab label="Tab Placeholder" disabled/>
+                      <Tab label="Tab Placeholder" disabled/>
+                    </Tabs>
+                  </Grid>
+                  <Grid container className={classes.tabContent} item>
+                    <SendTransaction/>
+                  </Grid>
+                </Grid>
+                <Grid item xs={4} className={classes.walletGridSubMenu}>
+                  <SubMenu/>
                 </Grid>
               </Grid>
-              <Grid item xs={4} className={classes.walletGridSubMenu}>
-                {/*<SubMenu />*/}
-              </Grid>
-            </Grid>
-          )}
+            </React.Fragment>
+          </Slide>
+        )}
       </React.Fragment>
     );
   }

@@ -9,27 +9,21 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { helperRenderConsoleText } from '../../helpers/helpers';
 import Template from '../Template';
 import { WithSnackBarContext } from '../../context/SnackBarContext';
-import { withWalletContext, WithWalletContext } from '../../context/WalletContext';
-import PrivateKeyDecrypt from '../../components/PrivateKeyDecrypt';
+import { Wallet, withWalletContext, WithWalletContext } from '../../context/WalletContext';
+import PrivateKeyDecrypt, { PrivateKeyValue } from '../../components/PrivateKeyDecrypt';
+import Slide from '@material-ui/core/Slide/Slide';
 
-export interface PrivateKeyValue {
-  key: string;
-  password: string;
-  valid: boolean;
-}
 export enum WalletName {
   PRIVATE_KEY = 'privateKey',
   KEYSTORE_FILE = 'keystoreFile',
   MNEMONIC_PHRASE = 'mnemonicPhrase'
 }
+
 export interface WalletType {
   title: string;
   example: string;
   component: any;
-  initialParams: {
-    key: string;
-    password: string;
-  };
+  initialParams: PrivateKeyValue
 }
 
 export const walletTypes = {
@@ -38,9 +32,12 @@ export const walletTypes = {
     example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
     component: PrivateKeyDecrypt,
     initialParams: {
-      key: '',
-      password: ''
-    },
+      key: '123456678',
+      password: '12345678',
+      isValidPkey: true,
+      isValidPassword: true,
+      isPasswordRequired: true
+    }
   },
   [WalletName.KEYSTORE_FILE]: {
     title: 'Keystore File',
@@ -50,20 +47,21 @@ export const walletTypes = {
     initialParams: {
       file: '',
       password: ''
-    },
+    }
   },
   [WalletName.MNEMONIC_PHRASE]: {
     title: 'Mnemonic',
     example: 'brain surround have swap horror cheese file distinct',
     component: PrivateKeyDecrypt,
     // component: MnemonicDecrypt,
-    initialParams: {},
+    initialParams: {}
   }
 };
 
 type UnlockParams = {} | PrivateKeyValue;
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 interface State {
   loginSelectorValue: WalletName;
@@ -102,67 +100,69 @@ class OpenWallet extends React.Component<Props, State> {
 
   public render() {
     console.log(...helperRenderConsoleText('Render OpenWallet', 'lightGreen'));
-    const { classes} = this.props;
+    const { classes } = this.props;
     const { loginSelectorValue } = this.state;
     const selectedWallet = this.getSelectedWallet();
     const decryptionComponent = this.getDecryptionComponent();
     return (
-      <Template
-        title={selectedWallet ? selectedWallet.title : 'Select a login method'}
-        hideButton={!(selectedWallet && selectedWallet.title)}
-        buttonAction={this.onBackButton}
-      >
-        <Grid container={true} item={true} alignItems="center" justify="center">
-          {selectedWallet && decryptionComponent ? (
-            <Grid
-              item={true}
-              container={true}
-              className={classes.decryptComponentGrid}
-              direction="column"
-              spacing={40}
-            >
-              <Grid item={true}>{decryptionComponent}</Grid>
-            </Grid>
-          ) : (
-            <Grid
-              item={true}
-              container={true}
-              className={classes.loginSelectItem}
-              direction="column"
-              spacing={40}
-            >
-              <Grid item={true}>
-                <Select
-                  // open={loginSelectorOpen}
-                  // onClose={this.handleLoginSelectorClose}
-                  // onOpen={this.handleLoginSelectorOpen}
-                  value={loginSelectorValue}
-                  onChange={this.handleLoginSelectorChange}
-                  className={classes.loginSelector}
-                >
-                  {Object.keys(walletTypes).map((walletType: WalletName) => {
-                    const wallet = walletTypes[walletType];
-                    return (
-                      <MenuItem key={walletType} value={walletType}>
-                        {wallet.title}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
+      <Slide in={true} direction="left">
+        <Template
+          title={selectedWallet ? selectedWallet.title : 'Select a login method'}
+          hideButton={!(selectedWallet && selectedWallet.title)}
+          buttonAction={this.onBackButton}
+        >
+          <Grid container={true} item={true} alignItems="center" justify="center" direction="column">
+            {selectedWallet && decryptionComponent ? (
+              <Grid
+                item={true}
+                container={true}
+                className={classes.decryptComponentGrid}
+                direction="column"
+                spacing={40}
+              >
+                <Grid item={true}>{decryptionComponent}</Grid>
               </Grid>
-              <Grid item={true} className={classes.buttonGrid}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleWalletChoice.bind(this, loginSelectorValue)}
-                >
-                  Continue
-                </Button>
+            ) : (
+              <Grid
+                item={true}
+                container={true}
+                className={classes.loginSelectItem}
+                direction="column"
+                spacing={40}
+              >
+                <Grid item={true}>
+                  <Select
+                    // open={loginSelectorOpen}
+                    // onClose={this.handleLoginSelectorClose}
+                    // onOpen={this.handleLoginSelectorOpen}
+                    value={loginSelectorValue}
+                    onChange={this.handleLoginSelectorChange}
+                    className={classes.loginSelector}
+                  >
+                    {Object.keys(walletTypes).map((walletType: WalletName) => {
+                      const wallet = walletTypes[walletType];
+                      return (
+                        <MenuItem key={walletType} value={walletType}>
+                          {wallet.title}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </Grid>
+                <Grid item={true} className={classes.buttonGrid}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleWalletChoice.bind(this, loginSelectorValue)}
+                  >
+                    Continue
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          )}
-        </Grid>
-      </Template>
+            )}
+          </Grid>
+        </Template>
+      </Slide>
     );
   }
 
@@ -195,16 +195,14 @@ class OpenWallet extends React.Component<Props, State> {
   //   console.log('onMnemonicUnlock called');
   // };
 
-  private onUnlock = (payload: any) => {
-    const { value, selectedWalletKey } = this.state;
-    console.log(value);
+  private onUnlock = (payload: PrivateKeyValue) => {
+    const { selectedWalletKey } = this.state;
     console.log(selectedWalletKey);
     console.log(payload);
-    const wallet = {
-
+    const wallet: Wallet = {
+      _privKey: payload.key,
+      address: '???'
     };
-
-
     if (wallet) {
       this.props.walletContext.setWallet(wallet)();
     }
@@ -223,16 +221,6 @@ class OpenWallet extends React.Component<Props, State> {
           value={value}
           onChange={this.onChange}
           onUnlock={this.onUnlock}
-          // isWalletPending={
-          //   this.state.selectedWalletKey === WalletName.KEYSTORE_FILE
-          //     ? this.props.isWalletPending
-          //     : undefined
-          // }
-          // isPasswordPending={
-          //   this.state.selectedWalletKey === WalletName.KEYSTORE_FILE
-          //     ? this.props.isPasswordPending
-          //     : undefined
-          // }
         />
       </Grid>
     );

@@ -1,4 +1,4 @@
-import { Routes } from '../context/RouteContext';
+import { Routes } from '../context/RouteContextNode';
 
 type ConsoleColors = 'lightGreen' | 'white' | 'lightBlue' | 'black';
 export const helperRenderConsoleText = (

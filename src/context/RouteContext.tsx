@@ -2,12 +2,16 @@ import * as React from 'react';
 
 export type Routes = '' | 'wallet';
 
-interface RouteContextInterface {
+export interface RouteContextInterface {
   location: Routes;
   history: Routes[];
   navigateTo: (location: Routes) => () => void,
   navigateBack: () => void
 }
+
+const initialRoute = {
+  location: "wallet" as Routes
+};
 
 const ctxt = React.createContext<RouteContextInterface | null>(null);
 
@@ -18,7 +22,7 @@ const RouteContextConsumer = ctxt.Consumer;
 class RouteContext extends React.Component<{}, RouteContextInterface> {
   // noinspection JSUnusedGlobalSymbols
   public state = {
-    location: '' as Routes,
+    ...initialRoute,
     history: [],
     navigateTo: (location: Routes) => () => {
       const tmpHistory = this.state.history as Routes[];

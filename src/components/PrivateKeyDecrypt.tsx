@@ -7,6 +7,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField/TextField';
 import { VPNKeyIcon } from '../theme/icons';
 import Grow from '@material-ui/core/Grow/Grow';
+import Slide from '@material-ui/core/Slide/Slide';
 
 export interface PrivateKeyValue {
   key: string;
@@ -37,7 +38,9 @@ const styles = (theme: Theme) =>
   });
 
 interface OwnProps {
-  onUnlock(): void;
+  value: PrivateKeyValue;
+
+  onUnlock(payload: PrivateKeyValue): void;
 }
 
 interface State {
@@ -58,63 +61,70 @@ class PrivateKeyDecrypt extends React.Component<Props, State> {
     }
   };
 
+  public componentWillMount(): void {
+    const { value } = this.props;
+    this.setState({ pKeyValue: value });
+  }
+
   public render() {
     const { classes } = this.props;
     const { pKeyValue } = this.state;
     const { key, isValidPkey, isPasswordRequired, password, isValidPassword } = pKeyValue;
 
     return (
-      <form id="selectedTypeKey" onSubmit={this.unlock}>
-        <Grid
-          container={true}
-          justify="center"
-          className={classes.formGrid}
-          direction="column"
-          alignItems="center"
-        >
-          <TextField
-            label={
-              <React.Fragment>
-                <VPNKeyIcon className={classes.keyLabelIcon}/> Private Key
-              </React.Fragment>}
-            InputLabelProps={{ className: classes.keyLabel }}
-            value={key}
-            onChange={this.onChange('pKey')}
-            margin="normal"
-            fullWidth
-            error={key.length > 0 && isValidPkey && isPasswordRequired && !isValidPassword}
-            helperText={(key.length > 0 && isValidPkey && isPasswordRequired && !isValidPassword) ? <span
-              className={classes.errorText}>Your wallet is encrypted. Please enter the password.</span> : undefined}
-          />
-          {isValidPkey &&
-          isPasswordRequired && (
-            <Grow in={true}>
-              <TextField
-                label={'Password'}
-                value={password}
-                onChange={this.onChange('password')}
-                inputProps={{ type: 'password' }}
-                margin="normal"
-                fullWidth
-                error={password.length > 0 && !isValidPassword}
-                helperText={(password.length > 0 && !isValidPassword) ?
-                  <span className={classes.errorText}>Invalid password provided</span> : undefined}
-              />
-            </Grow>
-          )}
-
-          <Button
-            className={classes.submitButton}
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValidPkey ||
-            ((isPasswordRequired && !isValidPassword) || (!isPasswordRequired))}
+      <Slide in direction="left">
+        <form id="selectedTypeKey" onSubmit={this.unlock}>
+          <Grid
+            container={true}
+            justify="center"
+            className={classes.formGrid}
+            direction="column"
+            alignItems="center"
           >
-            Unlock
-          </Button>
-        </Grid>
-      </form>
+            <TextField
+              label={
+                <React.Fragment>
+                  <VPNKeyIcon className={classes.keyLabelIcon}/> Private Key
+                </React.Fragment>}
+              InputLabelProps={{ className: classes.keyLabel }}
+              value={key}
+              onChange={this.onChange('pKey')}
+              margin="normal"
+              fullWidth
+              error={key.length > 0 && isValidPkey && isPasswordRequired && !isValidPassword}
+              helperText={(key.length > 0 && isValidPkey && isPasswordRequired && !isValidPassword) ? <span
+                className={classes.errorText}>Your wallet is encrypted. Please enter the password.</span> : undefined}
+            />
+            {isValidPkey &&
+            isPasswordRequired && (
+              <Grow in={true}>
+                <TextField
+                  label={'Password'}
+                  value={password}
+                  onChange={this.onChange('password')}
+                  inputProps={{ type: 'password' }}
+                  margin="normal"
+                  fullWidth
+                  error={password.length > 0 && !isValidPassword}
+                  helperText={(password.length > 0 && !isValidPassword) ?
+                    <span className={classes.errorText}>Invalid password provided</span> : undefined}
+                />
+              </Grow>
+            )}
+
+            <Button
+              className={classes.submitButton}
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={!isValidPkey ||
+              ((isPasswordRequired && !isValidPassword) || (!isPasswordRequired))}
+            >
+              Unlock
+            </Button>
+          </Grid>
+        </form>
+      </Slide>
     );
   }
 
@@ -145,7 +155,8 @@ class PrivateKeyDecrypt extends React.Component<Props, State> {
   private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onUnlock();
+    const { pKeyValue } = this.state;
+    this.props.onUnlock(pKeyValue);
   };
 }
 

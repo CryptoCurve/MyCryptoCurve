@@ -17,6 +17,7 @@ import { WithRouteContext, withRouteContext } from './context/RouteContext';
 import { helperRenderConsoleText } from './helpers/helpers';
 import Wallet from './containers/Wallet/Wallet';
 import Context from './context/Context';
+import Footer from './components/Footer';
 
 interface OwnProps {
 }
@@ -80,7 +81,6 @@ class App extends React.Component<Props, State> {
 }
 
 const MainRouting = withStyles(styles)(withRouteContext((props: WithRouteContext & WithStyles<typeof styles>) => {
-  console.log(props);
   const { routeContext, classes } = props;
   const { location } = routeContext;
   return (
@@ -91,6 +91,7 @@ const MainRouting = withStyles(styles)(withRouteContext((props: WithRouteContext
       <Header/>
       {location === 'wallet' ? <Wallet/> :
         <LandingPage/>}
+      {location !== '' && <Footer />}
     </React.Fragment>
   );
 }));

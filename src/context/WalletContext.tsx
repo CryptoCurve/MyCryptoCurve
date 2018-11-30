@@ -1,14 +1,20 @@
 import * as React from 'react';
 
-interface Wallet {
+export interface Wallet {
   _privKey: string;
+  address: string;
 }
 
 interface WalletContextInterface {
   // TODO: Need to change the any to an actual wallet type
   wallet: Wallet;
-  setWallet: (wallet: Wallet | any | null) => ()=>void;
+  setWallet: (wallet: Wallet | null) => ()=>void;
 }
+
+const InitialWallet:Wallet = {
+  _privKey: "",
+  address: ""
+};
 
 const ctxt = React.createContext<WalletContextInterface | null>(null);
 
@@ -19,11 +25,10 @@ const WalletContextConsumer = ctxt.Consumer;
 class WalletContext extends React.Component<{}, WalletContextInterface> {
   // noinspection JSUnusedGlobalSymbols
   public state = {
-    wallet: {
-      _privKey: ""
-    },
-    setWallet: (wallet: Wallet | any) => ()=> {
-      return this.setState({ wallet });
+    wallet: InitialWallet,
+    setWallet: (wallet: Wallet | null) => ()=> {
+      return this.setState({wallet: wallet === null?InitialWallet:wallet});
+
     }
   };
 

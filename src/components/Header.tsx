@@ -8,11 +8,14 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import ButtonBase from '@material-ui/core/ButtonBase/ButtonBase';
-import { withRouteContext, WithRouteContext } from '../context/RouteContext';
+import { Routes, withRouteContext, WithRouteContext } from '../context/RouteContext';
 import { helperRenderConsoleText } from '../helpers/helpers';
+import { RouteContextInterface } from '../context/RouteContext';
 
 interface OwnProps {
 }
+
+const tabRoutes:Routes[] = ["","wallet"];
 
 interface State {
   activeTab: number;
@@ -88,6 +91,16 @@ class Header extends React.Component<Props, State> {
     activeTab: 0
   };
 
+  public componentWillUpdate(nextProps: Readonly<Props>): void {
+    const {routeContext} = nextProps;
+    this.checkActiveTab(routeContext);
+  }
+
+  public componentWillMount(): void {
+    const {routeContext} = this.props;
+    this.checkActiveTab(routeContext);
+  }
+
   public render() {
     console.log(...helperRenderConsoleText('Render Header', 'lightGreen'));
     const { classes,routeContext } = this.props;
@@ -129,7 +142,7 @@ class Header extends React.Component<Props, State> {
               >
                 <Tab style={{ display: 'none' }}/>
                 <Tab label="Open Wallet"/>
-                <Tab label="New Wallet"/>
+                <Tab label="New Wallet" disabled/>
               </Tabs>
             </Grid>
           </Grid>
@@ -138,7 +151,20 @@ class Header extends React.Component<Props, State> {
     );
   }
 
+  private checkActiveTab = (routeContext:RouteContextInterface)=> {
+    const {location} = routeContext;
+    const {activeTab} = this.state;
+    if (tabRoutes.indexOf(location) !== activeTab) {
+      this.setState({activeTab: tabRoutes.indexOf(location)});
+    }
+  };
+
   private handleChange = ({}, value: number) => {
+    const {routeContext} = this.props;
+    const {location,navigateTo} = routeContext;
+    if (value !== tabRoutes.indexOf(location)) {
+      navigateTo(tabRoutes[value])();
+    }
     this.setState({ activeTab: value });
   };
 }
