@@ -13,6 +13,7 @@ import { Wallet, withWalletContext, WithWalletContext } from '../../context/Wall
 import PrivateKeyDecrypt, { PrivateKeyValue } from './components/PrivateKeyDecrypt';
 import Slide from '@material-ui/core/Slide/Slide';
 import { KeystoreDecrypt, KeystoreValue } from './components/KeyStoreDecrypt';
+import { MnemonicDecrypt } from './components/MnemonicDecrypt';
 
 export enum WalletName {
   PRIVATE_KEY = 'privateKey',
@@ -33,11 +34,11 @@ export const walletTypes = {
     example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
     component: PrivateKeyDecrypt,
     initialParams: {
-      key: '123456678',
-      password: '12345678',
-      isValidPkey: true,
-      isValidPassword: true,
-      isPasswordRequired: true
+      key: '',
+      password: '',
+      isValidPkey: false,
+      isValidPassword: false,
+      isPasswordRequired: false
     }
   },
   [WalletName.KEYSTORE_FILE]: {
@@ -52,8 +53,7 @@ export const walletTypes = {
   [WalletName.MNEMONIC_PHRASE]: {
     title: 'Mnemonic',
     example: 'brain surround have swap horror cheese file distinct',
-    component: PrivateKeyDecrypt,
-    // component: MnemonicDecrypt,
+    component: MnemonicDecrypt,
     initialParams: {}
   }
 };

@@ -13,6 +13,10 @@
     "ordered-imports": false,
     "no-empty-interface": false,
     "no-console": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "no-unused-expression": [
+      true,
+      "allow-fast-null-checks"
+    ]
   }
 }

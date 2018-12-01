@@ -10,7 +10,7 @@ export interface RouteContextInterface {
 }
 
 const initialRoute = {
-  location: "wallet" as Routes
+  location: "" as Routes
 };
 
 const ctxt = React.createContext<RouteContextInterface | null>(null);
