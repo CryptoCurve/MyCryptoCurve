@@ -6,17 +6,15 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography/Typography';
 import IconButton from '@material-ui/core/IconButton/IconButton';
-// TODO install lib: mdi-material-ui when I have signal
-// import TwitterIcon from 'mdi-material-ui/Twitter';
-// import FacebookIcon from 'mdi-material-ui/Facebook';
-// import MediumIcon from 'mdi-material-ui/Medium';
 import FooterLogo from '../assets/images/footer-logo.png';
 import Hidden from '@material-ui/core/Hidden/Hidden';
 import { Colors } from '../theme/theme';
 import NewTabLink from './NewTabLink';
+import { FacebookIcon, MediumIcon, TwitterIcon } from '../theme/icons';
 
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 interface FooterMenuItem {
   name: string;
@@ -201,7 +199,7 @@ class Footer extends React.Component<Props> {
           <Hidden smDown={true}>
             <Grid item={true} md={3}>
               <Grid container={true} direction="row" spacing={16} justify="center">
-                <img alt="" src={FooterLogo} className={classes.footerImage} />
+                <img alt="" src={FooterLogo} className={classes.footerImage}/>
               </Grid>
             </Grid>
           </Hidden>
@@ -244,17 +242,11 @@ class Footer extends React.Component<Props> {
                 >
                   <React.Fragment>
                     {socialMediaItem.text === 'twitter' ? (
-                      // TODO: Replace div with actual icon once lib installed
-                      <div>Twitter Icon</div>
-                      // <TwitterIcon />
+                      <TwitterIcon/>
                     ) : socialMediaItem.text === 'medium' ? (
-                      // TODO: Replace div with actual icon once lib installed
-                      <div>Medium Icon</div>
-                      // <MediumIcon />
+                      <MediumIcon/>
                     ) : (
-                      // TODO: Replace div with actual icon once lib installed
-                      <div>Facebook Icon</div>
-                      // <FacebookIcon />
+                      <FacebookIcon/>
                     )}
                   </React.Fragment>
                 </NewTabLink>
