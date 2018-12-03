@@ -67,6 +67,12 @@ export const cryptoCurveMainTheme = createMuiTheme({
       letterSpacing: 5,
       lineHeight: '27px'
     },
+    h5: {
+      textTransform: 'uppercase',
+      fontSize: 15,
+      letterSpacing: 1.5,
+      lineHeight: '20px'
+    },
     display1: {
       fontFamily: ['BebasneueRegular', 'Abel', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'
       ].join(','),

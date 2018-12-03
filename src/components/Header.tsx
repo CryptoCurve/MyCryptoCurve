@@ -1,24 +1,31 @@
 import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import AppBar from '@material-ui/core/AppBar/AppBar';
-import Typography from '@material-ui/core/Typography/Typography';
-import Tabs from '@material-ui/core/Tabs/Tabs';
-import Tab from '@material-ui/core/Tab/Tab';
-import Grid from '@material-ui/core/Grid/Grid';
 import { Theme } from '@material-ui/core';
-import createStyles from '@material-ui/core/styles/createStyles';
-import ButtonBase from '@material-ui/core/ButtonBase/ButtonBase';
 import { Routes, withRouteContext, WithRouteContext } from '../context/RouteContext';
 import { helperRenderConsoleText } from '../helpers/helpers';
 import { RouteContextInterface } from '../context/RouteContext';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import { WithStyles, Menu } from '@material-ui/core/es';
+import AppBar from '@material-ui/core/es/AppBar/AppBar';
+import Grid from '@material-ui/core/es/Grid/Grid';
+import Typography from '@material-ui/core/es/Typography/Typography';
+import ButtonBase from '@material-ui/core/es/ButtonBase/ButtonBase';
+import Tabs from '@material-ui/core/es/Tabs/Tabs';
+import Tab from '@material-ui/core/es/Tab/Tab';
+import withStyles from '@material-ui/core/es/styles/withStyles';
+import { ArrowDropDownIcon } from 'src/theme/icons';
+import MenuItem from '@material-ui/core/es/MenuItem/MenuItem';
+import { Chain, WithWalletContext, withWalletContext } from '../context/WalletContext';
+import { chainList } from '../config';
 
 interface OwnProps {
 }
 
-const tabRoutes:Routes[] = ["","wallet"];
+const tabRoutes: Routes[] = ['', 'wallet'];
 
 interface State {
   activeTab: number;
+  anchorEl: {} | null,
+
 }
 
 const styles = (theme: Theme) =>
@@ -53,6 +60,14 @@ const styles = (theme: Theme) =>
         width: '100%'
       }
     },
+    chainDropDown: {
+      paddingLeft: theme.spacing.unit * 2,
+      [theme.breakpoints.only('xs')]: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    },
     button: {
       // width: 200
     },
@@ -84,28 +99,28 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles> & WithRouteContext;
+type Props = OwnProps & WithStyles<typeof styles> & WithRouteContext & WithWalletContext;
 
 class Header extends React.Component<Props, State> {
   public state = {
-    activeTab: 0
+    activeTab: 0,
+    anchorEl: null
   };
 
   public componentWillUpdate(nextProps: Readonly<Props>): void {
-    const {routeContext} = nextProps;
+    const { routeContext } = nextProps;
     this.checkActiveTab(routeContext);
   }
 
   public componentWillMount(): void {
-    const {routeContext} = this.props;
+    const { routeContext } = this.props;
     this.checkActiveTab(routeContext);
   }
 
   public render() {
     console.log(...helperRenderConsoleText('Render Header', 'lightGreen'));
-    const { classes,routeContext } = this.props;
-    const  {location,navigateTo} = routeContext;
-    const { activeTab } = this.state;
+    const { classes, routeContext: {location,navigateTo},walletContext:{currentChain} } = this.props;
+    const { activeTab, anchorEl } = this.state;
     return (
       <React.Fragment>
         <AppBar
@@ -117,7 +132,7 @@ class Header extends React.Component<Props, State> {
         >
           <Grid container={true} className={classes.headerGrid} alignItems="center">
             <Grid item={true} xs={12} sm={2} className={classes.logoGrid}>
-              <ButtonBase className={classes.logoButton} onClick={navigateTo("")}>
+              <ButtonBase className={classes.logoButton} onClick={navigateTo('')}>
                 <Typography
                   variant="h3"
                   color="inherit"
@@ -145,23 +160,52 @@ class Header extends React.Component<Props, State> {
                 <Tab label="New Wallet" disabled/>
               </Tabs>
             </Grid>
+            <Grid item={true} className={classes.chainDropDown}>
+              <ButtonBase
+                aria-owns={anchorEl ? 'simple-menu' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleMenuClick}
+              >
+                <Typography variant="h5" color="inherit">{currentChain.name}</Typography>
+                <ArrowDropDownIcon/>
+              </ButtonBase>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+              >
+                {chainList.map(chain =>
+                  <MenuItem key={chain.name} onClick={this.handleMenuClose(chain)}>{chain.name}</MenuItem>
+                )}
+              </Menu>
+            </Grid>
           </Grid>
         </AppBar>
       </React.Fragment>
     );
   }
 
-  private checkActiveTab = (routeContext:RouteContextInterface)=> {
-    const {location} = routeContext;
-    const {activeTab} = this.state;
+  private handleMenuClick = (e: React.MouseEvent<{}>) => {
+    this.setState({ anchorEl: e.currentTarget });
+  };
+
+  private handleMenuClose = (chain: Chain) => () => {
+    const {walletContext:{setCurrentChain}} =this.props;
+    setCurrentChain(chain);
+    this.setState({ anchorEl: null });
+  };
+
+  private checkActiveTab = (routeContext: RouteContextInterface) => {
+    const { location } = routeContext;
+    const { activeTab } = this.state;
     if (tabRoutes.indexOf(location) !== activeTab) {
-      this.setState({activeTab: tabRoutes.indexOf(location)});
+      this.setState({ activeTab: tabRoutes.indexOf(location) });
     }
   };
 
   private handleChange = ({}, value: number) => {
-    const {routeContext} = this.props;
-    const {location,navigateTo} = routeContext;
+    const { routeContext } = this.props;
+    const { location, navigateTo } = routeContext;
     if (value !== tabRoutes.indexOf(location)) {
       navigateTo(tabRoutes[value])();
     }
@@ -169,4 +213,4 @@ class Header extends React.Component<Props, State> {
   };
 }
 
-export default withStyles(styles)(withRouteContext(Header)) as React.ComponentClass<OwnProps>;
+export default withStyles(styles)(withRouteContext(withWalletContext(Header))) as React.ComponentClass<OwnProps>;
