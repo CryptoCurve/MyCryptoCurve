@@ -1,7 +1,7 @@
 {
   "name": "my-crypto-curve",
   "version": "0.1.0",
-  "homepage": "https://troepster.github.io/MyCryptoCurve",
+  "homepage": "https://cryptocurve.github.io/MyCryptoCurve",
   "dependencies": {
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
