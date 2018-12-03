@@ -1,8 +1,7 @@
 {
   "name": "my-crypto-curve",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://troepster.github.io/MyCryptoCurve/",
+  "homepage": "https://myusername.github.io/my-app",
   "dependencies": {
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
@@ -17,7 +16,7 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -b master -d build"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
