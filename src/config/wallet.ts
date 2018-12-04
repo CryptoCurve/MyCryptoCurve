@@ -4,12 +4,18 @@ type ChainList = Chain[];
 
 export const chainList:ChainList = [
   {
-    name: "WanChain"
+    name: "WanChain",
+    value: "wan",
+    defaultDerivationPath: ""
   },
   {
-    name: "Ethereum"
+    name: "Ethereum",
+    value: "eth",
+    defaultDerivationPath: ""
   },
   {
-    name: "AnotherChain"
+    name: "AnotherChain",
+    value: "rando",
+    defaultDerivationPath: ""
   }
 ];

@@ -15,6 +15,8 @@ import Slide from '@material-ui/core/Slide/Slide';
 import { KeystoreDecrypt, KeystoreValue } from './components/KeyStoreDecrypt';
 import { MnemonicDecrypt } from './components/MnemonicDecrypt';
 
+import * as CryptoCurveSDK from 'cryptocurve-sdk';
+
 export enum WalletName {
   PRIVATE_KEY = 'privateKey',
   KEYSTORE_FILE = 'keystoreFile',
@@ -197,12 +199,33 @@ class OpenWallet extends React.Component<Props, State> {
 
   private onUnlock = (payload: PrivateKeyValue | KeystoreValue) => {
     const { selectedWalletKey } = this.state;
-    console.log(selectedWalletKey);
-    console.log(payload);
-    const wallet: Wallet = {
-      _privKey: "Private key stuff here",
-      address: '???'
-    };
+    const { walletContext } = this.props;
+    const { currentChain } = walletContext;
+    console.log("currentChain + " + JSON.stringify(currentChain));
+
+    const selectedWalletKeyString: string = selectedWalletKey as unknown as string;
+    
+    let wallet: Wallet | null = null;
+    this.props.walletContext.setWallet(wallet)();
+
+    switch (selectedWalletKeyString){
+      case 'privateKey':
+        try {
+          payload = payload as PrivateKeyValue;
+          wallet = CryptoCurveSDK.wallet.createFromPrivateKey(payload.key, payload.password);
+        } catch (error){
+          console.log('error ' + error.message);
+        }
+        break;
+      case 'keystoreFile':
+        try {
+          payload = payload as KeystoreValue;
+          wallet = CryptoCurveSDK.wallet.createFromKeystore(payload.file, payload.password);
+        } catch (error){
+          console.log('error ' + error.message);
+        }
+        break;
+    }
     if (wallet) {
       this.props.walletContext.setWallet(wallet)();
     }

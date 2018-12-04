@@ -138,6 +138,7 @@ class PrivateKeyDecrypt extends React.Component<Props, State> {
     }
     // TODO: Need to validate privateKey and password
     // setting isValidPkey true for testing - should be changed
+    // TODO cryptocurve-sdk should provide privateKey validator
     const isValidPkey = key.length > 5;
     const isValidPassword = password.length > 5;
     const isPasswordRequired = true;

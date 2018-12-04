@@ -2,11 +2,14 @@ import * as React from 'react';
 import { chainList } from '../config';
 
 export interface Wallet {
-  _privKey: string;
+  privateKey: string;
+  publicKey: string;
   address: string;
 }
 export interface Chain {
   name: string;
+  value: string;
+  defaultDerivationPath: string;
 }
 
 interface WalletContextInterface {
@@ -18,7 +21,8 @@ interface WalletContextInterface {
 }
 
 const InitialWallet:Wallet = {
-  _privKey: "",
+  privateKey: "",
+  publicKey: "",
   address: ""
 };
 

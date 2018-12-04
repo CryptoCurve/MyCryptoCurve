@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField/TextField';
 import { WithWalletContext, withWalletContext } from '../../../context/WalletContext';
 import { helperRenderConsoleText } from '../../../helpers/helpers';
 
+import * as CryptoCurveSDK from 'cryptocurve-sdk';
+
 interface OwnProps {}
 
 const styles = (theme: Theme) =>
@@ -39,10 +41,26 @@ class SendTransaction extends React.Component<Props, State> {
     console.log(...helperRenderConsoleText('Render SendTransaction', 'lightGreen'));
     const { classes,walletContext } = this.props;
     const { amount, toAddress } = this.state;
-    const {wallet} = walletContext;
+    const { wallet, currentChain } = walletContext;
+    console.log("currentChain + " + JSON.stringify(currentChain));
     const {address:fromAddress} = wallet;
     console.log('from ' + fromAddress);
     console.log(amount + ' to ' + toAddress);
+
+    const client = new CryptoCurveSDK.Client();
+    // TODO here we connect the client
+    const clientHost = 'http://localhost:8545'; // [wan/wan.testnet].cryptocurve.network
+    const timeout = 0; // or null
+    const clientUsername = 'test'; // default value for testnet
+    const clientPassword = 'test'; // default value for testnet
+    client.setProvider(clientHost, timeout, clientUsername, clientPassword);
+
+    // TODO create a transaction to validate it,
+    //    if transaction created without a client then it instantiates one itself?
+    // access client.getGasPrice and client.getGasLimit
+    //    display values before submission and make some kind of
+    //    override functionality available
+
     // TODO HERE IS WHERE WE USE THE WALLET TO PREPARE AND SIGN THE TRANSACTION
     // TODO validate address
     // TODO check balance

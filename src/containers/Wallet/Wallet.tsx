@@ -60,9 +60,9 @@ class Wallet extends React.Component<Props, State> {
     const { wallet, setWallet } = walletContext;
     return (
       <React.Fragment>
-        {!wallet._privKey && <OpenWallet/>}
-        {wallet._privKey && (
-          <Slide in={!!wallet._privKey} direction="left">
+        {!wallet.privateKey && <OpenWallet/>}
+        {wallet.privateKey && (
+          <Slide in={!!wallet.privateKey} direction="left">
             <React.Fragment>
               <Grid container className={classes.walletGridContainer}>
                 <Grid xs={8} item/>

@@ -25,6 +25,7 @@ function isPassRequired(file: string | null | ArrayBuffer): boolean {
   return !!file;
 }
 
+// TODO add cryptocurve-sdk wallet validation
 function isValidFile(rawFile: File): boolean {
   const fileType = rawFile.type;
   return fileType === '' || fileType === 'application/json';
