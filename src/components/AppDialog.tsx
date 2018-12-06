@@ -6,7 +6,7 @@ import { WithDialogContext, withDialogContext } from '../context/DialogContext';
 
 interface OwnProps {}
 
-type Props = OwnProps & WithDialogContext;
+interface Props extends OwnProps,WithDialogContext{}
 
 class AppDialog extends React.Component<Props> {
 

@@ -10,7 +10,8 @@ import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
 import { helperRenderConsoleText } from '../helpers/helpers';
 import { SnackBarMessages, SnackBarMsg, WithSnackBarContext, withSnackBarContext } from '../context/SnackBarContext';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,7 +37,8 @@ interface State {
   messageInfo: SnackBarMsg | null;
 }
 
-type Props = OwnProps & WithSnackBarContext & WithStyles<typeof styles>;
+interface Props extends OwnProps, WithSnackBarContext, WithStyles<typeof styles> {
+}
 
 class AppSnackBar extends React.Component<Props, State> {
   public state = {
@@ -57,7 +59,7 @@ class AppSnackBar extends React.Component<Props, State> {
   public render() {
     const { open, messageInfo } = this.state;
     const { classes } = this.props;
-    const { key, message, type } = messageInfo || {key:"",message:"",type: "success"};
+    const { key, message, type } = messageInfo || { key: '', message: '', type: 'success' };
     console.log(...helperRenderConsoleText('Render AppSnackBar', 'lightGreen'));
 
     return (
@@ -78,8 +80,8 @@ class AppSnackBar extends React.Component<Props, State> {
               type === 'success'
                 ? classes.success
                 : type === 'warning'
-                  ? classes.warning
-                  : type === 'error' ? classes.error : classes.info
+                ? classes.warning
+                : type === 'error' ? classes.error : classes.info
             }
             message={<span id="message-id">{message}</span>}
             action={[
@@ -90,7 +92,7 @@ class AppSnackBar extends React.Component<Props, State> {
                 className={classes.close}
                 onClick={this.handleClose}
               >
-                <CloseIcon />
+                <CloseIcon/>
               </IconButton>
             ]}
           />

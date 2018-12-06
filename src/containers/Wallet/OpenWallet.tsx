@@ -90,7 +90,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles> & WithSnackBarContext & WithWalletContext;
+interface Props extends OwnProps, WithStyles<typeof styles>, WithSnackBarContext, WithWalletContext {
+}
 
 class OpenWallet extends React.Component<Props, State> {
   public state = {
@@ -201,19 +202,19 @@ class OpenWallet extends React.Component<Props, State> {
     const { selectedWalletKey } = this.state;
     const { walletContext } = this.props;
     const { currentChain } = walletContext;
-    console.log("currentChain + " + JSON.stringify(currentChain));
+    console.log('currentChain + ' + JSON.stringify(currentChain));
 
     const selectedWalletKeyString: string = selectedWalletKey as unknown as string;
-    
+
     let wallet: Wallet | null = null;
     this.props.walletContext.setWallet(wallet)();
 
-    switch (selectedWalletKeyString){
+    switch (selectedWalletKeyString) {
       case 'privateKey':
         try {
           payload = payload as PrivateKeyValue;
           wallet = CryptoCurveSDK.wallet.createFromPrivateKey(payload.key, payload.password);
-        } catch (error){
+        } catch (error) {
           console.log('error ' + error.message);
         }
         break;
@@ -221,7 +222,7 @@ class OpenWallet extends React.Component<Props, State> {
         try {
           payload = payload as KeystoreValue;
           wallet = CryptoCurveSDK.wallet.createFromKeystore(payload.file, payload.password);
-        } catch (error){
+        } catch (error) {
           console.log('error ' + error.message);
         }
         break;

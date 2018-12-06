@@ -46,7 +46,8 @@ interface State {
   openTab: number;
 }
 
-type Props = OwnProps & WithStyles<typeof styles> & WithWalletContext;
+interface Props extends OwnProps, WithStyles<typeof styles>, WithWalletContext {
+}
 
 class Wallet extends React.Component<Props, State> {
   public state = {

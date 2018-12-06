@@ -188,7 +188,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles>;
+interface Props extends OwnProps, WithStyles<typeof styles> {
+}
 
 class Footer extends React.Component<Props> {
   public render() {

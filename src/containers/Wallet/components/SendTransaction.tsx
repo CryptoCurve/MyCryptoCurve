@@ -10,7 +10,8 @@ import { helperRenderConsoleText } from '../../../helpers/helpers';
 
 import * as CryptoCurveSDK from 'cryptocurve-sdk';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -24,12 +25,14 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing.unit * 6
     }
   });
+
 interface State {
   amount: number;
   toAddress: string;
 }
 
-type Props = OwnProps & WithStyles<typeof styles> & WithWalletContext;
+interface Props extends OwnProps, WithStyles<typeof styles>, WithWalletContext {
+}
 
 class SendTransaction extends React.Component<Props, State> {
   public state = {
@@ -39,11 +42,11 @@ class SendTransaction extends React.Component<Props, State> {
 
   public render() {
     console.log(...helperRenderConsoleText('Render SendTransaction', 'lightGreen'));
-    const { classes,walletContext } = this.props;
+    const { classes, walletContext } = this.props;
     const { amount, toAddress } = this.state;
     const { wallet, currentChain } = walletContext;
-    console.log("currentChain + " + JSON.stringify(currentChain));
-    const {address:fromAddress} = wallet;
+    console.log('currentChain + ' + JSON.stringify(currentChain));
+    const { address: fromAddress } = wallet;
     console.log('from ' + fromAddress);
     console.log(amount + ' to ' + toAddress);
 

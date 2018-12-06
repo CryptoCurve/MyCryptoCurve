@@ -18,7 +18,8 @@ import { helperRenderConsoleText } from '../../helpers/helpers';
 // import { Colors } from '../../../Root';
 // import { NewTabLink } from '../../../components/ui';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -63,14 +64,14 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles> & WithRouteContext;
+interface Props extends OwnProps, WithStyles<typeof styles>, WithRouteContext{}
 
 class LandingPage extends React.Component<Props> {
 
   public render() {
     console.log(...helperRenderConsoleText('Render LandingPage', 'lightGreen'));
-    const { classes,routeContext } = this.props;
-    const {navigateTo} = routeContext;
+    const { classes, routeContext } = this.props;
+    const { navigateTo } = routeContext;
     return (
       <Slide in={true} direction="left">
         <main className={classes.layout}>
@@ -96,7 +97,7 @@ class LandingPage extends React.Component<Props> {
                 <Button
                   variant="outlined"
                   classes={{ outlined: classes.button }}
-                  onClick={navigateTo("wallet")}
+                  onClick={navigateTo('wallet')}
                 >
                   Open Wallet
                 </Button>

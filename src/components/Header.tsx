@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Theme } from '@material-ui/core';
+import { Theme, WithStyles } from '@material-ui/core';
 import { Routes, withRouteContext, WithRouteContext } from '../context/RouteContext';
 import { helperRenderConsoleText } from '../helpers/helpers';
 import { RouteContextInterface } from '../context/RouteContext';
 import createStyles from '@material-ui/core/es/styles/createStyles';
-import { WithStyles, Menu } from '@material-ui/core/es';
 import AppBar from '@material-ui/core/es/AppBar/AppBar';
 import Grid from '@material-ui/core/es/Grid/Grid';
 import Typography from '@material-ui/core/es/Typography/Typography';
@@ -16,6 +15,7 @@ import { ArrowDropDownIcon } from 'src/theme/icons';
 import MenuItem from '@material-ui/core/es/MenuItem/MenuItem';
 import { Chain, WithWalletContext, withWalletContext } from '../context/WalletContext';
 import { chainList } from '../config';
+import Menu from '@material-ui/core/es/Menu';
 
 interface OwnProps {
 }
@@ -99,7 +99,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles> & WithRouteContext & WithWalletContext;
+interface Props extends OwnProps, WithRouteContext, WithWalletContext, WithStyles<typeof styles> {}
 
 class Header extends React.Component<Props, State> {
   public state = {
@@ -119,7 +119,7 @@ class Header extends React.Component<Props, State> {
 
   public render() {
     console.log(...helperRenderConsoleText('Render Header', 'lightGreen'));
-    const { classes, routeContext: {location,navigateTo},walletContext:{currentChain} } = this.props;
+    const { classes, routeContext: { location, navigateTo }, walletContext: { currentChain } } = this.props;
     const { activeTab, anchorEl } = this.state;
     return (
       <React.Fragment>
@@ -190,7 +190,7 @@ class Header extends React.Component<Props, State> {
   };
 
   private handleMenuClose = (chain: Chain) => () => {
-    const {walletContext:{setCurrentChain}} =this.props;
+    const { walletContext: { setCurrentChain } } = this.props;
     setCurrentChain(chain);
     this.setState({ anchorEl: null });
   };

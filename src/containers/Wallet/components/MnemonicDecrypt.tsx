@@ -63,7 +63,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles>;
+interface Props extends OwnProps, WithStyles<typeof styles> {
+}
 
 class MnemonicDecryptClass extends React.Component<Props, State> {
   public state: State = {

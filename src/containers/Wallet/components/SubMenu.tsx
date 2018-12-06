@@ -7,9 +7,11 @@ import Button from '@material-ui/core/Button/Button';
 import { customStyles } from '../../../theme/theme';
 import { helperRenderConsoleText } from '../../../helpers/helpers';
 
-interface OwnProps {}
+interface OwnProps {
+}
 
-interface State {}
+interface State {
+}
 
 const styles = (theme: Theme) => {
   return createStyles({
@@ -19,11 +21,12 @@ const styles = (theme: Theme) => {
     },
     subSectionContent: {
       marginTop: theme.spacing.unit * 2
-    },
+    }
   });
 };
 
-type Props = OwnProps & WithStyles<typeof styles>;
+interface Props extends OwnProps, WithStyles<typeof styles> {
+}
 
 class SubMenu extends React.Component<Props, State> {
   public state = {};

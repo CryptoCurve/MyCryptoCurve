@@ -41,7 +41,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = OwnProps & WithStyles<typeof styles>;
+interface Props extends OwnProps,WithStyles<typeof styles>{}
 
 interface State {
   error: Error | null;
