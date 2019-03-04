@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
+import { UnitDisplay, Address, NewTabLink, Modal } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
@@ -12,6 +12,7 @@ import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
+import { IButton } from '../ui/Modal';
 
 interface OwnProps {
   wallet: IWallet;
@@ -28,6 +29,10 @@ interface State {
   address: string;
   confirmAddr: boolean;
   copied: boolean;
+  copiedPrivate: boolean;
+  openPrivateKeyModal: boolean;
+  showPrivateKey: boolean;
+  privateKey: string | null;
 }
 
 interface DispatchProps {
@@ -37,14 +42,19 @@ interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 class AccountInfo extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
     showLongBalance: false,
     address: '',
     confirmAddr: false,
-    copied: false
+    copied: false,
+    copiedPrivate: false,
+    openPrivateKeyModal: false,
+    showPrivateKey: false,
+    privateKey: null
   };
 
   public setAddressFromWallet() {
+    console.log(this.props.wallet);
     const address = this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
@@ -85,9 +95,27 @@ class AccountInfo extends React.Component<Props, State> {
     }, 2000);
   };
 
+  public onCopyPrivate = () => {
+    this.setState(state => {
+      return {
+        copiedPrivate: !state.copiedPrivate
+      };
+    });
+    setTimeout(() => {
+      this.setState({ copiedPrivate: false });
+    }, 2000);
+  };
+
   public render() {
-    const { network, balance, isOffline } = this.props;
-    const { address, showLongBalance, confirmAddr } = this.state;
+    const { network, balance, isOffline, wallet: { isReadOnly } } = this.props;
+    const {
+      address,
+      showLongBalance,
+      confirmAddr,
+      openPrivateKeyModal,
+      showPrivateKey,
+      privateKey
+    } = this.state;
     let blockExplorer;
     let tokenExplorer;
     if (!network.isCustom) {
@@ -116,7 +144,32 @@ class AccountInfo extends React.Component<Props, State> {
             </CopyToClipboard>
           </div>
         </div>
-
+        {!isReadOnly && (
+          <div className="AccountInfo-section">
+            <h5 className="AccountInfo-section-header">Private Key</h5>
+            <div className="AccountInfo-section AccountInfo-address-section">
+              {!showPrivateKey && (
+                <button className="btn btn-default btn-block" onClick={this.onClickShowPrivateKey}>
+                  Show Private Key
+                </button>
+              )}
+              {showPrivateKey && (
+                <div className="AccountInfo-address-wrapper">
+                  <div className="AccountInfo-address-addr">{privateKey}</div>
+                  <CopyToClipboard onCopy={this.onCopyPrivate} text={privateKey || ''}>
+                    <div
+                      className={`AccountInfo-copy ${this.state.copiedPrivate ? 'is-copied' : ''}`}
+                      title="Copy To clipboard"
+                    >
+                      <i className="fa fa-copy" />
+                      <span>{this.state.copiedPrivate ? 'copied!' : 'copy address'}</span>
+                    </div>
+                  </CopyToClipboard>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
         {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">
             <a
@@ -208,10 +261,37 @@ class AccountInfo extends React.Component<Props, State> {
             </ul>
           </div>
         )}
+        <ShowPrivateKeyModal
+          closeFn={this.closeModal}
+          confirmFn={this.confirmShowPrivateKey}
+          open={openPrivateKeyModal}
+        />
       </div>
     );
   }
+
+  private onClickShowPrivateKey = () => {
+    this.setState({ openPrivateKeyModal: true });
+  };
+
+  private closeModal = () => {
+    this.setState({ openPrivateKeyModal: false });
+  };
+
+  private confirmShowPrivateKey = () => {
+    console.log(this.props);
+    console.log('Confirm showing private key');
+    const privateKey =
+      this.props.wallet.getPrivateKeyString && this.props.wallet.getPrivateKeyString();
+    console.log(privateKey);
+    this.setState({
+      openPrivateKeyModal: false,
+      showPrivateKey: true,
+      privateKey: privateKey || null
+    });
+  };
 }
+
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
@@ -219,5 +299,20 @@ function mapStateToProps(state: AppState): StateProps {
     isOffline: getOffline(state)
   };
 }
+
 const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);
+
+const ShowPrivateKeyModal = (props: { open: boolean; closeFn: any; confirmFn: any }) => {
+  const { open, closeFn, confirmFn } = props;
+  const buttons: IButton[] = [
+    { text: 'Show', type: 'primary', onClick: confirmFn },
+    { text: 'Cancel', type: 'default', onClick: closeFn }
+  ];
+
+  return (
+    <Modal title="Show private key?" isOpen={open} handleClose={closeFn} buttons={buttons}>
+      <p>You will be showing this key at your own risk</p>
+    </Modal>
+  );
+};

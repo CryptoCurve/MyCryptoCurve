@@ -54,7 +54,7 @@ const styles: any = {
     textTransform: 'uppercase',
     letterSpacing: '1px'
   },
-  // Address / private key info
+  // PrivateKey / private key info
   infoContainer: {
     float: 'left',
     width: '85%',
